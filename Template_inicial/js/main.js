@@ -16,5 +16,6 @@
         btnPrev: '.prev',
         btnNext: '.next'
     })
+   
 })()
 
