@@ -6,7 +6,7 @@ import {makeStyles} from '@material-ui/core';
 import { TextField,Grid,InputAdornment } from '@material-ui/core';
 import {Search} from '@styled-icons/boxicons-regular/Search'
 import filmeIMG1 from '../../assets/img/filme-cuties-netflix.png';
-import filmeIMG2 from '../../assets/img/Santana-netflix.jpg';
+// import filmeIMG2 from '../../assets/img/Santana-netflix.jpg';
 
 const useStyles = makeStyles({
   textFieldRoot: {
