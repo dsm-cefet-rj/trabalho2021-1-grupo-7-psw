@@ -71,14 +71,14 @@
 .ticketContent button{
     border: none;
     background-color: transparent;
-    background-image: url("../../images/favorito.svg");
+    background-image: url("../../assets/img/favorito.svg");
     background-repeat: no-repeat;
     background-size: contain;
     width: 30px;
     height: 30px;
 }
 .favoriteActive{
-    background-image: url("../../images/favorito_ativo.svg");
+    background-image: url("../../assets/img/favorito_ativo.svg");
 }
 .ticketDescription h2{
     font-size: 1.2rem;
