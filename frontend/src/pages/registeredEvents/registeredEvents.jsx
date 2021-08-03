@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
-import styles from './myTickets.module.css'
+import styles from './registeredEvents.module.css'
 
-import MyTicketCard from '../../components/myTicketCard/index'
+import RegisteredEventCard from '../../components/RegisteredEventCard'
 
-export default function MyTickets(){
+export default function RegisteredEvents(){
 
     const tickets = [
         {
@@ -62,25 +62,18 @@ export default function MyTickets(){
         <>
             <Header/>
             <main className={styles.mainContent}>
-                <h1>Meus ingressos</h1>
+                <h1>Eventos cadastrados</h1>
 
                 <section className={styles.container}>
-                    <form className={styles.searchBar}>
-                        <div className={styles.searchLeft}>
-                            <input type="search" placeholder="Pesquise pelos seus ingressos" />
-                        </div>
-                        <div className={styles.searchRight}>
-                            <button type="button"><img src="pesquisa.svg" alt="Search image"/></button>
-                        </div>
-                    </form>
 
-                    <section className={styles.tickets}>
+                    <section className={styles.events}>
                         {tickets.map((ticket,index) =>{
                             return(
-                                <MyTicketCard {...ticket} />
+                                <RegisteredEventCard {...ticket} />
                             )
                         })}
                     </section>
+                    
                 </section>
             </main>
             <Footer/>

@@ -1,0 +1,46 @@
+.event{ 
+    border: 1px solid black;
+    border-radius: 15px;
+    max-width: 350px;
+    margin-bottom: 20px;
+}
+.event img{
+    width: 100%;
+}
+.eventDescription{
+    padding: 8px 10px;
+}
+.eventDescription h2{
+    font-size: 1.2rem;
+}
+.eventDescription div:nth-child(2){
+    font-size: 0.9rem;
+    margin: 3px 0;
+}
+.eventDescription div:last-child{
+    font-size: 0.9rem;
+}
+.eventActions{
+    border: 1px solid black;
+    border-radius: 0 0 15px 15px;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.eventActions button{
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+}
+.seeEventBtn{
+    background-image: url("../../assets/img/seeBtn.png");
+}
+.editEventBtn{
+    background-image: url("../../assets/img/editBtn.png");
+}
+.deleteEventBtn{
+    background-image: url("../../assets/img/deleteBtn.png");
+}
