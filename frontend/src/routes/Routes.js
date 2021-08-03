@@ -6,6 +6,7 @@ import { history } from '../history'
 import Home from '../pages/home/home'
 import MyTickets from '../pages/myTickets/myTickets'
 import Login from '../pages/login/login'
+import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
 
 export default function Routes() {
   return (
@@ -14,6 +15,7 @@ export default function Routes() {
           <Route exact path="/" component={Home}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
+          <Route exact path="/admin/eventos" component={RegisteredEvents}/>
       </Switch>
     </Router>
   );

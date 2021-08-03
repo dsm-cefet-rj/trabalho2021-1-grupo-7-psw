@@ -53,50 +53,13 @@
 .searchBar button img{
     width: 1rem;
 }
-.ticket{ 
-    border: 1px solid black;
-    border-radius: 15px;
-    max-width: 350px;
-    margin-bottom: 20px;
-}
-.ticket img{
-    width: 100%;
-}
-.ticketContent{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-}
-.ticketContent button{
-    border: none;
-    background-color: transparent;
-    background-image: url("../../assets/img/favorito.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 30px;
-    height: 30px;
-}
-.favoriteActive{
-    background-image: url("../../assets/img/favorito_ativo.svg");
-}
-.ticketDescription h2{
-    font-size: 1.2rem;
-}
-.ticketDescription div:nth-child(2){
-    font-size: 0.9rem;
-    margin: 3px 0;
-}
-.ticketDescription div:last-child{
-    font-size: 0.9rem;
-}
 
 @media(min-width: 460px){
     .tickets{
         grid-template-columns: 1fr 1fr;
     }
 }
-@media(min-width: 769px){
+@media(min-width: 820px){
     .tickets{
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
