@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import Header from '../../components/Header/Header'
+import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import styles from './myTickets.module.css'
 
@@ -63,16 +63,13 @@ export default function MyTickets(){
                 <h1>Meus ingressos</h1>
 
                 <section className={styles.container}>
-                    
                     <form className={styles.searchBar}>
                         <div className={styles.searchLeft}>
                             <input type="search" placeholder="Pesquise pelos seus ingressos" />
                         </div>
-
                         <div className={styles.searchRight}>
                             <button type="button"><img src="pesquisa.svg" alt="Search image"/></button>
                         </div>
-                            
                     </form>
 
 
@@ -91,7 +88,6 @@ export default function MyTickets(){
 
                                         <button type="button"></button>
                                     </section>
-            
                                 </div>
                             )
                         })}
