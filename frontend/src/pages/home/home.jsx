@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../../components/header/index.js';
+import Header from '../../components/Header/index.js';
 import EventCard from '../../components/EventCard/index.js'
 import CarouselImg from '../../components/Carousel/index.js'
 import {makeStyles} from '@material-ui/core';

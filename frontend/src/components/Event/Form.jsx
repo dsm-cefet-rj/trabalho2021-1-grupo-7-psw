@@ -1,9 +1,13 @@
-export default function EventsInputs(props){
-    let minDate =new Date().toISOString().slice(0, -14)
-    return (
+import React from "react"
+import styles from "./pages.module.css"
 
+export default function EventForm(props){
+    let minDate =new Date().toISOString().slice(0, -14)
+    return(
         <>
-        <label htmlFor="eventName">Título:</label>
+        <form method="POST" action="" className={styles.card}>         
+            <h3>{props.companyName}</h3>
+            <label htmlFor="eventName">Título:</label>
             <input type="text" id="eventName" /> 
             <label htmlFor="eventType">Tipo de evento: </label>
             <input type="text" id="eventType" />
@@ -21,6 +25,8 @@ export default function EventsInputs(props){
             <input type="date" id="purchaseLimiteDate" />
             <label htmlFor="priceByTicket">Preço por ingresso - R$</label>
             <input type="text" placeholder="Insira o preço" id="priceByTicket" />
+            {props.children}
+        </form>
         </>
     )
 }
