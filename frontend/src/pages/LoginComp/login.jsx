@@ -1,10 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header/index'
+import Footer from '../../components/Footer/Footer'
 //Importa o css
 import './style.css';
 
 export default function LoginC(){
     return (
         <div className="page">
+            <Header/>
 
             <h1>Entrar</h1>   
 
@@ -21,7 +24,8 @@ export default function LoginC(){
                 </button>
                 
             </form> 
-               
+            
+
         </div>
     )
 }
