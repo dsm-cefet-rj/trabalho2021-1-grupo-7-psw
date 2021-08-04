@@ -5,17 +5,27 @@ import { history } from '../history'
 //Componentes das páginas
 import Home from '../pages/home/home'
 import MyTickets from '../pages/myTickets/myTickets'
-import Login from '../pages/login/login'
+import LoginU from '../pages/LoginUser/login'
+import LoginC from '../pages/LoginComp/login'
 import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
+import RegisterC from '../pages/RegisterComp'
+import RegisterU from '../pages/RegisterUser'
+import Page404 from '../pages/Page404'
 
 export default function Routes() {
   return (
     <Router history={history}> {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
-          <Route exact path="/login" component={Login}/>
+          <Route exact path="/login-user" component={LoginU}/>
+          <Route exact path="/login-company" component={LoginC}/>
+          <Route exact path="/register-user" component={RegisterU}/>
+          <Route exact path="/register-company" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
+          {/*Se a rota não existir... */}
+          <Route path="*" component={Page404}/>
+
       </Switch>
     </Router>
   );
