@@ -1,9 +1,15 @@
 import React from 'react';
 //Importa o css
 import './style.css';
+import Header from '../../components/Header/index'
+import Footer from '../../components/Footer/Footer'
+
+
 export default function RegisterC(){
     return (
         <div className="page">
+
+            <Header/>
 
             <h1>Cadastre sua empresa</h1>
     
