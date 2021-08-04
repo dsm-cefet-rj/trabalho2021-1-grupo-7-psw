@@ -10,7 +10,7 @@ export default function LoginU(){
 
             <Header/>
 
-            <h1>Entrar</h1>   
+            <h1 class="title">Entrar</h1>   
 
 
             <form>

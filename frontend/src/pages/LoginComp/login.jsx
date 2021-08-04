@@ -9,7 +9,7 @@ export default function LoginC(){
         <div className="page">
             <Header/>
 
-            <h1>Entrar</h1>   
+            <h1 class="title">Entrar</h1>   
 
             <form>
                 <label htmlFor="email">E-mail:</label>

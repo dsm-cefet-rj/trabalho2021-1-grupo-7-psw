@@ -3,8 +3,6 @@ import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import styles from './myTickets.module.css'
 
-import MyTicketCard from '../../components/myTicketCard/index'
-
 export default function MyTickets(){
 
     const tickets = [
@@ -33,7 +31,7 @@ export default function MyTickets(){
             favorite: false
         },
         {
-            id: 4,
+            id: 1,
             title: "Rock in Rio 2021",
             date: "10/11/2021",
             tickets_number: 1,
@@ -41,7 +39,7 @@ export default function MyTickets(){
             favorite: false
         },
         {
-            id: 5,
+            id: 2,
             title: "Beto Carreiro World",
             date: "05/12/2021",
             tickets_number: 2,
@@ -49,7 +47,7 @@ export default function MyTickets(){
             favorite: true
         },
         {
-            id: 6,
+            id: 3,
             title: "Game XP",
             date: "27/12/2021",
             tickets_number: 1,
@@ -74,13 +72,27 @@ export default function MyTickets(){
                         </div>
                     </form>
 
+
                     <section className={styles.tickets}>
-                        {tickets.map((ticket,index) =>{
+                        {tickets.map((cur,index) =>{
                             return(
-                                <MyTicketCard {...ticket} />
+                                <div key={cur.id} className={styles.ticket}>
+                                    <img src="evento.jpg" alt="Event image"/>
+
+                                    <section className={styles.ticketContent}>
+                                        <div className={styles.ticketDescription}>
+                                            <h2>{cur.title}</h2>
+                                            <div>{cur.date}</div>
+                                            <div>Ingressos: {cur.tickets_number}</div>
+                                        </div>
+
+                                        <button type="button"></button>
+                                    </section>
+                                </div>
                             )
                         })}
                     </section>
+                    
                 </section>
             </main>
             <Footer/>

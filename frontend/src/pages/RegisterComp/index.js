@@ -11,7 +11,7 @@ export default function RegisterC(){
 
             <Header/>
 
-            <h1>Cadastre sua empresa</h1>
+            <h1 class="title">Cadastre sua empresa</h1>
     
                 <form>
                     <label>Nome da Empresa:</label>
