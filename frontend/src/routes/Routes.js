@@ -1,7 +1,9 @@
 import React from 'react'
 import { Router, Switch, Route } from 'react-router'
 import { history } from '../history'
-
+import EventDelete from '../pages/Event/Delete'
+import EventEdit from '../pages/Event/Edit'
+import EventRegister from '../pages/Event/Register'
 //Componentes das páginas
 import Home from '../pages/home/home'
 import MyTickets from '../pages/myTickets/myTickets'
@@ -22,10 +24,13 @@ export default function Routes() {
           <Route exact path="/register-user" component={RegisterU}/>
           <Route exact path="/register-company" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
+
+          <Route exact path="/admin/eventos/criar"  component={EventRegister}/>
+          <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
+          <Route exact path="/admin/eventos/atualizar"  component={EventEdit}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
           {/*Se a rota não existir... */}
           <Route path="*" component={Page404}/>
-
       </Switch>
     </Router>
   );
