@@ -14,12 +14,12 @@ const useStyles = makeStyles({
   }
 });
 
-function App() {
+function App({history}) {
   const classes = useStyles();
-
+  console.log(history);
   return (
     <div className="App">
-      <Header/>
+      <Header history={history}/>
       <CarouselImg/>
       <Grid container justify="center" alignItems="center" style={{marginTop: 15, padding: 10}}>
         <TextField required variant="outlined" id="standard-required" placeholder="Pesquise pelo evento que você procura" classes={{root: classes.textFieldRoot}}InputProps={{
