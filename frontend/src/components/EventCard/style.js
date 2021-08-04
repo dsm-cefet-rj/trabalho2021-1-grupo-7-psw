@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const CardWrapper = styled.nav`
   background-color: #fff;
-  border: 1px solid #000;
+  box-shadow:3px 7px 16px -3px rgba(0,0,0,0.3);
   display:flex;
   flex-direction: column;
   border-radius: 10px;

@@ -8,8 +8,8 @@ const EventCard = ({eventName, eventImg, eventType}) => {
   return (
     <>
       <CardWrapper>
-        <div>
-         <img style={{width:'100%', height: 170}}src={eventImg} alt={eventName}/>
+        <div >
+         <img style={{width:'100%'}} src={eventImg} alt={eventName}/>
         </div>
         <CardsSpecs>
           <Title>{eventName}</Title>
