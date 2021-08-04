@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import Header from '../../components/header/index'
+import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import styles from './myTickets.module.css'
 
