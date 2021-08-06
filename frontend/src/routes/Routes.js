@@ -4,6 +4,7 @@ import { history } from '../history'
 
 //Componentes das páginas
 import Home from '../pages/home/home'
+import EventPage from '../pages/EventPage/index.jsx'
 import MyTickets from '../pages/myTickets/myTickets'
 import LoginU from '../pages/LoginUser/login'
 import LoginC from '../pages/LoginComp/login'
@@ -17,6 +18,7 @@ export default function Routes() {
     <Router history={history}> {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
+          <Route exact path="/evento" component={EventPage}/>
           <Route exact path="/login-user" component={LoginU}/>
           <Route exact path="/login-company" component={LoginC}/>
           <Route exact path="/register-user" component={RegisterU}/>

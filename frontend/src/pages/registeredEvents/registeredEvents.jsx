@@ -2,7 +2,6 @@
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import styles from './registeredEvents.module.css'
-
 import RegisteredEventCard from '../../components/RegisteredEventCard'
 
 export default function RegisteredEvents(){

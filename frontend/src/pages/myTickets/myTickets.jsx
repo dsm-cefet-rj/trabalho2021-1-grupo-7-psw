@@ -2,6 +2,7 @@
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import styles from './myTickets.module.css'
+import evento from '../../assets/img/evento.jpg';
 
 export default function MyTickets(){
 
@@ -72,12 +73,11 @@ export default function MyTickets(){
                         </div>
                     </form>
 
-
                     <section className={styles.tickets}>
                         {tickets.map((cur,index) =>{
                             return(
                                 <div key={cur.id} className={styles.ticket}>
-                                    <img src="evento.jpg" alt="Event image"/>
+                                    <img src={evento} alt="Event image"/>
 
                                     <section className={styles.ticketContent}>
                                         <div className={styles.ticketDescription}>

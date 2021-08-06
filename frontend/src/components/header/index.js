@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {MenuWrapper,Title,Text,ListWrapper,Link} from './style.js';
+import {MenuWrapper,Logo,Text,ListWrapper,Link} from './style.js';
 import {Menu} from '@styled-icons/boxicons-regular/Menu';
+import logoImg from '../../assets/img/logo.svg';
 import {UserCircle} from '@styled-icons/boxicons-solid/UserCircle';
 import {makeStyles} from '@material-ui/core';
 import { Drawer, List,ListItem, IconButton, Divider} from '@material-ui/core';
@@ -72,10 +73,8 @@ const Header = () => {
       <MenuWrapper>
         <IconButton onClick={() => handleOpenMenu(true)} classes={{root: classes.iconButtonRoot}}>
          <Menu size={30} style={{cursor: 'pointer'}} />
-        </IconButton>
-        <Title>
-          Ingressos Hub
-        </Title>
+        </IconButton> 
+          <Logo src={logoImg} alt="Logo Img"/>
          <Drawer anchor='left' open={isMenuOpen} onClose={() => handleOpenMenu(false)}>
           {list()}
         </Drawer> 
