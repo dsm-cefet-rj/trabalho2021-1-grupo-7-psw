@@ -12,6 +12,9 @@ import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
 import RegisterC from '../pages/RegisterComp'
 import RegisterU from '../pages/RegisterUser'
 import Page404 from '../pages/Page404'
+import EventDelete from '../pages/Event/Delete'
+import EventUpdate from '../pages/Event/Update'
+import EventCreate from '../pages/Event/Create'
 
 export default function Routes() {
   return (
@@ -25,6 +28,9 @@ export default function Routes() {
           <Route exact path="/register-company" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
+          <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
+          <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
+          <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
           {/*Se a rota não existir... */}
           <Route path="*" component={Page404}/>
 
