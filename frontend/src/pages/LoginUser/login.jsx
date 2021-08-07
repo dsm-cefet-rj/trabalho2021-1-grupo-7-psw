@@ -2,7 +2,7 @@ import React from 'react';
 //Importa o css
 //import './style.css';
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
+import Footer from '../../components/Footer/index'
 
 export default function LoginU(){
     return (

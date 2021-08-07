@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
+import Footer from '../../components/Footer/index'
 //Importa o css
 //import './style.css';
 
