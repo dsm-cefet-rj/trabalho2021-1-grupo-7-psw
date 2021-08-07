@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
-import styles from './myTickets.module.css'
-import evento from '../../assets/img/evento.jpg';
+import Footer from '../../components/Footer/index'
+
+import { Main, Title, Container, SearchBar, SearchLeft, SearchRight, SearchInput, SearchBtn, Tickets } from './style.js'
+import imgEvent from '../../assets/img/filme-cuties-netflix.png'
+import EventCard from '../../components/EventCard/index'
 
 export default function MyTickets(){
 
@@ -32,7 +34,7 @@ export default function MyTickets(){
             favorite: false
         },
         {
-            id: 1,
+            id: 4,
             title: "Rock in Rio 2021",
             date: "10/11/2021",
             tickets_number: 1,
@@ -40,7 +42,7 @@ export default function MyTickets(){
             favorite: false
         },
         {
-            id: 2,
+            id: 5,
             title: "Beto Carreiro World",
             date: "05/12/2021",
             tickets_number: 2,
@@ -48,7 +50,7 @@ export default function MyTickets(){
             favorite: true
         },
         {
-            id: 3,
+            id: 6,
             title: "Game XP",
             date: "27/12/2021",
             tickets_number: 1,
@@ -60,41 +62,31 @@ export default function MyTickets(){
     return(
         <>
             <Header/>
-            <main className={styles.mainContent}>
-                <h1>Meus ingressos</h1>
 
-                <section className={styles.container}>
-                    <form className={styles.searchBar}>
-                        <div className={styles.searchLeft}>
-                            <input type="search" placeholder="Pesquise pelos seus ingressos" />
-                        </div>
-                        <div className={styles.searchRight}>
-                            <button type="button"><img src="pesquisa.svg" alt="Search image"/></button>
-                        </div>
-                    </form>
+            <Main>
+                <Title>Meus ingressos</Title>
 
-                    <section className={styles.tickets}>
-                        {tickets.map((cur,index) =>{
+                <Container>
+                    <SearchBar>
+                        <SearchLeft>
+                            <SearchInput type="search" placeholder="Pesquise pelos seus ingressos" />
+                        </SearchLeft>
+                        
+                        <SearchRight>
+                            <SearchBtn><img src="pesquisa.svg" alt="Search image"/></SearchBtn>
+                        </SearchRight>
+                    </SearchBar>
+
+                    <Tickets>
+                        {tickets.map((ticket,index) =>{
                             return(
-                                <div key={cur.id} className={styles.ticket}>
-                                    <img src={evento} alt="Event image"/>
-
-                                    <section className={styles.ticketContent}>
-                                        <div className={styles.ticketDescription}>
-                                            <h2>{cur.title}</h2>
-                                            <div>{cur.date}</div>
-                                            <div>Ingressos: {cur.tickets_number}</div>
-                                        </div>
-
-                                        <button type="button"></button>
-                                    </section>
-                                </div>
+                                <EventCard eventName={ticket.title} eventImg={imgEvent} />
                             )
                         })}
-                    </section>
-                    
-                </section>
-            </main>
+                    </Tickets>
+                </Container>
+            </Main>
+
             <Footer/>
         </>
     )
