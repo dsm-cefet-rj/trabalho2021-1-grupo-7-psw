@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 //Importa o css
-import './style.css';
+//import './style.css';
 
 export default function LoginC(){
     return (

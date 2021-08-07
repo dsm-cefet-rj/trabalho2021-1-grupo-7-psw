@@ -1,6 +1,6 @@
 import React from 'react';
 //Importa o css
-import './style.css';
+//import './style.css';
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/Footer'
 import evento from '../../assets/img/evento.jpg';
