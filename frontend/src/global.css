@@ -9,7 +9,18 @@ a {
   color: '#000';
   text-decoration: none;
 }
+.swiper-button-next,
+.swiper-button-prev {
+  right: 10px;
+  padding: 20px;
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
+}
 
+.swiper-pagination-bullet-active {
+  background-color: #fff !important;
+}
 input {
   outline: none;
 }
