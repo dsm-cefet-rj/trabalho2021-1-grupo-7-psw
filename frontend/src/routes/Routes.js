@@ -22,18 +22,16 @@ export default function Routes() {
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
           <Route exact path="/evento" component={EventPage}/>
-          <Route exact path="/login-user" component={LoginU}/>
-          <Route exact path="/login-company" component={LoginC}/>
-          <Route exact path="/register-user" component={RegisterU}/>
-          <Route exact path="/register-company" component={RegisterC}/>
+          <Route exact path="/entrar" component={LoginU}/>
+          <Route exact path="/admin/entrar" component={LoginC}/>
+          <Route exact path="/cadastrar" component={RegisterU}/>
+          <Route exact path="/admin/cadastrar" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
           <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
           <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
-          {/*Se a rota não existir... */}
-          <Route path="*" component={Page404}/>
-
+          <Route path="*" component={Page404}/>{/*Se a rota não existir... */}
       </Switch>
     </Router>
   );
