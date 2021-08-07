@@ -7,7 +7,8 @@ export const CardWrapper = styled.nav`
   flex-direction: column;
   border-radius: 10px;
   overflow:hidden;
-  width: 330px;
+  width: 100%;
+  max-width: 330px;
   height: 220px;
   margin: 10px 0;
 `
