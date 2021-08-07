@@ -10,7 +10,9 @@ export default function LoginU(){
 
             <Header/>
 
-            <h1>Entrar</h1>   
+            <div className="titulo">
+                <h1>Entrar</h1>   
+            </div>   
 
 
             <form>

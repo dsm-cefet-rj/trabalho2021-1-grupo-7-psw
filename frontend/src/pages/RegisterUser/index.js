@@ -8,8 +8,11 @@ import Footer from '../../components/Footer/Footer'
 export default function RegisterU(){
     return (
         <div className="page">
-            <Header/>
-            <h1>Cadastre sua empresa</h1>
+            <Header/>y
+            
+            <div className="titulo">
+                <h1>Cadastre sua empresa</h1>   
+            </div>
     
                 <form>
                     <label>Nome da Empresa:</label>

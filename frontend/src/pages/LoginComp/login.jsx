@@ -9,22 +9,25 @@ export default function LoginC(){
         <div className="page">
             <Header/>
 
-            <h1>Entrar</h1>   
+            <div className="titulo">
+                <h1>Entrar</h1>   
+            </div>
 
-            <form>
-                <label htmlFor="email">E-mail:</label>
-                <input id="email" type="number"/>
-                <label htmlFor="cnpj">CNPJ:</label>
-                <input id="cnpj" type="number"/>
-                <label htmlFor="password">Senha:</label>
-                <input id="password" type="password"/>
+            <div className="body">
+                <form>
+                    <label htmlFor="email">E-mail:</label>
+                    <input id="email" type="email"/>
+                    <label htmlFor="cnpj">CNPJ:</label>
+                    <input id="cnpj" type="text"/>
+                    <label htmlFor="password">Senha:</label>
+                    <input id="password" type="password"/>
 
-                <button className="submitButton">
-                    Entrar
-                </button>
-                
-            </form> 
-            
+                    <button className="submitButton">
+                        Entrar
+                    </button>
+                    
+                </form> 
+            </div>
 
         </div>
     )
