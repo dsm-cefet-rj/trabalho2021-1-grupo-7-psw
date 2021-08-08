@@ -31,8 +31,7 @@ input[type="date"]{
     text-transform: uppercase;
 }
 `;
-export const InputText = styled.input
-`
+export const InputText = styled.input`
 height: 2.5rem;
 width: 100%;
 font-size: 1rem;
@@ -46,6 +45,7 @@ border-radius: 0.2rem;
         box-shadow: 0px 0px 5px 1px  rgb(139, 187, 243); 
     }
 `;
+
 export const Label = styled.label`
 display: block ;
 margin-bottom: 0.4rem ;

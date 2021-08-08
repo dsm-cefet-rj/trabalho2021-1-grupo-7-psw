@@ -1,30 +1,36 @@
 import React from 'react';
-//Importa o css
-//import './style.css';
+
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
+import { Title, Container, Main, Form, Label, Input, Button} from './style.js'
 
-export default function LoginU(){
+
+export default function RegisterU(){
     return (
-        <div className="page">
-
+        <>
             <Header/>
 
-            <h1 class="title">Entrar</h1>   
+            <Title>
+            Entrar
+            </Title>
 
+            <Main>
+                <Container>
+                    <Form>
+                        <Label htmlFor="email">E-mail:</Label>
+                        <Input type="email" id="email"/>
+                        <Label htmlFor="password">Senha:</Label>
+                        <Input type="password" id="password"/>
 
-            <form>
-                <label htmlFor="email">E-mail:</label>
-                <input id="email" type="email"/>
-                <label htmlFor="password">Senha:</label>
-                <input id="password" type="password"/>
+                        <Button className="submitButton">
+                        Entrar
+                        </Button>
 
-                <button className="submitButton">
-                    Entrar
-                </button>
-                
-            </form> 
+                    </Form>
+                </Container>
+            </Main>
+            <Footer/>
                
-        </div>
+        </>
     )
 }
