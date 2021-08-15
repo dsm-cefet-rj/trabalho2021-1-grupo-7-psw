@@ -29,6 +29,7 @@ import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Navigation } from 'swiper/core';
+import Footer from '../../components/Footer/index';
 
 // install Swiper modules
 SwiperCore.use([Pagination, Navigation]);
@@ -108,6 +109,7 @@ const EventPage = () => {
           Comprar
         </Button>
       </ContainerBuy>
+      <Footer />
     </>
   );
 };
