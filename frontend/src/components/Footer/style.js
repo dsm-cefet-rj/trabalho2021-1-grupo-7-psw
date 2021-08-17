@@ -30,7 +30,7 @@ export const LinkList = styled.ul`
     list-style: none;
     padding: 0;
     font-weight: 500;
-
+    margin-bottom: 15px;
     li {
         margin: 10px 15px;
     }

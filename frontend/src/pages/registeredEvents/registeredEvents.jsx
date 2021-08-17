@@ -1,62 +1,14 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
-import RegisteredEventCard from '../../components/RegisteredEventCard'
 import { Main, Title, Container, RegisterEventContainer, RegisterEventBtn, Events } from './style.js'
+import EventCard from '../../components/EventCard'
+import {events} from '../../utils/events'
+import { Link } from 'react-router-dom'
 
-export default function RegisteredEvents(){
+export default function RegisteredEvents({history}){
 
-    const tickets = [
-        {
-            id: 1,
-            title: "Rock in Rio 2021",
-            date: "10/11/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 2,
-            title: "Beto Carreiro World",
-            date: "05/12/2021",
-            tickets_number: 2,
-            user_id: 5,
-            favorite: true
-        },
-        {
-            id: 3,
-            title: "Game XP",
-            date: "27/12/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 4,
-            title: "Rock in Rio 2021",
-            date: "10/11/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 5,
-            title: "Beto Carreiro World",
-            date: "05/12/2021",
-            tickets_number: 2,
-            user_id: 5,
-            favorite: true
-        },
-        {
-            id: 6,
-            title: "Game XP",
-            date: "27/12/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        }
-    ]
-
+    console.log(history)
     return(
         <>
             <Header/>
@@ -64,12 +16,19 @@ export default function RegisteredEvents(){
                 <Title>Eventos cadastrados</Title>
 
                 <Container>
-                    <RegisterEventContainer><RegisterEventBtn>Cadastrar evento</RegisterEventBtn></RegisterEventContainer>
+                    <RegisterEventContainer><RegisterEventBtn onClick={() => history.push(`/admin/eventos/criar`)}>Cadastrar evento</RegisterEventBtn></RegisterEventContainer>
                     
                     <Events>
-                        {tickets.map((ticket,index) =>{
+                        {events.map((event,index) =>{
                             return(
-                                <RegisteredEventCard {...ticket} />
+                                //<RegisteredEventCard {...ticket} />
+                                <EventCard
+                                key={event.id}
+                                eventName={event.name}
+                                event={event}
+                                eventImg={event.imagens[0]}
+                                history={history}
+                                />
                             )
                         })}
                     </Events>
