@@ -27,6 +27,7 @@ export const RegisterEventContainer = styled.div`
 `
 
 export const RegisterEventBtn = styled.button`
+    max-width: 350px;
     width: 100%;
     height: 50px;
     font-size: 1.2rem;
@@ -35,9 +36,7 @@ export const RegisterEventBtn = styled.button`
     border-radius: 10px;
     color: white;
     background-color: #18B91E;
-    @media (min-width: 1040px) {
-        width: 450px;
-    }
+    cursor:pointer;
 `
 
 export const Events = styled.section`

@@ -8,8 +8,8 @@ export const CardWrapper = styled.div`
   border-radius: 10px;
   overflow:hidden;
   width: 100%;
-  width: 330px;
-  height: 220px;
+  max-width: 330px;
+  min-height: 220px;
   margin: 20px 20px;
 `
 
@@ -25,5 +25,14 @@ export const Title = styled.h1`
   margin-left: 10px;
   font-weight: bold;
   margin-bottom: 0;
+`
+export const SeeInfoBtn = styled.button`
+  cursor:pointer;
+  width: 100%;
+  height:40px;
+  color: white;
+  background-color: black;
+  border: none;
+  margin-top: 10px;
 `
 
