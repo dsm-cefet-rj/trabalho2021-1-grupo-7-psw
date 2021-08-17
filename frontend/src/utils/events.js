@@ -1,7 +1,8 @@
 export const events = [
   {
     id: 1,
-    name: 'Um lugar silencionso 2',
+    name: 'Um lugar silencioso 2',
+    slug: "um-lugar-silencioso-2",
     type: 'Cinema',
     descricao: 'lorem',
     empresa: 'Paramount',
@@ -11,6 +12,7 @@ export const events = [
   {
     id: 2,
     name: 'Rock in Rio',
+    slug: "rock-in-rio",
     type: 'Show',
     descricao: 'lorem',
     empresa: 'Rock in Rio',
@@ -20,6 +22,7 @@ export const events = [
   {
     id: 3,
     name: 'Loki',
+    slug: "loki",
     type: 'Cinema',
     descricao: 'lorem',
     empresa: 'Marvel',
@@ -29,6 +32,7 @@ export const events = [
   {
     id: 4,
     name: 'CBLOL',
+    slug: "cblol",
     type: 'Evento',
     descricao: 'lorem',
     empresa: 'CBLOL',
@@ -38,6 +42,7 @@ export const events = [
   {
     id: 5,
     name: 'Velozes e Furiosos 9',
+    slug: "velozes-e-furiosos-9",
     type: 'Filme',
     descricao: 'lorem',
     empresa: 'Universal',
@@ -47,6 +52,7 @@ export const events = [
   {
     id: 6,
     name: 'Major CSGO',
+    slug: "major-csgo",
     type: 'Evento',
     descricao: 'lorem',
     empresa: 'CSGO',
@@ -55,6 +61,7 @@ export const events = [
   }, {
     id: 7,
     name: 'Teste',
+    slug: "teste",
     type: 'Evento',
     descricao: 'lorem',
     empresa: 'CSGO',
@@ -64,3 +71,5 @@ export const events = [
 ]
 
 export const getEventById = ((id) => events.find((event) => event.id === id))
+
+export const getEventBySlug = ((slug) => events.find((event) => event.slug === slug))

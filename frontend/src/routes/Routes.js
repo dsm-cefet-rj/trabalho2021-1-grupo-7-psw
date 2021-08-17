@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Switch, Route } from 'react-router'
+import { Router, Switch, Route } from 'react-router-dom'
 import { history } from '../history'
 
 //Componentes das páginas
@@ -15,6 +15,7 @@ import Page404 from '../pages/Page404'
 import EventDelete from '../pages/Event/Delete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
+import EventInfo from '../pages/Event/Info'
 
 export default function Routes() {
   return (
@@ -31,6 +32,7 @@ export default function Routes() {
           <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
           <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
+          <Route exact path="/admin/evento/:slug"  component={EventInfo}/>
           <Route path="*" component={Page404}/>{/*Se a rota não existir... */}
       </Switch>
     </Router>
