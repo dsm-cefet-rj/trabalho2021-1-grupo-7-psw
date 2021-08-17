@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
-import { Title, Container, Main, Form, Label, Input, Button, FormTitle} from './style.js'
+import { Title, Container, Main, Form, Label, Input, Button, FormTitle} from '../RegisterUser/style'
 
 
 export default function RegisterU(){
