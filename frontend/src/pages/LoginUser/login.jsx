@@ -5,7 +5,7 @@ import Footer from '../../components/Footer/index'
 import { Title, Container, Main, Form, Label, Input, Button, FormTitle} from './style.js'
 
 
-export default function RegisterU(){
+export default function LoginU(){
     return (
         <>
             <Header/>
