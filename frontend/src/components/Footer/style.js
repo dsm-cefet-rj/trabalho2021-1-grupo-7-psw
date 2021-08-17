@@ -40,5 +40,6 @@ export const LinkList = styled.ul`
 `
 export const Copyright = styled.div`
     text-align:center;
+    margin-top: 10px;
     font-size:  14px;
 `

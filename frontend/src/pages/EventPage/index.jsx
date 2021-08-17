@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/index';
 import {
-  BannerEvent,
   Title,
   Text,
   WrapperContent,
@@ -10,29 +9,25 @@ import {
   PriceText,
   ParagraphsText,
   StrongText,
-  Map,
   Divider,
   WrapperEventSpecs,
   WrapperPriceSpecs,
   TagContainer,
   WrapperSectionContainer,
 } from './style.js';
-import { IconButton, Button, Grid } from '@material-ui/core';
+import { IconButton, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { Calendar } from '@styled-icons/boxicons-regular/Calendar';
-import filmeIMG1 from '../../assets/img/filme-cuties-netflix.png';
-import mapImg from '../../assets/img/map.png';
-import filmeIMG2 from '../../assets/img/Santana-netflix.jpg';
 import { FavoriteBorder } from '@styled-icons/material/FavoriteBorder';
+import CarouselImg from '../../components/Carousel/index.js';
+import { getEventById } from '../../utils/events.js';
+import { CircularProgress } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
 import 'swiper/swiper.scss';
 import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Pagination, Navigation } from 'swiper/core';
-import Footer from '../../components/Footer/index';
 
-// install Swiper modules
-SwiperCore.use([Pagination, Navigation]);
+import Footer from '../../components/Footer/index';
 
 const useStyles = makeStyles({
   button: {
@@ -49,51 +44,56 @@ const useStyles = makeStyles({
 });
 
 const EventPage = () => {
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   const classes = useStyles();
+
+  useEffect(() => {
+    loadEvent();
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(id);
+  const loadEvent = () => {
+    setLoading(true);
+    const eventData = getEventById(parseInt(id));
+    setEvent(eventData);
+    setLoading(false);
+  };
+
+  console.log(event);
   return (
-    <>
+    <div style={{ paddingBottom: 100 }}>
       <Header />
-      <Swiper
-        navigation={true}
-        className='mySwiper'
-        pagination={{ dynamicBullets: true }}
-      >
-        <SwiperSlide>
-          <BannerEvent imgBanner={filmeIMG1} alt='teste' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <BannerEvent imgBanner={filmeIMG2} alt='teste' />
-        </SwiperSlide>
-      </Swiper>
-      <WrapperContent>
-        <WrapperEventSpecs>
-          <TagContainer>Filme</TagContainer>
+      {event && <CarouselImg events={event} />}
+      {loading ? (
+        <CircularProgress size={30} />
+      ) : (
+        <WrapperContent>
+          <WrapperEventSpecs>
+            <TagContainer>{event.type}</TagContainer>
+            <WrapperEventNames>
+              <Title>{event.name}</Title>
+              <IconButton>
+                <FavoriteBorder size={40} style={{ marginBottom: 5 }} />
+              </IconButton>
+            </WrapperEventNames>
+          </WrapperEventSpecs>
           <WrapperEventNames>
-            <Title>Evento 1</Title>
-            <IconButton>
-              <FavoriteBorder size={40} style={{ marginBottom: 5 }} />
-            </IconButton>
+            <Calendar size={25} style={{ marginRight: 5 }} />
+            <StrongText font={16}>12/05/2021</StrongText>
           </WrapperEventNames>
-        </WrapperEventSpecs>
-        <WrapperEventNames>
-          <Calendar size={25} style={{ marginRight: 5 }} />
-          <StrongText font={16}>12/05/2021</StrongText>
-        </WrapperEventNames>
-        <Divider />
-        <WrapperSectionContainer>
-          <StrongText font={30}>Descrição</StrongText>
-          <ParagraphsText>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae
-            exercitationem molestiae sunt perspiciatis impedit magni illo, hic
-            tempora, ratione, est provident voluptate dolore iusto similique
-            numquam aspernatur omnis fugit deserunt.
-          </ParagraphsText>
-        </WrapperSectionContainer>
-        <WrapperSectionContainer>
-          <StrongText font={30}>Onde é?</StrongText>
-          <Map src={mapImg} />
-        </WrapperSectionContainer>
-      </WrapperContent>
+          <Divider />
+          <WrapperSectionContainer>
+            <StrongText font={30}>Descrição</StrongText>
+            <ParagraphsText>{event.descricao}</ParagraphsText>
+          </WrapperSectionContainer>
+          <WrapperSectionContainer>
+            <StrongText font={30}>Onde é?</StrongText>
+          </WrapperSectionContainer>
+        </WrapperContent>
+      )}
       <ContainerBuy>
         <WrapperPriceSpecs>
           <PriceText>R$ 200</PriceText>
@@ -110,7 +110,7 @@ const EventPage = () => {
         </Button>
       </ContainerBuy>
       <Footer />
-    </>
+    </div>
   );
 };
 

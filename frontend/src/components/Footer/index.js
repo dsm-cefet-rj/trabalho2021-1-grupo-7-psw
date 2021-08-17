@@ -7,7 +7,6 @@ export default function Footer(){
     return(
         <FooterComponent>
             <Container>
-
                 <LogoContainer>
                    <Logo src={logoImg}/> 
                 </LogoContainer>
