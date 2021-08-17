@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
-import styles from './myTickets.module.css'
+import Footer from '../../components/Footer/index'
 
-import MyTicketCard from '../../components/myTicketCard/index'
+import { Main, Title, Container, SearchBar, SearchLeft, SearchRight, SearchInput, SearchBtn, Tickets } from './style.js'
+import imgEvent from '../../assets/img/filme-cuties-netflix.png'
+import EventCard from '../../components/EventCard/index'
 
 export default function MyTickets(){
 
@@ -61,28 +62,31 @@ export default function MyTickets(){
     return(
         <>
             <Header/>
-            <main className={styles.mainContent}>
-                <h1>Meus ingressos</h1>
 
-                <section className={styles.container}>
-                    <form className={styles.searchBar}>
-                        <div className={styles.searchLeft}>
-                            <input type="search" placeholder="Pesquise pelos seus ingressos" />
-                        </div>
-                        <div className={styles.searchRight}>
-                            <button type="button"><img src="pesquisa.svg" alt="Search image"/></button>
-                        </div>
-                    </form>
+            <Main>
+                <Title>Meus ingressos</Title>
 
-                    <section className={styles.tickets}>
+                <Container>
+                    <SearchBar>
+                        <SearchLeft>
+                            <SearchInput type="search" placeholder="Pesquise pelos seus ingressos" />
+                        </SearchLeft>
+                        
+                        <SearchRight>
+                            <SearchBtn><img src="pesquisa.svg" alt="Search image"/></SearchBtn>
+                        </SearchRight>
+                    </SearchBar>
+
+                    <Tickets>
                         {tickets.map((ticket,index) =>{
                             return(
-                                <MyTicketCard {...ticket} />
+                                <EventCard eventName={ticket.title} eventImg={imgEvent} />
                             )
                         })}
-                    </section>
-                </section>
-            </main>
+                    </Tickets>
+                </Container>
+            </Main>
+
             <Footer/>
         </>
     )

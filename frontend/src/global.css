@@ -9,13 +9,17 @@ a {
   color: '#000';
   text-decoration: none;
 }
-
-html,
-body {
-  font-family: Helvetica, sans-serif;
+.swiper-button-next,
+.swiper-button-prev {
+  right: 10px;
+  padding: 20px;
+  color: #fff !important;
+  fill: #fff !important;
+  stroke: #fff !important;
 }
-button {
-  cursor: pointer;
+
+.swiper-pagination-bullet-active {
+  background-color: #fff !important;
 }
 input {
   outline: none;

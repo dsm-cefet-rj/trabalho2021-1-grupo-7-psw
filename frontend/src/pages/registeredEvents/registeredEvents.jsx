@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
-import styles from './registeredEvents.module.css'
-
+import Footer from '../../components/Footer/index'
 import RegisteredEventCard from '../../components/RegisteredEventCard'
+import { Main, Title, Container, RegisterEventContainer, RegisterEventBtn, Events } from './style.js'
 
 export default function RegisteredEvents(){
 
@@ -61,21 +60,21 @@ export default function RegisteredEvents(){
     return(
         <>
             <Header/>
-            <main className={styles.mainContent}>
-                <h1>Eventos cadastrados</h1>
+            <Main>
+                <Title>Eventos cadastrados</Title>
 
-                <section className={styles.container}>
-
-                    <section className={styles.events}>
+                <Container>
+                    <RegisterEventContainer><RegisterEventBtn>Cadastrar evento</RegisterEventBtn></RegisterEventContainer>
+                    
+                    <Events>
                         {tickets.map((ticket,index) =>{
                             return(
                                 <RegisteredEventCard {...ticket} />
                             )
                         })}
-                    </section>
-                    
-                </section>
-            </main>
+                    </Events>
+                </Container>
+            </Main>
             <Footer/>
         </>
     )

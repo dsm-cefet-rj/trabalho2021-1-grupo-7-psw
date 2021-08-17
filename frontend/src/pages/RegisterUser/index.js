@@ -1,18 +1,14 @@
 import React from 'react';
 //Importa o css
-import './style.css';
 import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
+import Footer from '../../components/Footer/index'
 
 
 export default function RegisterU(){
     return (
         <div className="page">
-            <Header/>y
-            
-            <div className="titulo">
-                <h1>Cadastre sua empresa</h1>   
-            </div>
+            <Header/>
+            <h1 class="title">Cadastre sua empresa</h1>
     
                 <form>
                     <label>Nome da Empresa:</label>
@@ -31,9 +27,7 @@ export default function RegisterU(){
                     </button>
 
                 </form>
-            
-                
-               
+            <Footer/>    
         </div>
     )
 }

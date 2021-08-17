@@ -12,6 +12,14 @@ export const MenuWrapper = styled.nav`
   z-index: 1000;
 `
 
+export const Logo = styled.img`
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  margin-left:auto;
+  margin-right: auto;
+`
+
 export const Title = styled.h1`
   font-size: 18px;
   font-weight: 300;

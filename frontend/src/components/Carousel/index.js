@@ -1,36 +1,48 @@
 import React from 'react';
-import Carousel from 'react-bootstrap/Carousel';
-import filmeIMG1 from '../../assets/img/filme-cuties-netflix.png';
-import filmeIMG2 from '../../assets/img/Santana-netflix.jpg';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Pagination, Navigation, Autoplay } from 'swiper/core';
+import {BannerEvent} from './style.js';
+import 'swiper/swiper.scss';
+import 'swiper/components/pagination/pagination.min.css';
+import 'swiper/components/navigation/navigation.min.css';
 
-const CarouselImg = () => {
+// install Swiper modules
+SwiperCore.use([Pagination, Navigation,Autoplay]);
+
+const CarouselImg = ({events,homePage = false}) => {
+  
   return (
-    <Carousel >
-      <Carousel.Item>
-        <img
-          style={{height:400, width: 400}}
-          className="d-block w-100"
-          src={filmeIMG1}
-          alt="First slide"
-        />
-      </Carousel.Item> 
-      <Carousel.Item>
-        <img
-          style={{height:400, width: 400}}
-          className="d-block w-100"
-          src={filmeIMG2}
-          alt="First slide"
-        />
-      </Carousel.Item> 
-    </Carousel>
+    <>
+    {homePage ? 
+    <Swiper
+        className='mySwiper'
+        autoplay={true}
+        pagination={{ dynamicBullets: true }}
+      >
+      {
+        events.map((event) => (
+          <SwiperSlide>
+            <BannerEvent imgBanner={event.imagens[0]} alt='teste' />
+          </SwiperSlide>
+        ))
+      }
+    </Swiper> :  
+    <Swiper
+    className='mySwiper'
+    navigation={true}
+    pagination={{ dynamicBullets: true }}
+    >
+      {
+        events.imagens.map((img) => (
+          <SwiperSlide>
+            <BannerEvent imgBanner={img} alt='teste' />
+          </SwiperSlide>
+        ))
+      }
+    </Swiper> 
+    }
+    </>
   )
 }
 
 export default CarouselImg;
-
-
-
-
-
- 
