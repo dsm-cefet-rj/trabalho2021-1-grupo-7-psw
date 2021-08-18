@@ -2,8 +2,6 @@ import React  from "react";
 import Header from '../../components/Header/index.js';
 import Footer from '../../components/Footer/index';
 
-import felipe from '../../assets/img/Time7/Felipe.jpg'
-
 import {Grid} from '@material-ui/core';
 import {Main, Title,Img,Div,Text} from './style.js'
 
@@ -39,7 +37,7 @@ export default function About(){
                     </Div>
                     <Div>
                         <a href="https://github.com/felipe-junior" target="_blank" rel="Git-Felipe">Felipe sem foto no git
-                            <Img src={felipe} alt="Rei do back"></Img>
+                            <Img src="https://github.com/felipe-junior.png" alt="Rei do back"></Img>
                         </a>
                     </Div>
                     <Div>

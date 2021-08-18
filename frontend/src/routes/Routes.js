@@ -16,12 +16,14 @@ import EventDelete from '../pages/Event/Delete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
 import EventInfo from '../pages/Event/Info'
+import AboutUs from '../pages/About/about'
 
 export default function Routes() {
   return (
     <Router history={history}> {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
+          <Route exact path="/sobre" component={AboutUs}/>
           <Route exact path="/evento/:slug" component={EventPage}/>
           <Route exact path="/entrar" component={LoginU}/>
           <Route exact path="/admin/entrar" component={LoginC}/>

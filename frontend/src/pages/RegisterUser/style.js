@@ -31,6 +31,7 @@ export const Form = styled.form`
     margin-bottom: 2rem;
     @media (max-width: 420px) {
         box-shadow: none;
+        padding: 10px;
     }
 `;
 
@@ -44,6 +45,7 @@ export const FormTitle = styled.h2`
 export const Label = styled.label`
     display: block ;
     margin-bottom: 0.4rem ;
+    margin-top: 20px;
     text-align:left;
 `;
 
@@ -53,9 +55,16 @@ export const Input = styled.input`
     font-size: 14px;
     text-indent: 10px;
     padding-left: 0.2rem;
-    margin-bottom: 20px;
     border: 1px solid black ;
     border-radius: 0.2rem;
+`;
+
+export const ErrorInputs = styled.div`
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 5px;
+    color: red;
 `;
 
 export const Button = styled.button` 

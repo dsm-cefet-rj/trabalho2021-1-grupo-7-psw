@@ -2,71 +2,39 @@ import React from 'react';
 
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
-import { makeStyles } from '@material-ui/core';
-import { TextField, Grid } from '@material-ui/core';
-import { Title, Main, Form, Button, FormTitle } from './style.js';
-
-const useStyles = makeStyles({
-  textFieldRoot: {
-    width: '100%',
-    color: '#000',
-  },
-  multilineColor: {
-    color: '#000',
-  },
-  labelColor: {
-    color: '#000',
-  },
-});
+import {
+  Title,
+  Container,
+  Main,
+  Form,
+  Label,
+  Input,
+  Button,
+  FormTitle,
+} from '../RegisterUser/style';
 
 export default function LoginU() {
-  const classes = useStyles();
-
   return (
     <>
       <Header />
 
       <Title>Entrar</Title>
-
       <Main>
-        <Form>
-          <FormTitle>Login</FormTitle>
-          <Grid style={{ margin: 20 }}>
-            <TextField
-              required
-              variant='outlined'
-              color='secundary'
-              id='standard-required'
-              InputProps={{
-                className: classes.multilineColor,
-              }}
-              InputLabelProps={{
-                className: classes.labelColor,
-              }}
-              label='E-mail'
-              classes={{ root: classes.textFieldRoot }}
-            />
-          </Grid>
-          <Grid style={{ margin: 20 }}>
-            <TextField
-              required
-              variant='outlined'
-              color='secundary'
-              id='standard-password-input'
+        <Container>
+          <Form>
+            <FormTitle>Login do Cliente</FormTitle>
+            <Label htmlFor='email'>E-mail:</Label>
+            <Input type='email' id='email' placeholder='Digite seu e-mail' />
+            <Label htmlFor='password'>Senha:</Label>
+            <Input
               type='password'
-              InputProps={{
-                className: classes.multilineColor,
-              }}
-              InputLabelProps={{
-                className: classes.labelColor,
-              }}
-              label='Senha'
-              autoComplete='current-password'
-              classes={{ root: classes.textFieldRoot }}
+              id='password'
+              placeholder='Digite sua senha'
             />
-          </Grid>
-          <Button className='submitButton'>Entrar</Button>
-        </Form>
+
+            <Button className='submitButton'>Entrar</Button>
+          </Form>
+        </Container>
       </Main>
       <Footer />
     </>
