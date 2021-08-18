@@ -77,5 +77,35 @@ export const Button = styled.button`
     border: none;
     border-radius: 5px;
     margin-top: 1.5rem;
+    margin-bottom: 20px;
 `;
 
+export const Hr = styled.hr`
+    color:black;
+    margin-bottom: 12px;
+`
+
+export const RegisterFlex = styled.div`
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    @media(min-width: 420px){
+        flex-direction: row;
+        justify-content: space-between;
+    }
+`
+export const RegisterBtn = styled.button` 
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    background: darkgrey;
+    color: white;
+    font-weight:bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    @media(min-width: 420px){
+        width: 150px;
+    }
+`;
