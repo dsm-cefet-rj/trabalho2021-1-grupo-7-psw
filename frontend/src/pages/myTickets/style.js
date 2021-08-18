@@ -15,6 +15,16 @@ export const Title = styled.h1`
     padding: 10px 0;
 `;
 
+
+export const Text = styled.h1`
+    width: 100%;
+    margin-top: 15px;
+    text-align: left;
+    color: #212020;
+    font-size: 20px;
+    font-weight: 800;
+`;
+
 export const Container = styled.section`
     padding: 1rem 10px;
     margin: 0 auto;

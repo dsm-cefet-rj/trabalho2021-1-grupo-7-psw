@@ -8,26 +8,24 @@ export const Title = styled.h1`
     font-size: 25px;
     font-weight: 400;
     padding: 10px 0;
-    margin-bottom: 40px;
     @media (max-width: 420px) {
         margin-bottom: 10px;
     }
 `
 
-export const Container = styled.section`
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 0;
-`
 export const Main = styled.main`
-    min-height: 70vh;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 69vh;
 `
 
 export const Form = styled.form`
-    padding: 2.5rem 1rem;
-    border-radius: 0.5rem;
-    text-align: center;
-    box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.589);
+    width:80%;
+border-radius: 0.5rem;
+    text-align: center;;
     @media (max-width: 420px) {
         box-shadow: none;
     }
@@ -35,19 +33,21 @@ export const Form = styled.form`
 
 export const FormTitle = styled.h2`
     font-size: 25px;
-    text-align: center;
+    text-align: left;
     color: black;
-    margin-bottom: 30px;
+    font-weight: 900;
+    margin-bottom: 50px;
 `
 
 export const Label = styled.label`
     display: block ;
+    font-weight: 800;
     margin-bottom: 0.4rem ;
     text-align:left;
 `;
 
 export const Input = styled.input`
-    height: 2.5rem;
+    height: 3.5rem;
     width: 100%;
     font-size: 14px;
     text-indent: 10px;
@@ -59,7 +59,7 @@ export const Input = styled.input`
 
 export const Button = styled.button` 
     cursor: pointer;
-    width: 100%;
+    width: 10rem;
     height: 45px;
     background: #212020;
     color: white;

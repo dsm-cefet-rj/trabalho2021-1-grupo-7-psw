@@ -20,7 +20,7 @@ import { makeStyles } from '@material-ui/core';
 import { Calendar } from '@styled-icons/boxicons-regular/Calendar';
 import { FavoriteBorder } from '@styled-icons/material/FavoriteBorder';
 import CarouselImg from '../../components/Carousel/index.js';
-import { getEventById } from '../../utils/events.js';
+import { getEventBySlug } from '../../utils/events.js';
 import { CircularProgress } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import 'swiper/swiper.scss';
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
 const EventPage = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams();
+  const { slug } = useParams();
   const classes = useStyles();
 
   useEffect(() => {
@@ -54,10 +54,9 @@ const EventPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(id);
   const loadEvent = () => {
     setLoading(true);
-    const eventData = getEventById(parseInt(id));
+    const eventData = getEventBySlug(slug);
     setEvent(eventData);
     setLoading(false);
   };

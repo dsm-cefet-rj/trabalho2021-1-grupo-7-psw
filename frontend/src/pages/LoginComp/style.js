@@ -27,7 +27,6 @@ export const Form = styled.form`
     padding: 2.5rem 1rem;
     border-radius: 0.5rem;
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.589);
     @media (max-width: 420px) {
         box-shadow: none;
     }

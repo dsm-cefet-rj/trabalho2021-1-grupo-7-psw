@@ -22,7 +22,7 @@ export default function Routes() {
     <Router history={history}> {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
-          <Route exact path="/evento/:id" component={EventPage}/>
+          <Route exact path="/evento/:slug" component={EventPage}/>
           <Route exact path="/entrar" component={LoginU}/>
           <Route exact path="/admin/entrar" component={LoginC}/>
           <Route exact path="/cadastrar" component={RegisterU}/>
