@@ -40,6 +40,7 @@ export const Text = styled.h2`
 export const StrongText = styled.h2`
   font-weight: 800;
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: ${props => `${props.font}px`};
 `;
 
@@ -126,6 +127,7 @@ export const ContainerBuy = styled.div`
   align-items: center;
   display: flex;
   padding: 0px 20px;
+  z-index: 10000;
   box-shadow: 8px 0px 4px rgba(0, 0, 0, 0.25);
   position: fixed;
   bottom:0;
