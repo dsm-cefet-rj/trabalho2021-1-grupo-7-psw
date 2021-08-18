@@ -42,12 +42,12 @@ export default function About(){
                     </Div>
                     <Div>
                         <a href="https://github.com/lucasfarolfi" target="_blank" rel="Git-Farolfi">
-                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>Farolfi Jesus
+                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>Farolfi
                         </a>
                     </Div>
                     <Div>
                         <a href="https://github.com/Joaomleite" target="_blank" rel="Git-joao">
-                            <Img src="https://github.com/Joaomleite.png" alt="Rei do front"></Img>João quero leite
+                            <Img src="https://github.com/Joaomleite.png" alt="Rei do front"></Img>João
                         </a>
                     </Div>
                 </Grid>

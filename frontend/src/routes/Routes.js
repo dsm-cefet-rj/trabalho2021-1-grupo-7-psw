@@ -6,8 +6,7 @@ import { history } from '../history'
 import Home from '../pages/home/home'
 import EventPage from '../pages/EventPage/index.jsx'
 import MyTickets from '../pages/myTickets/myTickets'
-import LoginU from '../pages/LoginUser/login'
-import LoginC from '../pages/LoginComp/login'
+import Login from '../pages/Login/login'
 import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
 import RegisterC from '../pages/RegisterComp'
 import RegisterU from '../pages/RegisterUser'
@@ -15,7 +14,6 @@ import Page404 from '../pages/Page404'
 import EventReadAndDelete from '../pages/Event/ReadAndDelete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
-import EventInfo from '../pages/Event/Info'
 import AboutUs from '../pages/About/about'
 
 export default function Routes() {
@@ -25,16 +23,14 @@ export default function Routes() {
           <Route exact path="/" component={Home}/>
           <Route exact path="/sobre" component={AboutUs}/>
           <Route exact path="/evento/:slug" component={EventPage}/>
-          <Route exact path="/entrar" component={LoginU}/>
-          <Route exact path="/admin/entrar" component={LoginC}/>
+          <Route exact path="/entrar" component={Login}/>
           <Route exact path="/cadastrar" component={RegisterU}/>
           <Route exact path="/admin/cadastrar" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
-          <Route exact path="/admin/eventos/detalhes"  component={EventReadAndDelete}/>
-          <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
+          <Route exact path="/admin/evento/novo"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
-          <Route exact path="/admin/evento/:slug"  component={EventInfo}/>
+          <Route exact path="/admin/evento/:slug"  component={EventReadAndDelete}/>
           <Route path="*" component={Page404}/>{/*Se a rota não existir... */}
       </Switch>
     </Router>
