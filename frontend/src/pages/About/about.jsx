@@ -2,8 +2,6 @@ import React  from "react";
 import Header from '../../components/Header/index.js';
 import Footer from '../../components/Footer/index';
 
-import felipe from '../../assets/img/Time7/Felipe.jpg'
-
 import {Grid} from '@material-ui/core';
 import {Main, Title,Img,Div,Text} from './style.js'
 
@@ -28,27 +26,27 @@ export default function About(){
                     style={{ marginTop: 15, padding: 10 }}
                 >
                     <Div>
-                        <a href="https://github.com/Caio-Abreu" target="_blank" rel="Git-Caio">Caio mamaco
+                        <a href="https://github.com/Caio-Abreu" target="_blank" rel="Git-Caio">Caio Abreu
                             <Img src="https://github.com/Caio-Abreu.png" alt="Gostoso"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/dreymond1" target="_blank" rel="Git-Drey">Drey matador
+                        <a href="https://github.com/dreymond1" target="_blank" rel="Git-Drey">Andrey 
                             <Img src="https://github.com/dreymond1.png" alt="Mato mesmo"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/felipe-junior" target="_blank" rel="Git-Felipe">Felipe sem foto no git
-                            <Img src={felipe} alt="Rei do back"></Img>
+                        <a href="https://github.com/felipe-junior" target="_blank" rel="Git-Felipe">Felipe
+                            <Img src="https://github.com/felipe-junior.png" alt="Rei do back" ></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/lucasfarolfi" target="_blank" rel="Git-Farolfi">Jesus
+                        <a href="https://github.com/lucasfarolfi" target="_blank" rel="Git-Farolfi">Farolfi Jesus
                             <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/Joaomleite" target="_blank" rel="Git-joao">Playboy
+                        <a href="https://github.com/Joaomleite" target="_blank" rel="Git-joao">João quero leite
                             <Img src="https://github.com/Joaomleite.png" alt="Rei do front"></Img>
                         </a>
                     </Div>

@@ -1,14 +1,16 @@
-  
 import React from 'react';
-//Importa o css
-import './style.css';
+import Footer from '../../components/Footer/index'
+import { Main } from './style.js'
 
 export default function Page404(){
     return (
-        <div>
+        <>
             
             <h1>Página não existe</h1>
-               
-        </div>
+            <Main/>
+
+
+            <Footer/>
+        </>
     )
 }

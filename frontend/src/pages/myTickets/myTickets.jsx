@@ -1,101 +1,77 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
-import styles from './myTickets.module.css'
+import { useState } from 'react';
+import Header from '../../components/Header/index';
+import Footer from '../../components/Footer/index';
 
-export default function MyTickets(){
+import { Main, Title, Container, Text, Tickets } from './style.js';
+import EventCard from '../../components/EventCard/index';
+import { events } from '../../utils/events';
+import { TextField, Grid, InputAdornment } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import { Search } from '@styled-icons/boxicons-regular/Search';
 
-    const tickets = [
-        {
-            id: 1,
-            title: "Rock in Rio 2021",
-            date: "10/11/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 2,
-            title: "Beto Carreiro World",
-            date: "05/12/2021",
-            tickets_number: 2,
-            user_id: 5,
-            favorite: true
-        },
-        {
-            id: 3,
-            title: "Game XP",
-            date: "27/12/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 1,
-            title: "Rock in Rio 2021",
-            date: "10/11/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        },
-        {
-            id: 2,
-            title: "Beto Carreiro World",
-            date: "05/12/2021",
-            tickets_number: 2,
-            user_id: 5,
-            favorite: true
-        },
-        {
-            id: 3,
-            title: "Game XP",
-            date: "27/12/2021",
-            tickets_number: 1,
-            user_id: 5,
-            favorite: false
-        }
-    ]
+const useStyles = makeStyles({
+  textFieldRoot: {
+    width: 700,
+  },
+});
 
-    return(
-        <>
-            <Header/>
-            <main className={styles.mainContent}>
-                <h1>Meus ingressos</h1>
+export default function MyTickets() {
+  const [textFilter, setTextFilter] = useState('');
+  const classes = useStyles();
 
-                <section className={styles.container}>
-                    <form className={styles.searchBar}>
-                        <div className={styles.searchLeft}>
-                            <input type="search" placeholder="Pesquise pelos seus ingressos" />
-                        </div>
-                        <div className={styles.searchRight}>
-                            <button type="button"><img src="pesquisa.svg" alt="Search image"/></button>
-                        </div>
-                    </form>
+  const getFilterEvents = () => {
+    if (textFilter !== '') {
+      const eventsFilter = events.filter((event) =>
+        event.name.toLowerCase().includes(textFilter)
+      );
+      return eventsFilter;
+    } else {
+      return events;
+    }
+  };
+  return (
+    <>
+      <Header />
 
+      <Main>
+        <Title>Meus ingressos</Title>
 
-                    <section className={styles.tickets}>
-                        {tickets.map((cur,index) =>{
-                            return(
-                                <div key={cur.id} className={styles.ticket}>
-                                    <img src="evento.jpg" alt="Event image"/>
+        <Container>
+          <Grid container justify='center'>
+            <TextField
+              required
+              variant='outlined'
+              id='standard-required'
+              placeholder='Pesquise pelo evento que você procura'
+              classes={{ root: classes.textFieldRoot }}
+              onChange={(e) => setTextFilter(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Search size={40} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Text>{getFilterEvents().length} Pedidos encontrados</Text>
+          <Tickets>
+            {getFilterEvents().map((event, index) => {
+              return (
+                <EventCard
+                  key={event.id}
+                  eventName={event.name}
+                  event={event}
+                  eventImg={event.imagens[0]}
+                />
+              );
+            })}
+          </Tickets>
+        </Container>
+      </Main>
 
-                                    <section className={styles.ticketContent}>
-                                        <div className={styles.ticketDescription}>
-                                            <h2>{cur.title}</h2>
-                                            <div>{cur.date}</div>
-                                            <div>Ingressos: {cur.tickets_number}</div>
-                                        </div>
-
-                                        <button type="button"></button>
-                                    </section>
-                                </div>
-                            )
-                        })}
-                    </section>
-                    
-                </section>
-            </main>
-            <Footer/>
-        </>
-    )
+      <Footer />
+    </>
+  );
 }

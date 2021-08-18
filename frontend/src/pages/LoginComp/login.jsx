@@ -1,31 +1,42 @@
 import React from 'react';
-import Header from '../../components/Header/index'
-import Footer from '../../components/Footer/Footer'
-//Importa o css
-import './style.css';
 
-export default function LoginC(){
-    return (
-        <div className="page">
-            <Header/>
+import Header from '../../components/Header/index';
+import Footer from '../../components/Footer/index';
+import {
+  Title,
+  Container,
+  Main,
+  Form,
+  Label,
+  Input,
+  Button,
+  FormTitle,
+} from '../RegisterUser/style';
 
-            <h1 class="title">Entrar</h1>   
+export default function LoginComp() {
+  return (
+    <>
+      <Header />
 
-            <form>
-                <label htmlFor="email">E-mail:</label>
-                <input id="email" type="number"/>
-                <label htmlFor="cnpj">CNPJ:</label>
-                <input id="cnpj" type="number"/>
-                <label htmlFor="password">Senha:</label>
-                <input id="password" type="password"/>
+      <Title>Entrar | Empresa</Title>
+      <Main>
+        <Container>
+          <Form>
+            <FormTitle>Login da Empresa</FormTitle>
+            <Label htmlFor='email'>E-mail:</Label>
+            <Input type='email' id='email' placeholder='Digite o e-mail' />
+            <Label htmlFor='password'>Senha:</Label>
+            <Input
+              type='password'
+              id='password'
+              placeholder='Digite a senha'
+            />
 
-                <button className="submitButton">
-                    Entrar
-                </button>
-                
-            </form> 
-            
-
-        </div>
-    )
+            <Button className='submitButton'>Entrar</Button>
+          </Form>
+        </Container>
+      </Main>
+      <Footer />
+    </>
+  );
 }
