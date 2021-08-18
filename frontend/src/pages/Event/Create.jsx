@@ -5,6 +5,7 @@ import {
     Label,
     ButtonSubmit,
     Container,
+    FormTitle
   } from '../../components/Event/style';
 
 import React, { useState } from 'react';
@@ -55,7 +56,7 @@ export default function FormCard(props) {
         <PageTitle>Detalhes do evento</PageTitle>
         <Container>
           <FormCardWrapper>
-            <h3 style={{marginBottom: 10 + "px"} }>{"Empresa X"}</h3>
+            <FormTitle>{"Empresa X"}</FormTitle>
   
             <Label htmlFor='eventName'>Nome do evento:</Label>
             <InputText type='text' id='eventName'  value={event.name} />

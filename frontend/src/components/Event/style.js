@@ -32,6 +32,9 @@ input[type="date"]{
     text-transform: uppercase;
 }
 `;
+export const FormTitle = styled.h3 `
+    font-size: 1.58rem;
+`
 export const DivCardWrapper = styled.div`
 padding: 1rem;
 @media(min-width: 768px ){
