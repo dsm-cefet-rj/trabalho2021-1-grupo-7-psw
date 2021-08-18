@@ -2,6 +2,7 @@
 import React from 'react'
 import { FooterComponent, Container, LinkList, Copyright, LogoContainer, Logo} from './style.js'
 import logoImg from '../../assets/img/logo.svg'
+import {Link} from 'react-router-dom'
 
 export default function Footer(){
     return(
@@ -12,13 +13,13 @@ export default function Footer(){
                 </LogoContainer>
 
                 <LinkList>
-                    <li>Home</li>
-                    <li>Seus Pedidos</li>
-                    <li>Suporte</li>
-                    <li>FeedBack</li>
-                    <li>Sobre</li>
-                    <li>Entrar</li>
-                    <li>Cadastrar-se</li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/meus-ingressos">Seus Pedidos</Link></li>
+                    <li><Link to="/suporte">Suporte</Link></li>
+                    <li><Link to="/feedback">FeedBack</Link></li>
+                    <li><Link to="/sobre">Sobre</Link></li>
+                    <li><Link to="/entrar">Entrar</Link></li>
+                    <li><Link to="/cadastrar">Cadastrar-se</Link></li>
                 </LinkList>
 
                 <hr/>
