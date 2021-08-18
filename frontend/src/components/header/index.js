@@ -59,7 +59,7 @@ const Header = () => {
       <ListItem button={true} classes={{root: classes.listItemRoot}}>
         <Link>FeedBack</Link>
       </ListItem>
-      <ListItem button={true} classes={{root: classes.listItemRoot}}>
+      <ListItem button={true} classes={{root: classes.listItemRoot}} onClick={() => history.push('/sobre')}>
         <Link>Sobre</Link>
       </ListItem>
       <ListItem classes={{root: classes.lastItemRoot}}>

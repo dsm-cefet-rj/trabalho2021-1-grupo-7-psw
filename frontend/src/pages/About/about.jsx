@@ -26,28 +26,28 @@ export default function About(){
                     style={{ marginTop: 15, padding: 10 }}
                 >
                     <Div>
-                        <a href="https://github.com/Caio-Abreu" target="_blank" rel="noreferrer">
-                            <Img src="https://github.com/Caio-Abreu.png" alt="Gostoso"></Img>Caio mamaco
+                        <a href="https://github.com/Caio-Abreu" target="_blank" rel="Git-Caio">Caio Abreu
+                            <Img src="https://github.com/Caio-Abreu.png" alt="Gostoso"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/dreymond1" target="_blank" rel="noreferrer">
-                            <Img src="https://github.com/dreymond1.png" alt="Mato mesmo"></Img>Drey matador
+                        <a href="https://github.com/dreymond1" target="_blank" rel="Git-Drey">Andrey 
+                            <Img src="https://github.com/dreymond1.png" alt="Mato mesmo"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/felipe-junior" target="_blank" rel="noreferrer">
-                            <Img src="https://github.com/felipe-junior.png" alt="Rei do back"></Img>Felipe sem foto no git
+                        <a href="https://github.com/felipe-junior" target="_blank" rel="Git-Felipe">Felipe
+                            <Img src="https://github.com/felipe-junior.png" alt="Rei do back" ></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/lucasfarolfi" target="_blank" rel="noreferrer">
-                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>Jesus
+                        <a href="https://github.com/lucasfarolfi" target="_blank" rel="Git-Farolfi">Farolfi Jesus
+                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>
                         </a>
                     </Div>
                     <Div>
-                        <a href="https://github.com/Joaomleite" target="_blank" rel="noreferrer">
-                            <Img src="https://github.com/Joaomleite.png" alt="Rei do front"></Img>Playboy
+                        <a href="https://github.com/Joaomleite" target="_blank" rel="Git-joao">João quero leite
+                            <Img src="https://github.com/Joaomleite.png" alt="Rei do front"></Img>
                         </a>
                     </Div>
                 </Grid>

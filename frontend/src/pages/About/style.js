@@ -18,20 +18,28 @@ export const Title = styled.h1`
     padding: 10px 0;
 `;
 
+
+export const Img = styled.img`
+border-radius: 50%;   
+width: 90%;
+height: 90%;
+border: 2px solid black;
+box-shadow: 0 0 8px black;
+transition-duration: 0.3s;
+`;
+
 export const Div = styled.div`
     text-align:center;
     margin: 20px;
     height: 15em;
     width: 15em;
+    font-weight:550;
+    &:hover ${Img} {
+        width:100%;
+        height:100%;
+        box-shadow: none;
+        border: 3px solid green;
 `;
-export const Img = styled.img`
-    border-radius: 50%;   
-    width: 100%;
-    height: 100%;
-    // margin: 20px;
-    border: 2px solid black;
-`;
-
 export const Container = styled.section`
     padding: 1rem 10px;
     margin: 0 auto;
