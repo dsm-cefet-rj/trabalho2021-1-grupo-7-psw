@@ -12,7 +12,7 @@ import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
 import RegisterC from '../pages/RegisterComp'
 import RegisterU from '../pages/RegisterUser'
 import Page404 from '../pages/Page404'
-import EventDelete from '../pages/Event/Delete'
+import EventReadAndDelete from '../pages/Event/ReadAndDelete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
 import EventInfo from '../pages/Event/Info'
@@ -31,7 +31,7 @@ export default function Routes() {
           <Route exact path="/admin/cadastrar" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
-          <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
+          <Route exact path="/admin/eventos/detalhes"  component={EventReadAndDelete}/>
           <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
           <Route exact path="/admin/evento/:slug"  component={EventInfo}/>
