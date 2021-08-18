@@ -12,16 +12,18 @@ import RegisteredEvents from '../pages/registeredEvents/registeredEvents'
 import RegisterC from '../pages/RegisterComp'
 import RegisterU from '../pages/RegisterUser'
 import Page404 from '../pages/Page404'
-import EventDelete from '../pages/Event/Delete'
+import EventReadAndDelete from '../pages/Event/ReadAndDelete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
 import EventInfo from '../pages/Event/Info'
+import AboutUs from '../pages/About/about'
 
 export default function Routes() {
   return (
     <Router history={history}> {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch> {/* Onde contém todas as rotas da aplicação */}
           <Route exact path="/" component={Home}/>
+          <Route exact path="/sobre" component={AboutUs}/>
           <Route exact path="/evento/:slug" component={EventPage}/>
           <Route exact path="/entrar" component={LoginU}/>
           <Route exact path="/admin/entrar" component={LoginC}/>
@@ -29,7 +31,7 @@ export default function Routes() {
           <Route exact path="/admin/cadastrar" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
-          <Route exact path="/admin/eventos/excluir"  component={EventDelete}/>
+          <Route exact path="/admin/eventos/detalhes"  component={EventReadAndDelete}/>
           <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
           <Route exact path="/admin/evento/:slug"  component={EventInfo}/>

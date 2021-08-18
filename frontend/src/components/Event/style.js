@@ -4,8 +4,9 @@ export const PageTitle = styled.h2`
 background-color: black;
 color: white;
 width: 100%;
-height: 54;
-font-size: 30;
+height: 54px;
+font-size: 1.5rem;
+line-height: 54px;
 margin: 0;
 text-align: center;
 
@@ -16,6 +17,26 @@ text-align: center;
 
 `;
 export const FormCardWrapper = styled.form`
+padding: 1rem;
+@media(min-width: 768px ){
+    border-radius: 0.5rem;
+    margin-top: 3rem;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.589);
+    padding: 1rem;
+    height: 800px;
+    
+};
+
+input[type="date"]{
+    text-transform: uppercase;
+}
+`;
+export const FormTitle = styled.h3 `
+    font-size: 1.58rem;
+    margin-bottom: 1rem;
+`
+export const DivCardWrapper = styled.div`
 padding: 1rem;
 @media(min-width: 768px ){
     border-radius: 0.5rem;

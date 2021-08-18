@@ -13,23 +13,23 @@ import {
   FormTitle,
 } from '../RegisterUser/style';
 
-export default function RegisterU() {
+export default function LoginComp() {
   return (
     <>
       <Header />
 
-      <Title>Entrar</Title>
+      <Title>Entrar | Empresa</Title>
       <Main>
         <Container>
           <Form>
             <FormTitle>Login da Empresa</FormTitle>
             <Label htmlFor='email'>E-mail:</Label>
-            <Input type='email' id='email' placeholder='Digite seu e-mail' />
+            <Input type='email' id='email' placeholder='Digite o e-mail' />
             <Label htmlFor='password'>Senha:</Label>
             <Input
               type='password'
               id='password'
-              placeholder='Digite sua senha'
+              placeholder='Digite a senha'
             />
 
             <Button className='submitButton'>Entrar</Button>

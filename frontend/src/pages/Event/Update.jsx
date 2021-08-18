@@ -1,7 +1,96 @@
-import React  from "react";
-import FormCard from "../../components/Event/Form";
-export default function EventDelete(props){
+import {
+    PageTitle,
+    FormCardWrapper,
+    InputText,
+    Label,
+    ButtonSubmit,
+    Container,
+    FormTitle
+  } from '../../components/Event/style';
+
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/Edit';
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        margin: theme.spacing(2),
+        width: 50 + "%",
+        "@media (max-width: 600px)": {
+            width: 100 + "%"
+          }
+    },
+    div:{
+        display: "flex",
+        justifyContent: "space-around"
+    },
+  }));
+
+
+export default function FormCard(props) {
+    let minDate = new Date().toISOString().slice(0, -14);
+    const event = {name:"CBLOL", type: "e-sports", ticketsNumber: "167", date: "2022-05-20", purchaseStartDate: "2022-04-20", purchaseLimiteDate: "2022-05-18", ticketPrice: "R$ 22,00"}
+    const [open, setOpen] = React.useState(false);
+    
+    const classes = useStyles(); 
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <FormCard pageTitle="Atualizar evento" companyName="Empresa X" buttonName="Confirmar alterações" buttonStyleType="update"></FormCard>
-    )
-}
+      <>
+        <PageTitle>Detalhes do evento</PageTitle>
+        <Container>
+          <FormCardWrapper>
+          <FormTitle style={{marginBottom: 10 + "px"} }>{"Empresa X"}</FormTitle>
+  
+            <Label htmlFor='eventName'>Nome do evento:</Label>
+            <InputText type='text' id='eventName'  value={event.name} />
+  
+            <Label htmlFor='eventType'>Tipo de evento: </Label>
+            <InputText type='text' id='eventType'   value={event.type}/>
+  
+            <Label htmlFor='eventTicketNumber'>Quantidade de ingressos:</Label>
+            <InputText type='number' id='eventTicketNumber'  value={event.ticketsNumber}/>
+  
+            <Label htmlFor='eventDate'>Data do evento:</Label>
+            <InputText type='date' min={minDate} id='eventDate'  value={event.date}/>
+  
+            <Label htmlFor='purchaseStartDate'>Data de inicio de compra</Label>
+            <InputText type='date' id='purchaseStartDate'  value={event.purchaseStartDate}/>
+  
+            <Label htmlFor='purchaseLimiteDate'>Data limite de compras</Label>
+            <InputText type='date' id='purchaseLimiteDate'  value={event.purchaseLimiteDate}/>
+  
+            <Label htmlFor='priceByTicket'>Preço por ingresso - R$</Label>
+            <InputText
+              type='text'
+              placeholder='Insira o preço'
+              id='priceByTicket'
+              
+                value={event.ticketPrice}
+            />
+           
+            <div className={classes.div}>
+
+            <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<EditIcon />}
+                    className={classes.button}>
+            Confirmar alterações
+            </Button>
+            </div>
+      
+          </FormCardWrapper>
+        </Container>
+      </>
+    );
+  }
+  
