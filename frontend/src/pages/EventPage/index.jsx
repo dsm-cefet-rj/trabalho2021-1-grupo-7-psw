@@ -23,6 +23,7 @@ import CarouselImg from '../../components/Carousel/index.js';
 import { getEventBySlug } from '../../utils/events.js';
 import { CircularProgress } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'swiper/swiper.scss';
 import 'swiper/components/pagination/pagination.min.css';
 import 'swiper/components/navigation/navigation.min.css';
@@ -61,7 +62,6 @@ const EventPage = () => {
     setLoading(false);
   };
 
-  console.log(event);
   return (
     <div style={{ paddingBottom: 100 }}>
       <Header />
@@ -90,12 +90,27 @@ const EventPage = () => {
           </WrapperSectionContainer>
           <WrapperSectionContainer>
             <StrongText font={30}>Onde é?</StrongText>
+            <MapContainer
+              center={[event.address.long, event.address.lat]}
+              zoom={16}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              />
+              <Marker position={[event.address.long, event.address.lat]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            </MapContainer>
           </WrapperSectionContainer>
         </WrapperContent>
       )}
       <ContainerBuy>
         <WrapperPriceSpecs>
-          <PriceText>R$ 200</PriceText>
+          <PriceText>R$ {event?.price}</PriceText>
           <Text style={{ marginLeft: 10 }}>em até 12x sem juros</Text>
         </WrapperPriceSpecs>
         <Button

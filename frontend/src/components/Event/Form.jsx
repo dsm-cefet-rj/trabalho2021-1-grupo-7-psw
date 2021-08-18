@@ -5,6 +5,7 @@ import {
   Label,
   ButtonSubmit,
   Container,
+  FormTitle
 } from './style';
 
 export default function FormCard(props) {
@@ -14,7 +15,7 @@ export default function FormCard(props) {
       <PageTitle>{props.pageTitle}</PageTitle>
       <Container>
         <FormCardWrapper>
-          <h3 style={{marginBottom: 10 + "px"} }>{props.companyName}</h3>
+          <FormTitle style={{marginBottom: 10 + "px"} }>{"Empresa X"}</FormTitle>
 
           <Label htmlFor='eventName'>Título:</Label>
           <InputText type='text' id='eventName' />
