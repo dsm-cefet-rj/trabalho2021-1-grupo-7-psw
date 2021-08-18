@@ -5,20 +5,14 @@ import {
     Label,
     ButtonSubmit,
     Container,
+    FormTitle
   } from '../../components/Event/style';
 
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
-import Icon from '@material-ui/core/Icon';
-import SaveIcon from '@material-ui/icons/Save';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 const useStyles = makeStyles((theme) => ({
     button: {
         margin: theme.spacing(2),
@@ -54,7 +48,7 @@ export default function FormCard(props) {
         <PageTitle>Detalhes do evento</PageTitle>
         <Container>
           <FormCardWrapper>
-            <h3 style={{marginBottom: 10 + "px"} }>{"Empresa X"}</h3>
+          <FormTitle style={{marginBottom: 10 + "px"} }>{"Empresa X"}</FormTitle>
   
             <Label htmlFor='eventName'>Nome do evento:</Label>
             <InputText type='text' id='eventName'  value={event.name} />
@@ -90,7 +84,7 @@ export default function FormCard(props) {
                     color="primary"
                     startIcon={<EditIcon />}
                     className={classes.button}>
-            Criar evento
+            Confirmar alterações
             </Button>
             </div>
       
