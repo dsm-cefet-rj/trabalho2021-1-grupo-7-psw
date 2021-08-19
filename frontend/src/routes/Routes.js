@@ -15,6 +15,7 @@ import EventReadAndDelete from '../pages/Event/ReadAndDelete'
 import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
 import AboutUs from '../pages/About/about'
+import Feedback from '../pages/Feedback/index'
 
 export default function Routes() {
   return (
@@ -28,6 +29,7 @@ export default function Routes() {
           <Route exact path="/admin/cadastrar" component={RegisterC}/>
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
+          <Route exact path="/feedback"  component={Feedback}/>
           <Route exact path="/admin/evento/novo"  component={EventCreate}/>
           <Route exact path="/admin/evento/:slug/editar"  component={EventUpdate}/>
           <Route exact path="/admin/evento/:slug"  component={EventReadAndDelete}/>
