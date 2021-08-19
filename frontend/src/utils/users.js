@@ -10,7 +10,7 @@ export const users = [
     },
     {
         id: 2,
-        name: "Caio",
+        name: "CaioFilms",
         email: "caio123@gmail.com",
         cnpj: "35.235.235/2342-34",
         password: "123123123",
@@ -36,10 +36,12 @@ export const users = [
     },
     {
         id: 5,
-        name: "Felipe",
+        name: "FelipeCompany",
         email: "felipe123@gmail.com",
         cnpj: "12.312.312/3123-13",
         password: "123123123",
         role: 1 //Empresa
     },
 ]
+
+export const getUserBySlug = ((slug) => users.find((user) => user.slug === slug))
