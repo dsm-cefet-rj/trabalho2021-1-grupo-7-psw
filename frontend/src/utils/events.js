@@ -7,7 +7,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'Paramount',
     qtd_ingresso: 10,
-    price: 150,
+    date: "2022-05-20",
+    price: 150.00,
     address: {
       long:-22.886205000766278,
       lat:-43.28361798050839,
@@ -22,7 +23,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'Rock in Rio',
     qtd_ingresso: 1,
-    price: 600,
+    date: "2022-10-23",
+    price: 600.00,
     address: {
       long:-22.978110205365084,
       lat:-43.39416502708061,
@@ -37,7 +39,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'Marvel',
     qtd_ingresso: 13,
-    price: 150,
+    date: "2023-01-11",
+    price: 150.00,
     address: {
       long:-22.85005165732935,
       lat:-43.31048008105505,
@@ -52,7 +55,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'CBLOL',
     qtd_ingresso: 2,
-    price: 500,
+    date: "2021-11-30",
+    price: 500.00,
     address: {
       long:-22.912328949859138,
       lat:-43.22496622098693,
@@ -67,7 +71,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'Universal',
     qtd_ingresso: 20,
-    price: 25,
+    date: "2022-07-04",
+    price: 25.00,
     address: {
       long:-22.886205000766278,
       lat:-43.28361798050839,
@@ -82,7 +87,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'CSGO',
     qtd_ingresso: 3,
-    price: 1000,
+    date: "2022-03-03",
+    price: 1000.00,
     address: {
       long:-22.99755449306113,
       lat:-43.36012305318558,
@@ -96,7 +102,8 @@ export const events = [
     descricao: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.',
     empresa: 'CSGO',
     qtd_ingresso: 3,
-    price: 200,
+    date: "20/02/2023",
+    price: 200.00,
     address: {
       long:-22.886205000766278,
       lat:-43.28361798050839,

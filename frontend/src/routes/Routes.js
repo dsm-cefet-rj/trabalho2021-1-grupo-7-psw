@@ -29,7 +29,7 @@ export default function Routes() {
           <Route exact path="/meus-ingressos" component={MyTickets}/>
           <Route exact path="/admin/eventos" component={RegisteredEvents}/>
           <Route exact path="/admin/evento/novo"  component={EventCreate}/>
-          <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
+          <Route exact path="/admin/evento/:slug/editar"  component={EventUpdate}/>
           <Route exact path="/admin/evento/:slug"  component={EventReadAndDelete}/>
           <Route path="*" component={Page404}/>{/*Se a rota não existir... */}
       </Switch>
