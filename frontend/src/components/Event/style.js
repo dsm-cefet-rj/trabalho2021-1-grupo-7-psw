@@ -9,7 +9,7 @@ font-size: 1.5rem;
 line-height: 54px;
 margin: 0;
 text-align: center;
-
+font-weight: 400;
 @media(min-width: 768px ){
     height: 50px;
     line-height: 50px;
@@ -24,14 +24,16 @@ padding: 1rem;
     text-align: center;
     box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.589);
     padding: 1rem;
-    height: 800px;
-    
 };
 
 input[type="date"]{
     text-transform: uppercase;
 }
 `;
+export const FormTitle = styled.h3 `
+    font-size: 1.58rem;
+    margin-bottom: 1rem;
+`
 export const DivCardWrapper = styled.div`
 padding: 1rem;
 @media(min-width: 768px ){
@@ -45,14 +47,14 @@ padding: 1rem;
 };
 
 input[type="date"]{
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 `;
 export const InputText = styled.input`
 height: 2.5rem;
 width: 100%;
 font-size: 1rem;
-padding-left: 0.2rem;
+padding-left: 0.5rem;
 margin-bottom: 1rem !important;
 border: 1px solid black ;
 border-radius: 0.2rem;
@@ -63,9 +65,26 @@ border-radius: 0.2rem;
     }
 `;
 
+export const InputTextarea = styled.textarea`
+resize:none;
+height: 2.5rem;
+width: 100%;
+font-size: 1rem;
+min-height: 150px;
+padding: 5px 8px;
+text-align: justify;
+margin-bottom: 1rem ;
+border: 1px solid black ;
+border-radius: 0.2rem;
+outline: none;
+
+`;
+
 export const Label = styled.label`
 display: block ;
+text-align: left;
 margin-bottom: 0.4rem ;
+margin-top: 10px;
 `
 
 export const ButtonSubmit = styled.button` 
@@ -103,7 +122,7 @@ background-color: ${props => {
 // 
 export const Container = styled.div`
     @media(min-width: 768px ){
-        max-width: 760px;
+        max-width: 500px;
         margin: 0 auto;
         margin-bottom: 2rem;
         padding: 0;

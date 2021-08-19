@@ -6,8 +6,13 @@ import { Title, Container, Main, Form, Label, Input, Button, FormTitle,ErrorInpu
 import {useFormik} from 'formik'
 import MaskInput from 'react-text-mask'
 import * as yup from 'yup'
+import {Link} from 'react-router-dom'
 
 export default function RegisterComp(){
+
+    const linkStyle = {
+        color: "#074AB8"
+    }
 
     const cnpjStyle = {
         height: "2.5rem",
@@ -117,6 +122,7 @@ export default function RegisterComp(){
                         Criar conta
                         </Button>
 
+                        <Link to='/entrar' style={linkStyle}>Voltar ao login</Link>
                     </Form>
                 </Container>
             </Main>
