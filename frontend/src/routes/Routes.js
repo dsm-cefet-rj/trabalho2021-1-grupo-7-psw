@@ -17,6 +17,7 @@ import EventUpdate from '../pages/Event/Update'
 import EventCreate from '../pages/Event/Create'
 import EventInfo from '../pages/Event/Info'
 import AboutUs from '../pages/About/about'
+import Feedback from '../pages/Feedback/index'
 
 export default function Routes() {
   return (
@@ -35,6 +36,7 @@ export default function Routes() {
           <Route exact path="/admin/eventos/criar"  component={EventCreate}/>
           <Route exact path="/admin/eventos/atualizar"  component={EventUpdate}/>
           <Route exact path="/admin/evento/:slug"  component={EventInfo}/>
+          <Route exact path="/feedback"  component={Feedback}/>
           <Route path="*" component={Page404}/>{/*Se a rota não existir... */}
       </Switch>
     </Router>
