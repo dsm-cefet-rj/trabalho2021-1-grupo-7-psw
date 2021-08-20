@@ -8,6 +8,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use(cors())
 
-app.use("/admin", Router)
+app.use("/", Router)
 
 app.listen(8080, () => console.log("Server is running"))
