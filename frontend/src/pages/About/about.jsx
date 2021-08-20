@@ -42,7 +42,9 @@ export default function About(){
                     </Div>
                     <Div>
                         <a href="https://github.com/lucasfarolfi" target="_blank" rel="Git-Farolfi">
-                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>Farolfi
+
+                            <Img src="https://github.com/lucasfarolfi.png" alt="Menino jesus"></Img>
+                            Farolfi Jesus
                         </a>
                     </Div>
                     <Div>

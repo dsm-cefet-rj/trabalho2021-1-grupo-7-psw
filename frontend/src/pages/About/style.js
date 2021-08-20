@@ -13,9 +13,12 @@ export const Title = styled.h1`
     color: white;
     background-color: #212020;
     border-radius: 60px;
-    word-break: break-word;
     margin: 50px auto;
     padding: 10px 0;
+    @media(min-width: 800px) {
+        font-size: 30px;
+        width:30%;
+      }
 `;
 
 
@@ -39,6 +42,7 @@ export const Div = styled.div`
         height:100%;
         box-shadow: none;
         border: 3px solid green;
+    }
 `;
 export const Container = styled.section`
     padding: 1rem 10px;
@@ -48,6 +52,14 @@ export const Container = styled.section`
 
 export const Text = styled.p`
     margin: 10px 10%;
-    font-size: 16px;
-    font-weight: 550;
+    padding: 5px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    border: 2px solid black;
+    border-radius: 20px;
+    @media(min-width: 800px) {
+        font-size: 20px;
+        border-radius: 10px;
+      }
 `;
