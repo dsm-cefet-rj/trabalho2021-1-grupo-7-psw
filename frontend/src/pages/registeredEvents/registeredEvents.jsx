@@ -22,7 +22,7 @@ export default function RegisteredEvents({ history }) {
         <Container>
           <RegisterEventContainer>
             <RegisterEventBtn
-              onClick={() => history.push(`/admin/eventos/criar`)}
+              onClick={() => history.push(`/admin/evento/novo`)}
             >
               Cadastrar evento
             </RegisterEventBtn>

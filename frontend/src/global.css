@@ -18,6 +18,11 @@ a {
   stroke: #fff !important;
 }
 
+.leaflet-container {
+  width: 100%;
+  height: 300px;
+}
+
 .swiper-pagination-bullet-active {
   background-color: #fff !important;
 }

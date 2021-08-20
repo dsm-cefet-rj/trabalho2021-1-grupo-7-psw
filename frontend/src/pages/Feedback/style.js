@@ -15,10 +15,15 @@ export const Title = styled.h1`
 `
 
 export const Container = styled.section`
-    max-width: 400px;
+    max-width: 850px;
     margin: 0 auto;
     padding: 0;
 `
+export const Line = styled.hr`
+    opacity: 25%;
+    padding-bottom: px;
+`
+
 export const Main = styled.main`
     min-height: 70vh;
 `
@@ -26,8 +31,6 @@ export const Main = styled.main`
 export const Form = styled.form`
     padding: 2.5rem 1rem;
     border-radius: 0.5rem;
-    text-align: center;
-    box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.589);
     margin-bottom: 2rem;
     @media (max-width: 420px) {
         box-shadow: none;
@@ -36,22 +39,28 @@ export const Form = styled.form`
 `;
 
 export const FormTitle = styled.h2`
-    font-size: 25px;
-    text-align: center;
+    font-size: 30px;
     color: black;
-    margin-bottom: 30px;
+    
+`
+export const Paragraph = styled.p`
+    font-size: 16px;
+    color: black;
+    padding-top: 25px;
+    padding-bottom: 5px;
 `
 
 export const Label = styled.label`
     display: block ;
-    margin-bottom: 0.4rem ;
+    margin-bottom: 1rem ;
     margin-top: 20px;
     text-align:left;
+    font-size: 23px;
 `;
 
 export const Input = styled.input`
     height: 2.5rem;
-    width: 100%;
+    width: 75%;
     font-size: 14px;
     text-indent: 10px;
     padding-left: 0.2rem;
@@ -59,17 +68,29 @@ export const Input = styled.input`
     border-radius: 0.2rem;
 `;
 
+export const TextArea = styled.textarea`
+    height: 10rem;
+    width: 85%;
+    font-size: 14px;
+    text-indent: 10px;
+    padding-top: 10px;
+    padding-left: 0.2rem;
+    border: 1px solid black ;
+    border-radius: 0.2rem;
+`;
+
+/*
 export const ErrorInputs = styled.div`
     width: 100%;
     text-align: left;
     font-size: 14px;
     margin-top: 5px;
     color: red;
-`;
+`;*/
 
 export const Button = styled.button` 
     cursor: pointer;
-    width: 100%;
+    width: 50%;
     height: 45px;
     background: #212020;
     color: white;
@@ -77,35 +98,5 @@ export const Button = styled.button`
     border: none;
     border-radius: 5px;
     margin-top: 1.5rem;
-    margin-bottom: 20px;
 `;
 
-export const Hr = styled.hr`
-    color:black;
-    margin-bottom: 12px;
-`
-
-export const RegisterFlex = styled.div`
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    @media(min-width: 420px){
-        flex-direction: row;
-        justify-content: space-between;
-    }
-`
-export const RegisterBtn = styled.button` 
-    cursor: pointer;
-    width: 100%;
-    height: 50px;
-    background: darkgrey;
-    color: white;
-    font-weight:bold;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    margin-top: 5px;
-    @media(min-width: 420px){
-        width: 150px;
-    }
-`;

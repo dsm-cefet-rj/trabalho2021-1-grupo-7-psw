@@ -56,7 +56,7 @@ const Header = () => {
       <ListItem button={true} classes={{root: classes.listItemRoot}}>
         <Link>Suporte</Link>
       </ListItem>
-      <ListItem button={true} classes={{root: classes.listItemRoot}}>
+      <ListItem button={true} classes={{root: classes.listItemRoot}} onClick={() => history.push('/feedback')}>
         <Link>FeedBack</Link>
       </ListItem>
       <ListItem button={true} classes={{root: classes.listItemRoot}} onClick={() => history.push('/sobre')}>
@@ -74,7 +74,7 @@ const Header = () => {
         <IconButton onClick={() => handleOpenMenu(true)} classes={{root: classes.iconButtonRoot}}>
          <Menu size={30} style={{cursor: 'pointer'}} />
         </IconButton> 
-          <Logo src={logoImg} alt="Logo Img"/>
+          <Logo src={logoImg} alt="Logo Img" onClick={() => history.push('/')}/>
          <Drawer anchor='left' open={isMenuOpen} onClose={() => handleOpenMenu(false)}>
           {list()}
         </Drawer> 
