@@ -1,14 +1,18 @@
 const Router = require('express').Router()
 const Empresa = require('../Controllers/Empresa')
+const IndexController = require('../Controllers/IndexController')
 const UserController = require('../Controllers/UserController')
 const EventController = require('../Controllers/EventController')
-//Endpoints
+
+//Index
+Router.get('/login', IndexController.login) //Login do usuário
+
+//Enterprises
 Router.post('/create', Empresa.create)
 
 //Users
 Router.get('/usuarios', UserController.index) //Todos os usuários
 Router.get('/usuario', UserController.find) //Procura usuário pelo e-mail
-Router.get('/login', UserController.login) //Login do usuário
 Router.post('/usuario', UserController.create) //Cadastra o usuário
 
 //Events
