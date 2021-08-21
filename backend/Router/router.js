@@ -8,6 +8,7 @@ Router.post('/create', Empresa.create)
 //Users
 Router.get('/usuarios', UserController.index) //Todos os usuários
 Router.get('/usuario', UserController.find) //Procura usuário pelo e-mail
+Router.get('/login', UserController.login) //Login do usuário
 Router.post('/usuario', UserController.create) //Cadastra o usuário
 
 //Events
