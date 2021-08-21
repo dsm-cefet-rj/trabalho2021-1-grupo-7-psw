@@ -8,6 +8,22 @@ class UserController{
     }
 
     async find(req, res){
+        let email = req.body.email
+
+        if(email == undefined || email == ''){
+            return res.status(400).json({error: "Dados inválidos"})
+        }
+
+        let user = await User.findOne(email)
+
+        if(user == undefined){
+            return res.status(404).json({error: "Usuário não encontrado"})
+        }
+        
+        return res.status(200).json({user: {id: user.id, name: user.name, email: user.email, role: user.role}})
+    }
+
+    async login(req, res){
         let {email, password} = req.body
 
         if(email == undefined || email == '' || password == undefined || password == ''){
