@@ -1,14 +1,15 @@
 const Router = require('express').Router()
-const Empresa = require('../Controllers/Empresa')
 const IndexController = require('../Controllers/IndexController')
 const UserController = require('../Controllers/UserController')
 const EventController = require('../Controllers/EventController')
+const CompanyController = require('../Controllers/CompanyController')
 
 //Index
 Router.get('/login', IndexController.login) //Login do usuário
 
 //Enterprises
-Router.post('/create', Empresa.create)
+Router.post("/empresa", CompanyController.create)
+
 
 //Users
 Router.get('/usuarios', UserController.index) //Todos os usuários

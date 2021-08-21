@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { baseUrl } from '../../utils/backendUrl';
+import axios from 'axios'
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
 import { Title, Container, Main, Form, Label, Input, Button, FormTitle,ErrorInputs} from '../RegisterUser/style'
@@ -57,8 +58,9 @@ export default function RegisterComp(){
                 password: formik.values.password,
                 confirmPassword: formik.values.confirmPassword
             }
-
-            console.log(user)
+            axios.post(`${baseUrl}/empresa`, user).then(response=>{
+                console.log(response)            
+            }).catch((err)=>console.log(err.response))
         }
     })
 
