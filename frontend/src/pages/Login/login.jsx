@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { getUser } from '../../services/login_service'
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
 import { Title,Container,Main,Form,Label,Input,Button,
@@ -8,6 +9,12 @@ import { Link } from 'react-router-dom';
 import {users} from '../../utils/users'
 
 export default function LoginU() {
+
+  const getUsername = async () => {
+    const user = await getUser('lucas123@gmail.com', '123123123')
+    console.log(user)
+  }
+  getUsername()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,19 +28,17 @@ export default function LoginU() {
     setPassword(evt.target.value)
   },[setPassword])
 
-  const handleSubmit = useCallback((evt)=>{
+  const handleSubmit = useCallback(async(evt)=>{
     evt.preventDefault()
 
-    let findUser = users.find(user=>user.email === email && user.password === password)
+    try{const user = await getUser('lucas123@gmail.com', '12312312')
+    console.log(user)
+  }catch(error){
+    console.log(error)
+  }
 
-    if(!findUser){
-      setError("O usuário está incorreto ou não existe.")
-    }
-    else{
-      setError(null)
-      console.log({email, password})
-    }
-
+  
+   
   },[email,password])
 
   return (
