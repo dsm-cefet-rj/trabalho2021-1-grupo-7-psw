@@ -5,7 +5,7 @@ const EventController = require("../Controllers/EventController");
 const CompanyController = require("../Controllers/CompanyController");
 
 //Index
-Router.get("/login", IndexController.login); //Login do usuário
+Router.post("/login", IndexController.login); //Login do usuário
 
 //Enterprises
 Router.post("/empresa", CompanyController.create);

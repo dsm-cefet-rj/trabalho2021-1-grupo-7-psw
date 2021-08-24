@@ -14,14 +14,14 @@ class EventController{
         if((name == undefined || name == '') || (type == undefined || type == '') || (enterprise == undefined || enterprise == '')
         || (num_tickets == undefined || num_tickets == '') || (price == undefined || price == '') || (date == undefined || date == '')
         || (description == undefined || description == '')){
-            return res.status(400).json({error: "Dados inválidos"})
+            return res.status(400).json({msg: "Dados inválidos"})
         }
 
         let slug = Slugify(name).toLowerCase()
         let findEvent = await Event.findOne(slug)
         
         if(findEvent != undefined){
-            return res.status(401).json({error: "Evento já cadastrado"})
+            return res.status(401).json({msg: "Evento já cadastrado"})
         }
 
         await Event.create(name, slug, type, enterprise, num_tickets,date, price, description)
@@ -34,7 +34,7 @@ class EventController{
         let event = await Event.findOne(slug)
 
         if(event == undefined){
-            return res.status(404).json({erro: "Evento não encontrado"})
+            return res.status(404).json({msg: "Evento não encontrado"})
         }
 
         return res.status(200).json({event})
@@ -46,7 +46,7 @@ class EventController{
         let findEvent = await Event.findOne(slug)   
 
         if(findEvent == undefined){
-            return res.status(404).json({error: "Evento não encontrado"})
+            return res.status(404).json({msg: "Evento não encontrado"})
         }
 
         await Event.update(name, slug, type, num_tickets,date, price, description)
@@ -57,13 +57,13 @@ class EventController{
         let slug = req.params.slug
 
         if(slug == undefined || slug == ''){
-            return res.status(400).json({error: "Dados inválidos"})
+            return res.status(400).json({msg: "Dados inválidos"})
         }
 
         let event = await Event.findOne(slug)
 
         if(event == undefined){
-            return res.status(404).json({error: "Evento não encontrado"})
+            return res.status(404).json({msg: "Evento não encontrado"})
         }
 
         await Event.delete(slug)

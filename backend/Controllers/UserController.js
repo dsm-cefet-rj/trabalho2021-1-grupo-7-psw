@@ -8,16 +8,16 @@ class UserController{
     }
 
     async find(req, res){
-        let email = req.body.email
+        let email = req.query.email
 
         if(email == undefined || email == ''){
-            return res.status(400).json({error: "Dados inválidos"})
+            return res.status(400).json({msg: "Dados inválidos"})
         }
 
         let user = await User.findOne(email)
 
         if(user == undefined){
-            return res.status(404).json({error: "Usuário não encontrado"})
+            return res.status(404).json({msg: "Usuário não encontrado"})
         }
         
         return res.status(200).json({user: {id: user.id, name: user.name, email: user.email, role: user.role}})
@@ -28,12 +28,12 @@ class UserController{
 
         if((name == undefined || name == '') || (email == undefined || email == '') ||
         (cpf == undefined || cpf == '') || (password == undefined || password == '')){
-            return res.status(400).json({error: "Dados inválidos."})
+            return res.status(400).json({msg: "Dados inválidos."})
         }
 
         let user = await User.findOne(email)
         if(user != undefined){
-            return res.status(401).json({error: "E-mail já cadastrado."})
+            return res.status(401).json({msg: "E-mail já cadastrado."})
         }
         
         await User.create(name,email,cpf,password)
