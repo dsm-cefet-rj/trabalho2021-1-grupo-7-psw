@@ -1,11 +1,11 @@
 import api from "./api";
 
-export const getUser = (emailType, passwordType) => {
-  console.log(emailType, passwordType);
+export const getUser = (email, password) => {
+  
   return api()
-    .get("/login", { params: { email: emailType, password: passwordType } })
+    .post("/login", { email, password })
     .then((response) => {
-      return response.data || {};
+      return response.data.user || {};
     })
     .catch((error) => {
       throw error;

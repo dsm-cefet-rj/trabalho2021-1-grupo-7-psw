@@ -6,15 +6,9 @@ import Footer from '../../components/Footer/index';
 import { Title,Container,Main,Form,Label,Input,Button,
   FormTitle, Hr,RegisterBtn, RegisterFlex, ErrorInputs} from '../RegisterUser/style';
 import { Link } from 'react-router-dom';
-import {users} from '../../utils/users'
+import { history } from '../../history'
 
 export default function LoginU() {
-
-  const getUsername = async () => {
-    const user = await getUser('lucas123@gmail.com', '123123123')
-    console.log(user)
-  }
-  getUsername()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,13 +25,15 @@ export default function LoginU() {
   const handleSubmit = useCallback(async(evt)=>{
     evt.preventDefault()
 
-    try{const user = await getUser('lucas123@gmail.com', '12312312')
-    console.log(user)
-  }catch(error){
-    console.log(error)
-  }
-
-  
+    try{
+      const user = await getUser(email, password)
+      setError(null)
+      
+      history.push('/')
+    }catch(error){
+      let msgErro = error.response.data.msg
+      setError(msgErro)
+    }
    
   },[email,password])
 
