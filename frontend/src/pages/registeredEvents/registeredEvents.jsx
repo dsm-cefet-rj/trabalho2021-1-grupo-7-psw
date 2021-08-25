@@ -10,9 +10,21 @@ import {
   Events,
 } from './style.js';
 import EventCard from '../../components/EventCard';
-import { events } from '../../utils/events';
+import { getEvents } from '../../services/event_service';
+import { useEffect, useState } from 'react';
 
 export default function RegisteredEvents({ history }) {
+
+  const [events, setEvents] = useState([])
+
+  useEffect( ()=>{
+    getEvents()
+    .then(res=>{
+      let result = res.events
+      setEvents(result)
+    })
+  },[])
+
   return (
     <>
       <Header />
@@ -36,7 +48,7 @@ export default function RegisteredEvents({ history }) {
                   key={event.id}
                   eventName={event.name}
                   event={event}
-                  eventImg={event.imagens[0]}
+                  eventImg={event.images[0]}
                   history={history}
                 />
               );
