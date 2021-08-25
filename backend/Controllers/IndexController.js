@@ -1,3 +1,4 @@
+const Company = require("../Models/Company")
 const User = require("../Models/User");
 
 class IndexController {
@@ -16,8 +17,14 @@ class IndexController {
     }
 
     let user = await User.findOne(email);
+    let company
 
-    if (user == undefined) {
+    if(user===undefined){
+      company = await Company.findOne(email)
+      user = company
+    }
+
+    if (user == undefined ) {
       return res.status(404).json({ msg: "Usuário incorreto ou não existe" });
     }
 
