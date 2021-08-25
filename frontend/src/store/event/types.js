@@ -1,0 +1,5 @@
+
+
+export const FETCH_EVENTS = 'FETCH_EVENTS';
+
+export const FETCH_EVENTS_RESULT = 'FETCH_EVENTS_RESULT';

@@ -4,10 +4,10 @@ import EventCard from '../../components/EventCard/index.js';
 import CarouselImg from '../../components/Carousel/index.js';
 import { makeStyles } from '@material-ui/core';
 import { TextField, Grid, InputAdornment } from '@material-ui/core';
-import { events } from '../../utils/events.js';
+import { fetchEvents } from '../../store/event/action';
 import { Search } from '@styled-icons/boxicons-regular/Search';
 import Footer from '../../components/Footer/index';
-// import filmeIMG2 from '../../assets/img/Santana-netflix.jpg';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles({
   textFieldRoot: {
@@ -15,14 +15,21 @@ const useStyles = makeStyles({
   },
 });
 
-function App({ history }) {
+function App({ history, events, getEventos, status }) {
   const [recentEvents, setRecentEvents] = useState([]);
   const [textFilter, setTextFilter] = useState('');
   const classes = useStyles();
+  console.log(events, status, 'como q ta vindo');
+
+  useEffect(() => {
+    getEventos();
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     getRecentsEvents();
-  }, []);
+    // eslint-disable-next-line
+  }, [events]);
 
   const getRecentsEvents = () => {
     if (events) {
@@ -52,7 +59,7 @@ function App({ history }) {
   return (
     <div className='App'>
       <Header history={history} />
-      <CarouselImg events={recentEvents} homePage={true} />
+      {events && <CarouselImg events={recentEvents} homePage={true} />}
       <Grid
         container
         justify='center'
@@ -80,18 +87,27 @@ function App({ history }) {
         justify='center'
         style={{ padding: 25, maxWidth: 1200, margin: '0 auto' }}
       >
-        {getFilterEvents().map((event) => (
-          <EventCard
-            key={event.id}
-            eventName={event.name}
-            eventImg={event.imagens[0]}
-            event={event}
-          />
-        ))}
+        {events.length > 0 &&
+          getFilterEvents().map((event) => (
+            <EventCard
+              key={event.id}
+              eventName={event.name}
+              eventImg={event.images[0]}
+              event={event}
+            />
+          ))}
       </Grid>
       <Footer />
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  events: state.event.data,
+  status: state.event.status,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getEventos: () => dispatch(fetchEvents()),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);

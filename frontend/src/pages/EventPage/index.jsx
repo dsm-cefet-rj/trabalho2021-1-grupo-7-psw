@@ -20,9 +20,10 @@ import { makeStyles } from '@material-ui/core';
 import { Calendar } from '@styled-icons/boxicons-regular/Calendar';
 import { FavoriteBorder } from '@styled-icons/material/FavoriteBorder';
 import CarouselImg from '../../components/Carousel/index.js';
-import { getEventBySlug } from '../../utils/events.js';
+// import { getEventBySlug } from '../../utils/events.js';
 import { CircularProgress } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
+import { getEventBySlug } from '../../services/event_service';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'swiper/swiper.scss';
 import 'swiper/components/pagination/pagination.min.css';
@@ -55,13 +56,13 @@ const EventPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  const loadEvent = () => {
+  const loadEvent = async () => {
     setLoading(true);
-    const eventData = getEventBySlug(slug);
-    setEvent(eventData);
+    const response = await getEventBySlug(slug);
+    setEvent(response);
     setLoading(false);
   };
-
+  console.log(event);
   return (
     <div style={{ paddingBottom: 100 }}>
       <Header />

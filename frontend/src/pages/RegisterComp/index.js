@@ -108,7 +108,7 @@ export default function RegisterComp(){
                                 /[0-9]/
                             ]}
                             guide={false} //Serve para ir completando aos poucos
-                            type="text" id="cnpj" placeholder="Digite o CNPJ da empresa" {...formik.getFieldProps('cnpj')}
+                              placeholder="Digite o CNPJ da empresa" {...formik.getFieldProps('cnpj')}
                         />
                         {formik.touched.cnpj ? <ErrorInputs>{formik.errors.cnpj}</ErrorInputs> : null}
 
