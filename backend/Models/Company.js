@@ -3,9 +3,13 @@ class Company{
     constructor(){
 
     }
-    static lista = []
-
-    
+    static lista = [{
+        name: "olimpo",
+        email: "olimpo@gmail.com",
+        cnpj: "123.456.789.11",
+        password: "12345678",
+        role: 3
+      }]
 
     create(name, email, cnpj, password){
 
@@ -23,6 +27,10 @@ class Company{
         Company.lista.forEach(empresa =>{
             console.log(empresa)
         })
+    }
+    async findOne(email){
+        const company = Company.lista.find(company => company.email === email)
+        return company
     }
 }
 module.exports = new Company()
