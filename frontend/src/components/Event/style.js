@@ -63,6 +63,7 @@ border-radius: 0.2rem;
         outline: none;
         box-shadow: 0px 0px 5px 1px  rgb(139, 187, 243); 
     }
+}
 `;
 
 export const InputTextarea = styled.textarea`

@@ -22,7 +22,7 @@ const CarouselImg = ({events,homePage = false}) => {
       {
         events.map((event) => (
           <SwiperSlide>
-            <BannerEvent imgBanner={event.imagens[0]} alt='teste' />
+            <BannerEvent imgBanner={event.images[0]} alt='teste' />
           </SwiperSlide>
         ))
       }
@@ -33,7 +33,7 @@ const CarouselImg = ({events,homePage = false}) => {
     pagination={{ dynamicBullets: true }}
     >
       {
-        events.imagens.map((img) => (
+        events.images.map((img) => (
           <SwiperSlide>
             <BannerEvent imgBanner={img} alt='teste' />
           </SwiperSlide>

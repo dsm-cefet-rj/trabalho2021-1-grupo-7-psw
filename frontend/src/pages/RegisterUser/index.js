@@ -110,7 +110,7 @@ export default function RegisterU(){
                                 /[0-9]/
                             ]}
                             guide={false} //Serve para ir completando aos poucos
-                            type="text" id="CPF" placeholder="Digite seu CPF" {...formik.getFieldProps('cpf')}
+                              placeholder="Digite seu CPF" {...formik.getFieldProps('cpf')}
                         />
                         {formik.touched.cpf ? <ErrorInputs>{formik.errors.cpf}</ErrorInputs> : null}
                         <Label htmlFor="password">Senha:</Label>

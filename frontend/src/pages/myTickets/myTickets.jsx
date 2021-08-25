@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
-
+import { connect } from 'react-redux';
+import { fetchEvents } from '../../store/event/action';
 import { Main, Title, Container, Text, Tickets } from './style.js';
 import EventCard from '../../components/EventCard/index';
-import { events } from '../../utils/events';
 import { TextField, Grid, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { Search } from '@styled-icons/boxicons-regular/Search';
@@ -16,9 +16,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MyTickets() {
+function MyTickets({ events, getEventos }) {
   const [textFilter, setTextFilter] = useState('');
   const classes = useStyles();
+
+  useEffect(() => {
+    getEventos();
+    // eslint-disable-next-line
+  }, []);
 
   const getFilterEvents = () => {
     if (textFilter !== '') {
@@ -63,7 +68,7 @@ export default function MyTickets() {
                   key={event.id}
                   eventName={event.name}
                   event={event}
-                  eventImg={event.imagens[0]}
+                  eventImg={event.images[0]}
                 />
               );
             })}
@@ -75,3 +80,14 @@ export default function MyTickets() {
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  events: state.event.data,
+  status: state.event.status,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getEventos: () => dispatch(fetchEvents()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyTickets);
