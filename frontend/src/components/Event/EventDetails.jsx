@@ -8,7 +8,7 @@ import {
   InputTextarea,
 } from './style';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { history } from '../../history';
 import { useLocation, useParams } from 'react-router-dom';
-import { getEventBySlug } from '../../utils/events';
+import { getEventBySlug, deleteEvent } from '../../services/event_service';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -46,7 +46,21 @@ export default function FormCard(props) {
 
   const location = useLocation().pathname;
   const { slug } = useParams();
-  const event = getEventBySlug(slug);
+  const [event, setEvent] = useState({})
+
+  useEffect(async ()=>{
+    const response = await getEventBySlug(slug);
+    setEvent(response)
+  },[])
+
+  const handleDelete = () => {
+    deleteEvent(slug).then(res=>{
+      history.push('/admin/eventos')
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  };
 
   return (
     <>
@@ -68,7 +82,7 @@ export default function FormCard(props) {
             type='number'
             id='eventTicketNumber'
             disabled
-            value={event.qtd_ingresso}
+            value={event.num_tickets}
           />
 
           <Label htmlFor='eventDate'>Data do evento:</Label>
@@ -84,7 +98,7 @@ export default function FormCard(props) {
           />
 
           <Label htmlFor='description'>Descrição:</Label>
-          <InputTextarea id='description' disabled value={event.descricao} />
+          <InputTextarea id='description' disabled value={event.description} />
 
           <div className={classes.div}>
             <Button
@@ -126,7 +140,7 @@ export default function FormCard(props) {
               <Button onClick={handleClose} color='primary'>
                 Não
               </Button>
-              <Button onClick={handleClose} color='primary' autoFocus>
+              <Button onClick={handleDelete} color='primary' autoFocus>
                 Sim
               </Button>
             </DialogActions>

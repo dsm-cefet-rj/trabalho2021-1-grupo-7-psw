@@ -91,7 +91,7 @@ export const Label = styled.label`
 display: block ;
 text-align: left;
 margin-bottom: 0.4rem ;
-margin-top: 1rem;
+margin-top: 1.5rem;
 `
 
 export const ButtonSubmit = styled.button` 
@@ -128,6 +128,7 @@ background-color: ${props => {
 ` 
 // 
 export const Container = styled.div`
+    min-height: 100vh;
     @media(min-width: 768px ){
         max-width: 500px;
         margin: 0 auto;
