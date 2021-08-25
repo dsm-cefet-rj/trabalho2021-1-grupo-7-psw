@@ -122,7 +122,7 @@ class Event{
     }
 
     async findOne(slug){
-        return this.events.find(event=>event.slug === slug)
+        return this.events.find(event=>event.slug == slug)
     }
 
     async create(name, slug,type, enterprise, num_tickets,date, price, description){
