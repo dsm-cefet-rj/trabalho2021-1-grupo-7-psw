@@ -76,7 +76,7 @@ const formik = useFormik({
         registerEvent(event.name, event.type, event.enterprise ,event.quantity, event.date, event.price, event.description)
         .then(res=>{
           setError(null)
-          history.push('/')
+          history.push('/admin/eventos')
         })
         .catch(error=>{
           let errorMsg = error.response.data.msg

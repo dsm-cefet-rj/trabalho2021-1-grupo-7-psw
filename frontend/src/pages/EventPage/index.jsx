@@ -50,6 +50,7 @@ const EventPage = () => {
   const [loading, setLoading] = useState(true);
   const { slug } = useParams();
   const classes = useStyles();
+  const [eventDate, setEventDate] = useState('')
 
   useEffect(() => {
     loadEvent();
@@ -61,6 +62,7 @@ const EventPage = () => {
     const response = await getEventBySlug(slug);
     setEvent(response);
     setLoading(false);
+    setEventDate(response.date.split('-'))
   };
   console.log(event);
   return (
@@ -82,12 +84,12 @@ const EventPage = () => {
           </WrapperEventSpecs>
           <WrapperEventNames>
             <Calendar size={25} style={{ marginRight: 5 }} />
-            <StrongText font={16}>12/05/2021</StrongText>
+            <StrongText font={16}>{`${eventDate[2]}/${eventDate[1]}/${eventDate[0]}`}</StrongText>
           </WrapperEventNames>
           <Divider />
           <WrapperSectionContainer>
             <StrongText font={30}>Descrição</StrongText>
-            <ParagraphsText>{event.descricao}</ParagraphsText>
+            <ParagraphsText>{event.description}</ParagraphsText>
           </WrapperSectionContainer>
           <WrapperSectionContainer>
             <StrongText font={30}>Onde é?</StrongText>
