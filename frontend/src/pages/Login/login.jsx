@@ -1,60 +1,36 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { getUser } from '../../services/login_service';
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
-import {
-  Title,
-  Container,
-  Main,
-  Form,
-  Label,
-  Input,
-  Button,
-  FormTitle,
-  Hr,
-  RegisterBtn,
-  RegisterFlex,
-  ErrorInputs,
+import { Title,Container,Main,Form,Label,Input,Button,FormTitle,Hr,RegisterBtn,RegisterFlex,ErrorInputs,
 } from '../RegisterUser/style';
 import { Link } from 'react-router-dom';
 import { history } from '../../history';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import { loginSchema } from '../../utils/loginSchema';
 
 export default function LoginU() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [erro, setErro] = useState(null);
+  
+  const {register, handleSubmit, formState:{errors} } = useForm({
+    resolver: yupResolver(loginSchema)
+  })
 
-  const handleChangeEmail = useCallback(
-    (evt) => {
-      setEmail(evt.target.value);
-    },
-    [setEmail]
-  );
+  const loginSubmit = async (user) => {
+    const { email, password} = user;
+    
+    try {
+      await getUser(email, password);
+      setErro(null);
+      history.push('/');
 
-  const handleClickPassword = useCallback(
-    (evt) => {
-      setPassword(evt.target.value);
-    },
-    [setPassword]
-  );
-
-  const handleSubmit = useCallback(
-    async (evt) => {
-      evt.preventDefault();
-
-      try {
-        const user = await getUser(email, password);
-        setError(null);
-
-        history.push('/');
-      } catch (error) {
-        let msgErro = error.response.data.msg;
-        setError(msgErro);
-      }
-    },
-    [email, password]
-  );
+    } catch (error) {
+      let msgErro = error.response.data.msg;
+      setErro(msgErro);
+    }
+  };
 
   return (
     <>
@@ -63,26 +39,27 @@ export default function LoginU() {
       <Title>Entrar</Title>
       <Main>
         <Container>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit(loginSubmit)}>
             <FormTitle>Faça Login</FormTitle>
             <Label htmlFor='email'>E-mail:</Label>
-            <Input
+            <Input autoComplete="none"
               type='email'
-              id='email'
+              id='email' 
               placeholder='Digite seu e-mail'
-              value={email}
-              onChange={handleChangeEmail}
+              id='email' {...register("email")}
             />
+            <ErrorInputs>{errors.email?.message}</ErrorInputs>
 
             <Label htmlFor='password'>Senha:</Label>
             <Input
               type='password'
-              id='password'
+              id='password' 
               placeholder='Digite sua senha'
-              onChange={handleClickPassword}
-              value={password}
+             id='password'{...register("password")}
             />
-            {error ? <ErrorInputs>{error}</ErrorInputs> : null}
+            <ErrorInputs>{errors.password?.message}</ErrorInputs>
+
+            {erro ? <ErrorInputs>{erro}</ErrorInputs> : null}
             <Button className='submitButton'>Entrar</Button>
 
             <Hr />
