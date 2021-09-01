@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchEvent } from '../../store/event/eventSlice';
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
-import { connect } from 'react-redux';
-import { fetchEvents } from '../../store/event/action';
 import { Main, Title, Container, Text, Tickets } from './style.js';
 import EventCard from '../../components/EventCard/index';
 import { TextField, Grid, InputAdornment } from '@material-ui/core';
@@ -16,12 +16,16 @@ const useStyles = makeStyles({
   },
 });
 
-function MyTickets({ events, getEventos }) {
+function MyTickets() {
   const [textFilter, setTextFilter] = useState('');
   const classes = useStyles();
+  const eventsState = useSelector((state) => state.event);
+  const events = eventsState.event;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getEventos();
+    dispatch(fetchEvent());
     // eslint-disable-next-line
   }, []);
 
@@ -38,7 +42,6 @@ function MyTickets({ events, getEventos }) {
   return (
     <>
       <Header />
-
       <Main>
         <Title>Meus ingressos</Title>
 
@@ -81,13 +84,4 @@ function MyTickets({ events, getEventos }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  events: state.event.data,
-  status: state.event.status,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getEventos: () => dispatch(fetchEvents()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyTickets);
+export default MyTickets;
