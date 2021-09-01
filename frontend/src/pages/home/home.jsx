@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchEvent } from '../../store/event/eventSlice';
 import Header from '../../components/Header/index.js';
 import EventCard from '../../components/EventCard/index.js';
 import CarouselImg from '../../components/Carousel/index.js';
 import { makeStyles } from '@material-ui/core';
 import { TextField, Grid, InputAdornment } from '@material-ui/core';
-import { fetchEvents } from '../../store/event/action';
 import { Search } from '@styled-icons/boxicons-regular/Search';
 import Footer from '../../components/Footer/index';
-import { connect } from 'react-redux';
 
 const useStyles = makeStyles({
   textFieldRoot: {
@@ -15,14 +15,20 @@ const useStyles = makeStyles({
   },
 });
 
-function App({ history, events, getEventos, status }) {
+function App({ history, getEventos, status }) {
   const [recentEvents, setRecentEvents] = useState([]);
   const [textFilter, setTextFilter] = useState('');
+
+  const eventsState = useSelector((state) => state.event);
+  const events = eventsState.event;
+
   const classes = useStyles();
-  console.log(events, status, 'como q ta vindo');
+  console.log(eventsState, 'como q ta vindo');
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getEventos();
+    dispatch(fetchEvent());
     // eslint-disable-next-line
   }, []);
 
@@ -102,12 +108,4 @@ function App({ history, events, getEventos, status }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  events: state.event.data,
-  status: state.event.status,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getEventos: () => dispatch(fetchEvents()),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
