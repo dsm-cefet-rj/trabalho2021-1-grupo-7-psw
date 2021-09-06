@@ -2,92 +2,47 @@ import React, { useState } from "react";
 
 import Header from "../../components/Header/index";
 import Footer from "../../components/Footer/index";
-import {
-  Title,
-  Container,
-  Main,
-  Form,
-  Label,
-  Input,
-  Button,
-  FormTitle,
-  ErrorInputs,
-} from "./style.js";
-import { useFormik } from "formik";
-import MaskInput from "react-text-mask";
-import * as yup from "yup";
+import { Title,Container,Main,Form,Label,Input,Button,FormTitle,ErrorInputs,} from "./style.js";
 import { Link } from "react-router-dom";
 import { registerUser } from "../../services/register";
 import { history } from "../../history";
+import {yupResolver} from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import { registerUserSchema } from "../../utils/registerSchema";
+
+const normalizeCpf = value =>{
+  function formatCpf(text) {
+    const badchars = /[^\d]/g
+    const mask = /(\d{3})(\d{3})(\d{3})(\d{2})/
+    const cpf = new String(text).replace(badchars, "");
+    return cpf.replace(mask, "$1.$2.$3-$4").substr(0,14) || "";
+  }
+  return formatCpf(value)
+}
 
 export default function RegisterU() {
   const linkStyle = {
     color: "#074AB8",
   };
 
-  const cpfStyle = {
-    height: "2.5rem",
-    width: "100%",
-    fontSize: "14px",
-    textIndent: "10px",
-    paddingLeft: "0.2rem",
-    border: "1px solid black",
-    borderRadius: "0.2rem",
+  const [erro, setErro] = useState(null);
+  
+  const {register, handleSubmit, formState:{errors} } = useForm({
+    resolver: yupResolver(registerUserSchema)
+  })
+
+  const registerSubmit = async (user) => {
+
+    try {
+      await registerUser(`${user.firstName} ${user.lastName}`, user.email ,user.cpf, user.password);
+      setErro(null);
+      history.push('/');
+
+    } catch (error) {
+      let msgErro = error.response.data.msg;
+      setErro(msgErro);
+    }
   };
-
-  const [error, setError] = useState(null);
-
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      cpf: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: yup.object({
-      firstName: yup.string().required("O campo nome precisa ser preenchido."),
-      lastName: yup
-        .string()
-        .required("O campo sobrenome precisa ser preenchido."),
-      email: yup
-        .string()
-        .required("O campo de e-mail precisa ser preenchido.")
-        .email("Preencha um e-mail válido."),
-      cpf: yup
-        .string()
-        .required("O campo de CPF precisa ser preenchido.")
-        .min(14, "O campo de CPF deverá ser preenchido corretamente."),
-      password: yup
-        .string()
-        .required("O campo de senha precisa ser preenchido.")
-        .min(8, "A senha deverá possuir no mínimo 8 caracteres."),
-      confirmPassword: yup
-        .string()
-        .required("O campo de senha precisa ser preenchido.")
-        .oneOf([yup.ref("password"), null], "As senhas precisam ser iguais"),
-    }),
-    onSubmit: (values) => {
-      //HandleSubmit
-      const user = {
-        name: `${formik.values.firstName} ${formik.values.lastName}`,
-        email: formik.values.email,
-        cpf: formik.values.cpf,
-        password: formik.values.password,
-      };
-
-      registerUser(user.name, user.email, user.cpf, user.password)
-        .then((res) => {
-          setError(null);
-          history.push("/");
-        })
-        .catch((error) => {
-          let errorMsg = error.response.data.msg;
-          setError(errorMsg);
-        });
-    },
-  });
 
   return (
     <>
@@ -97,7 +52,7 @@ export default function RegisterU() {
 
       <Main>
         <Container>
-          <Form onSubmit={formik.handleSubmit}>
+          <Form onSubmit={handleSubmit(registerSubmit)}>
             <FormTitle>Cadastro do cliente</FormTitle>
 
             <Label htmlFor="firstName">Nome:</Label>
@@ -105,90 +60,63 @@ export default function RegisterU() {
               type="text"
               id="firstName"
               placeholder="Digite seu nome"
-              {...formik.getFieldProps("firstName")}
+              {...register("firstName")}
             />
-            {formik.touched.firstName ? (
-              <ErrorInputs>{formik.errors.firstName}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.firstName?.message}</ErrorInputs>
 
             <Label htmlFor="lastName">Sobrenome</Label>
             <Input
               type="text"
               id="lastName"
               placeholder="Digite seu sobrenome"
-              {...formik.getFieldProps("lastName")}
+              {...register("lastName")}
             />
-            {formik.touched.lastName ? (
-              <ErrorInputs>{formik.errors.lastName}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.lastName?.message}</ErrorInputs>
 
             <Label htmlFor="email">E-mail:</Label>
             <Input
               type="email"
               id="email"
               placeholder="Digite seu e-mail"
-              {...formik.getFieldProps("email")}
+              {...register("email")}
             />
-            {formik.touched.email ? (
-              <ErrorInputs>{formik.errors.email}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.email?.message}</ErrorInputs>
 
             <Label htmlFor="CPF">CPF:</Label>
-            <MaskInput
-              type="text"
-              id="CPF"
-              style={cpfStyle}
-              mask={[
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                ".",
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                ".",
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                "-",
-                /[0-9]/,
-                /[0-9]/,
-              ]}
-              guide={false} //Serve para ir completando aos poucos
+            <Input
               type="text"
               id="CPF"
               placeholder="Digite seu CPF"
-              {...formik.getFieldProps("cpf")}
+              {...register("cpf")}
+              onChange={(event)=>{
+                const {value} = event.target
+                event.target.value = normalizeCpf(value)
+              }}
             />
-            {formik.touched.cpf ? (
-              <ErrorInputs>{formik.errors.cpf}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.cpf?.message}</ErrorInputs>
+
             <Label htmlFor="password">Senha:</Label>
             <Input
               type="password"
               id="password"
               placeholder="Digite sua senha"
-              {...formik.getFieldProps("password")}
+              {...register("password")}
             />
-            {formik.touched.password ? (
-              <ErrorInputs>{formik.errors.password}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.password?.message}</ErrorInputs>
+
             <Label htmlFor="confirmPassword">Confirmar senha:</Label>
             <Input
               type="password"
               id="confirmPassword"
               placeholder="Confirme sua senha"
-              {...formik.getFieldProps("confirmPassword")}
+              {...register("confirmPassword")}
             />
-            {formik.touched.confirmPassword ? (
-              <ErrorInputs>{formik.errors.confirmPassword}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.confirmPassword?.message}</ErrorInputs>
 
-            {error ? <ErrorInputs>{error}</ErrorInputs> : null}
+            {erro ? <ErrorInputs>{erro}</ErrorInputs> : null}
             <Button
               type="submit"
               className="submitButton"
-              disabled={!formik.isValid}
             >
               Criar conta
             </Button>
