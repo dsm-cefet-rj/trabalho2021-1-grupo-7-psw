@@ -7,14 +7,13 @@ import {
   FormTitle,InputTextarea, ErrorInputs
 } from './style';
 
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
 import {useForm} from 'react-hook-form';
-import * as yup from 'yup'
 import { registerEvent } from '../../services/event_service';
 import { history } from '../../history'
 import {yupResolver} from '@hookform/resolvers/yup';
