@@ -1,23 +1,33 @@
 import React, { useState } from "react";
 import Header from "../../components/Header/index";
 import Footer from "../../components/Footer/index";
-import {Title,Container,Main,Form,Label,Input,Button,FormTitle,ErrorInputs,} from "../RegisterUser/style";
+import {
+  Title,
+  Container,
+  Main,
+  Form,
+  Label,
+  Input,
+  Button,
+  FormTitle,
+  ErrorInputs,
+} from "../RegisterUser/style";
 import { Link } from "react-router-dom";
 import { registerCompany } from "../../services/register";
 import { history } from "../../history";
-import {yupResolver} from '@hookform/resolvers/yup';
-import {useForm} from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { registerCompSchema } from "../../utils/registerSchema";
 
-const normalizeCnpj = value =>{
+const normalizeCnpj = (value) => {
   function formatCnpj(text) {
-    const badchars = /[^\d]/g
-    const mask = /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/
+    const badchars = /[^\d]/g;
+    const mask = /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/;
     const cnpj = new String(text).replace(badchars, "");
-    return cnpj.replace(mask, "$1.$2.$3/$4-$5").substr(0,18) || "";
+    return cnpj.replace(mask, "$1.$2.$3/$4-$5").substr(0, 18) || "";
   }
-  return formatCnpj(value)
-}
+  return formatCnpj(value);
+};
 
 export default function RegisterComp() {
   const linkStyle = {
@@ -26,17 +36,25 @@ export default function RegisterComp() {
 
   const [erro, setErro] = useState(null);
 
-  const {register, handleSubmit, formState:{errors} } = useForm({
-    resolver: yupResolver(registerCompSchema)
-  })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(registerCompSchema),
+  });
 
   const registerSubmit = async (comp) => {
-
     try {
-      await registerCompany(comp.name, comp.email ,comp.cnpj, comp.password,comp.confirmPassword);
+      await registerCompany(
+        comp.name,
+        comp.email,
+        comp.cnpj,
+        comp.password,
+        comp.confirmPassword
+      );
       setErro(null);
-      history.push('/');
-
+      history.push("/");
     } catch (error) {
       let msgErro = error.response.data.msg;
       setErro(msgErro);
@@ -78,9 +96,9 @@ export default function RegisterComp() {
               id="cnpj"
               placeholder="Digite o CNPJ"
               {...register("cnpj")}
-              onChange={(event)=>{
-                const {value} = event.target
-                event.target.value = normalizeCnpj(value)
+              onChange={(event) => {
+                const { value } = event.target;
+                event.target.value = normalizeCnpj(value);
               }}
             />
             <ErrorInputs>{errors.cnpj?.message}</ErrorInputs>
@@ -104,10 +122,7 @@ export default function RegisterComp() {
             <ErrorInputs>{errors.confirmPassword?.message}</ErrorInputs>
 
             {erro ? <ErrorInputs>{erro}</ErrorInputs> : null}
-            <Button
-              type="submit"
-              className="submitButton"
-            >
+            <Button type="submit" className="submitButton">
               Criar conta
             </Button>
 
