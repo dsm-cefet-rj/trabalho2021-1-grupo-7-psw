@@ -1,97 +1,47 @@
 import React, { useState } from "react";
-import { baseUrl } from "../../utils/backendUrl";
-import axios from "axios";
 import Header from "../../components/Header/index";
 import Footer from "../../components/Footer/index";
-import {
-  Title,
-  Container,
-  Main,
-  Form,
-  Label,
-  Input,
-  Button,
-  FormTitle,
-  ErrorInputs,
-} from "../RegisterUser/style";
-import { useFormik } from "formik";
-import MaskInput from "react-text-mask";
-import * as yup from "yup";
+import {Title,Container,Main,Form,Label,Input,Button,FormTitle,ErrorInputs,} from "../RegisterUser/style";
 import { Link } from "react-router-dom";
 import { registerCompany } from "../../services/register";
 import { history } from "../../history";
+import {yupResolver} from '@hookform/resolvers/yup';
+import {useForm} from 'react-hook-form';
+import { registerCompSchema } from "../../utils/registerSchema";
+
+const normalizeCnpj = value =>{
+  function formatCnpj(text) {
+    const badchars = /[^\d]/g
+    const mask = /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/
+    const cnpj = new String(text).replace(badchars, "");
+    return cnpj.replace(mask, "$1.$2.$3/$4-$5").substr(0,18) || "";
+  }
+  return formatCnpj(value)
+}
 
 export default function RegisterComp() {
   const linkStyle = {
     color: "#074AB8",
   };
 
-  const cnpjStyle = {
-    height: "2.5rem",
-    width: "100%",
-    fontSize: "14px",
-    textIndent: "10px",
-    paddingLeft: "0.2rem",
-    border: "1px solid black",
-    borderRadius: "0.2rem",
+  const [erro, setErro] = useState(null);
+
+  const {register, handleSubmit, formState:{errors} } = useForm({
+    resolver: yupResolver(registerCompSchema)
+  })
+
+  const registerSubmit = async (comp) => {
+
+    try {
+      await registerCompany(comp.name, comp.email ,comp.cnpj, comp.password,comp.confirmPassword);
+      setErro(null);
+      history.push('/');
+
+    } catch (error) {
+      let msgErro = error.response.data.msg;
+      setErro(msgErro);
+    }
   };
-
-  const [error, setError] = useState(null);
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      cnpj: "",
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: yup.object({
-      name: yup.string().required("O campo nome precisa ser preenchido."),
-      email: yup
-        .string()
-        .required("O campo de e-mail precisa ser preenchido.")
-        .email("Preencha um e-mail válido."),
-      cnpj: yup
-        .string()
-        .required("O campo de CNPJ precisa ser preenchido.")
-        .min(18, "O campo de CNPJ deverá ser preenchido corretamente."),
-      password: yup
-        .string()
-        .required("O campo de senha precisa ser preenchido.")
-        .min(8, "A senha deverá possuir no mínimo 8 caracteres."),
-      confirmPassword: yup
-        .string()
-        .required("O campo de senha precisa ser preenchido.")
-        .oneOf([yup.ref("password"), null], "As senhas precisam ser iguais"),
-    }),
-    onSubmit: (values) => {
-      //HandleSubmit
-      const comp = {
-        name: formik.values.name,
-        email: formik.values.email,
-        cnpj: formik.values.cnpj,
-        password: formik.values.password,
-        confirmPassword: formik.values.confirmPassword,
-      };
-
-      registerCompany(
-        comp.name,
-        comp.email,
-        comp.cnpj,
-        comp.password,
-        comp.confirmPassword
-      )
-        .then((res) => {
-          setError(null);
-          history.push("/");
-        })
-        .catch((error) => {
-          let errorMsg = error.response.data;
-          setError(errorMsg);
-        });
-    },
-  });
 
   return (
     <>
@@ -101,7 +51,7 @@ export default function RegisterComp() {
 
       <Main>
         <Container>
-          <Form onSubmit={formik.handleSubmit}>
+          <Form onSubmit={handleSubmit(registerSubmit)}>
             <FormTitle>Cadastro da empresa</FormTitle>
 
             <Label htmlFor="name">Nome:</Label>
@@ -109,85 +59,54 @@ export default function RegisterComp() {
               type="text"
               id="name"
               placeholder="Digite o nome da empresa"
-              {...formik.getFieldProps("name")}
+              {...register("name")}
             />
-            {formik.touched.name ? (
-              <ErrorInputs>{formik.errors.name}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.name?.message}</ErrorInputs>
 
             <Label htmlFor="email">E-mail:</Label>
             <Input
               type="email"
               id="email"
               placeholder="Digite o e-mail da empresa"
-              {...formik.getFieldProps("email")}
+              {...register("email")}
             />
-            {formik.touched.email ? (
-              <ErrorInputs>{formik.errors.email}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.email?.message}</ErrorInputs>
 
             <Label htmlFor="cnpj">CNPJ:</Label>
-            <MaskInput
+            <Input
               type="text"
               id="cnpj"
-              style={cnpjStyle}
-              mask={[
-                /[0-9]/,
-                /[0-9]/,
-                ".",
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                ".",
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                "/",
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                /[0-9]/,
-                "-",
-                /[0-9]/,
-                /[0-9]/,
-              ]}
-              guide={false} //Serve para ir completando aos poucos
-              type="text"
-              id="cnpj"
-              placeholder="Digite o CNPJ da empresa"
-              {...formik.getFieldProps("cnpj")}
+              placeholder="Digite o CNPJ"
+              {...register("cnpj")}
+              onChange={(event)=>{
+                const {value} = event.target
+                event.target.value = normalizeCnpj(value)
+              }}
             />
-            {formik.touched.cnpj ? (
-              <ErrorInputs>{formik.errors.cnpj}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.cnpj?.message}</ErrorInputs>
 
             <Label htmlFor="password">Senha:</Label>
             <Input
               type="password"
               id="password"
               placeholder="Digite a senha"
-              {...formik.getFieldProps("password")}
+              {...register("password")}
             />
-            {formik.touched.password ? (
-              <ErrorInputs>{formik.errors.password}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.password?.message}</ErrorInputs>
 
             <Label htmlFor="confirmPassword">Confirmar senha:</Label>
             <Input
               type="password"
               id="confirmPassword"
               placeholder="Confirme a senha"
-              {...formik.getFieldProps("confirmPassword")}
+              {...register("confirmPassword")}
             />
-            {formik.touched.confirmPassword ? (
-              <ErrorInputs>{formik.errors.confirmPassword}</ErrorInputs>
-            ) : null}
+            <ErrorInputs>{errors.confirmPassword?.message}</ErrorInputs>
 
-            {error ? <ErrorInputs>{error}</ErrorInputs> : null}
+            {erro ? <ErrorInputs>{erro}</ErrorInputs> : null}
             <Button
               type="submit"
               className="submitButton"
-              disabled={!formik.isValid}
             >
               Criar conta
             </Button>
