@@ -1,75 +1,100 @@
-const Event = require('../Models/Event')
-const Slugify = require('slugify')
+const Event = require('../Models/Event');
+const Slugify = require('slugify');
 
-class EventController{
-    async index(req, res){
-        let events = await Event.getAll()
+class EventController {
+  async index(req, res) {
+    let events = await Event.getAll();
 
-        res.status(200).json({events})
+    res.status(200).json({ events });
+  }
+
+  async create(req, res) {
+    let { name, type, enterprise, num_tickets, date, price, description } =
+      req.body;
+
+    if (
+      name == undefined ||
+      name == '' ||
+      type == undefined ||
+      type == '' ||
+      enterprise == undefined ||
+      enterprise == '' ||
+      num_tickets == undefined ||
+      num_tickets == '' ||
+      price == undefined ||
+      price == '' ||
+      date == undefined ||
+      date == '' ||
+      description == undefined ||
+      description == ''
+    ) {
+      return res.status(400).json({ msg: 'Dados inválidos' });
     }
 
-    async create(req, res){
-        let {name, type, enterprise, num_tickets,date, price, description} = req.body
+    let slug = Slugify(name).toLowerCase();
+    let findEvent = await Event.findOne(slug);
 
-        if((name == undefined || name == '') || (type == undefined || type == '') || (enterprise == undefined || enterprise == '')
-        || (num_tickets == undefined || num_tickets == '') || (price == undefined || price == '') || (date == undefined || date == '')
-        || (description == undefined || description == '')){
-            return res.status(400).json({msg: "Dados inválidos"})
-        }
-
-        let slug = Slugify(name).toLowerCase()
-        let findEvent = await Event.findOne(slug)
-        
-        if(findEvent != undefined){
-            return res.status(401).json({msg: "Evento já cadastrado"})
-        }
-
-        await Event.create(name, slug, type, enterprise, num_tickets,date, price, description)
-        return res.status(200).json({status: "Evento cadastrado com sucesso!"})
+    if (findEvent != undefined) {
+      return res.status(401).json({ msg: 'Evento já cadastrado' });
     }
 
-    async find(req, res){
-        let slug = req.params.slug
+    await Event.create(
+      name,
+      slug,
+      type,
+      enterprise,
+      num_tickets,
+      date,
+      price,
+      description
+    );
+    const event = await Event.findOne(slug);
+    return res.status(200).json({ event });
+  }
 
-        let event = await Event.findOne(slug)
+  async find(req, res) {
+    let slug = req.params.slug;
 
-        if(event == undefined){
-            return res.status(404).json({msg: "Evento não encontrado"})
-        }
+    let event = await Event.findOne(slug);
 
-        return res.status(200).json({event})
+    if (event == undefined) {
+      return res.status(404).json({ msg: 'Evento não encontrado' });
     }
 
-    async update(req, res){
-        let {slug ,name, type, num_tickets,date, price, description} = req.body
-        
-        let findEvent = await Event.findOne(slug)   
+    return res.status(200).json({ event });
+  }
 
-        if(findEvent == undefined){
-            return res.status(404).json({msg: "Evento não encontrado"})
-        }
+  async update(req, res) {
+    let { slug, name, type, num_tickets, date, price, description } = req.body;
 
-        await Event.update(name, slug, type, num_tickets,date, price, description)
-        return res.status(200).json({status: "Evento atualizado com sucesso!"})
+    let findEvent = await Event.findOne(slug);
+
+    if (findEvent == undefined) {
+      return res.status(404).json({ msg: 'Evento não encontrado' });
     }
 
-    async delete(req, res){
-        let slug = req.params.slug
+    await Event.update(name, slug, type, num_tickets, date, price, description);
+    const updatedEvent = await Event.findOne(Slugify(name).toLowerCase());
+    console.log(updatedEvent);
+    return res.status(200).json({ updatedEvent });
+  }
 
-        if(slug == undefined || slug == ''){
-            return res.status(400).json({msg: "Dados inválidos"})
-        }
+  async delete(req, res) {
+    let slug = req.params.slug;
 
-        let event = await Event.findOne(slug)
-
-        if(event == undefined){
-            return res.status(404).json({msg: "Evento não encontrado"})
-        }
-
-        await Event.delete(slug)
-        return res.status(200).json({status: "Evento deletado com sucesso!"})
+    if (slug == undefined || slug == '') {
+      return res.status(400).json({ msg: 'Dados inválidos' });
     }
 
+    let event = await Event.findOne(slug);
+
+    if (event == undefined) {
+      return res.status(404).json({ msg: 'Evento não encontrado' });
+    }
+
+    await Event.delete(slug);
+    return res.status(200).json({ status: 'Evento deletado com sucesso!' });
+  }
 }
 
-module.exports = new EventController()
+module.exports = new EventController();

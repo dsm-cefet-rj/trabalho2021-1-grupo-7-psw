@@ -1,4 +1,9 @@
-import { getEvents } from '../../services/event_service';
+import {
+  getEvents,
+  deleteEvent,
+  registerEvent,
+  updateEvent,
+} from '../../services/event_service';
 
 import {
   createSlice,
@@ -15,37 +20,123 @@ export const fetchEvent = createAsyncThunk('auth/fetchEvent', async () => {
   }
 });
 
+export const createEvent = createAsyncThunk(
+  'auth/CreateEvent',
+  async ({ name, type, enterprise, quantity, date, price, description }) => {
+    try {
+      const response = await registerEvent(
+        name,
+        type,
+        enterprise,
+        quantity,
+        date,
+        price,
+        description
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const upEvent = createAsyncThunk(
+  'auth/updateEvent',
+  async ({ id, slug, name, type, quantity, date, price, description }) => {
+    try {
+      const response = await updateEvent(
+        slug,
+        name,
+        type,
+        quantity,
+        date,
+        price,
+        description
+      );
+      const obj = {
+        slug: response.updatedEvent.slug,
+        name: response.updatedEvent.name,
+        type: response.updatedEvent.type,
+        quantity: response.updatedEvent.quantity,
+        date: response.updatedEvent.date,
+        price: response.updatedEvent.date,
+        description: response.updatedEvent.description,
+      };
+
+      return { id, changes: obj };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const delEvent = createAsyncThunk(
+  'auth/delEvent',
+  async ({ slug, id }) => {
+    try {
+      await deleteEvent(slug);
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const eventAdapter = createEntityAdapter({
-  selectId: (event) => event.id,
+  selectId: (entity) => entity.id,
 });
 
-const initialState = { event: [], loading: false, error: null, status: null };
+const initialState = { event: [], error: null, status: null };
 
 const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
-    setAllEvents: eventAdapter.setAll,
+    // setAllEvents: eventAdapter.setAll,
     removeEvent: eventAdapter.removeOne,
     setManyEvent: eventAdapter.addMany,
-    updateEvent: eventAdapter.updateOne,
+    updateEvents: eventAdapter.updateMany,
   },
   extraReducers: {
     [fetchEvent.pending]: (state, action) => {
-      state.loading = true;
+      state.status = 'loading';
       state.error = null;
     },
     [fetchEvent.fulfilled]: (state, action) => {
-      state.event = action.payload.events;
-      state.loading = false;
+      state.status = 'loaded';
+      eventAdapter.setAll(state, action.payload.events);
     },
     [fetchEvent.rejected]: (state, action) => {
+      state.status = 'failed';
       state.error = action.error.message;
+    },
+    [createEvent.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [createEvent.fulfilled]: (state, action) => {
+      state.status = 'loaded';
+      eventAdapter.addOne(state, action.payload.event);
+    },
+    [upEvent.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [upEvent.fulfilled]: (state, action) => {
+      state.status = 'loaded';
+      eventAdapter.updateOne(state, {
+        id: action.payload.id,
+        changes: action.payload.changes,
+      });
+    },
+    [delEvent.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [delEvent.fulfilled]: (state, action) => {
+      state.status = 'loaded';
+      eventAdapter.removeOne(state, action.payload);
     },
   },
 });
 
-export const { setAllEvents, removeEvent, setManyEvent, updateEvent } =
-  eventSlice.actions;
+export const { removeEvent, setManyEvent, updateEvents } = eventSlice.actions;
 
 export default eventSlice.reducer;

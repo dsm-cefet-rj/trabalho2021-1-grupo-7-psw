@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   PageTitle,
   FormCardWrapper,
@@ -7,8 +8,8 @@ import {
   FormTitle,
   InputTextarea,
 } from './style';
-
-import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { delEvent } from '../../store/event/eventSlice';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -31,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
   },
 }));
+
 export default function FormCard(props) {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
@@ -46,20 +50,16 @@ export default function FormCard(props) {
 
   const location = useLocation().pathname;
   const { slug } = useParams();
-  const [event, setEvent] = useState({})
+  const [event, setEvent] = useState({});
 
-  useEffect(async ()=>{
+  useEffect(async () => {
     const response = await getEventBySlug(slug);
-    setEvent(response)
-  },[])
+    setEvent(response);
+  }, []);
 
   const handleDelete = () => {
-    deleteEvent(slug).then(res=>{
-      history.push('/admin/eventos')
-    })
-    .catch(error=>{
-      console.log(error)
-    })
+    dispatch(delEvent({ slug, id: event.id }));
+    history.push('/admin/eventos');
   };
 
   return (

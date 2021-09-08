@@ -6,15 +6,16 @@ import {
   InputTextarea,
   ErrorInputs,
 } from '../../pages/Event/style';
-
+import { useDispatch } from 'react-redux';
+import { upEvent } from '../../store/event/eventSlice';
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import { updateEvent } from '../../services/event_service';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { history } from '../../history'
+import { history } from '../../history';
 
 import { schemaUpdate } from '../../utils/eventSchema';
 
@@ -33,29 +34,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UpdateForm(props) {
-    const classes = useStyles();
-    const [error, setError] = useState(null)
-    const { register, handleSubmit, formState: { errors } } = useForm({
-      resolver: yupResolver(schemaUpdate)
-    });      
-    {console.log(props.props)}
-  
-  
-  function update(data){
-    updateEvent(props.props.slug, data.name,data.type,data.quantity,data.date,data.price,data.description)
-    .then(res=>{
-     setError(null)
-     history.push('/admin/eventos')
-     })
-     .catch(error=>{
-       let errorMsg = error.response.data.msg
-       setError(errorMsg)
-     })
+  const classes = useStyles();
+  const [error, setError] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schemaUpdate),
+  });
+
+  const dispatch = useDispatch();
+
+  function update(data) {
+    dispatch(
+      upEvent({
+        id: props.props.id,
+        slug: props.props.slug,
+        name: data.name,
+        type: data.type,
+        quantity: data.quantity,
+        date: data.date,
+        price: data.price,
+        description: data.description,
+      })
+    )
+      .then((res) => {
+        setError(null);
+        history.push('/admin/eventos');
+      })
+      .catch((error) => {
+        let errorMsg = error.response.data.msg;
+        setError(errorMsg);
+      });
   }
-  
 
   return (
-      <FormCardWrapper onSubmit={handleSubmit(update)}>
+    <FormCardWrapper onSubmit={handleSubmit(update)}>
       <FormTitle style={{ marginBottom: 25 + 'px' }}>
         {props.props.name}
       </FormTitle>
@@ -68,9 +83,7 @@ export default function UpdateForm(props) {
         {...register('name')}
         defaultValue={props.props.name}
       />
-      {errors ? (
-        <ErrorInputs>{errors.name?.message}</ErrorInputs>
-      ) : null}
+      {errors ? <ErrorInputs>{errors.name?.message}</ErrorInputs> : null}
 
       <Label htmlFor='eventType'>Tipo de evento: </Label>
       <InputText
@@ -80,9 +93,7 @@ export default function UpdateForm(props) {
         {...register('type')}
         defaultValue={props.props.type}
       />
-      {errors ? (
-        <ErrorInputs>{errors.type?.message}</ErrorInputs>
-      ) : null}
+      {errors ? <ErrorInputs>{errors.type?.message}</ErrorInputs> : null}
 
       <Label htmlFor='eventTicketNumber'>Quantidade de ingressos:</Label>
       <InputText
@@ -91,10 +102,7 @@ export default function UpdateForm(props) {
         {...register('quantity')}
         defaultValue={props.props.num_tickets}
       />
-      {errors ? (
-        <ErrorInputs>{errors.quantity?.message}</ErrorInputs>
-      ) : null}
-      
+      {errors ? <ErrorInputs>{errors.quantity?.message}</ErrorInputs> : null}
 
       <Label htmlFor='eventDate'>Data do evento:</Label>
       <InputText
@@ -104,10 +112,7 @@ export default function UpdateForm(props) {
         {...register('date')}
         defaultValue={props.props.date}
       />
-      {errors ? (
-        <ErrorInputs>{errors.date?.message}</ErrorInputs>
-      ) : null}
-      
+      {errors ? <ErrorInputs>{errors.date?.message}</ErrorInputs> : null}
 
       <Label htmlFor='priceByTicket'>Preço por ingresso - R$</Label>
       <InputText
@@ -117,9 +122,7 @@ export default function UpdateForm(props) {
         {...register('price')}
         defaultValue={props.props.price}
       />
-      {errors ? (
-        <ErrorInputs>{errors.price?.message}</ErrorInputs>
-      ) : null}
+      {errors ? <ErrorInputs>{errors.price?.message}</ErrorInputs> : null}
 
       <Label htmlFor='description'>Descrição:</Label>
       <InputTextarea
@@ -128,10 +131,7 @@ export default function UpdateForm(props) {
         {...register('description')}
         defaultValue={props.props.description}
       />
-    {errors ? (
-        <ErrorInputs>{errors.description?.message}</ErrorInputs>
-      ) : null}
-
+      {errors ? <ErrorInputs>{errors.description?.message}</ErrorInputs> : null}
 
       {/* {error ? <ErrorInputs>{error}</ErrorInputs> : null} */}
 

@@ -50,7 +50,7 @@ const EventPage = () => {
   const [loading, setLoading] = useState(true);
   const { slug } = useParams();
   const classes = useStyles();
-  const [eventDate, setEventDate] = useState('')
+  const [eventDate, setEventDate] = useState('');
 
   useEffect(() => {
     loadEvent();
@@ -62,9 +62,8 @@ const EventPage = () => {
     const response = await getEventBySlug(slug);
     setEvent(response);
     setLoading(false);
-    setEventDate(response.date.split('-'))
+    setEventDate(response.date.split('-'));
   };
-  console.log(event);
   return (
     <div style={{ paddingBottom: 100 }}>
       <Header />
@@ -84,7 +83,9 @@ const EventPage = () => {
           </WrapperEventSpecs>
           <WrapperEventNames>
             <Calendar size={25} style={{ marginRight: 5 }} />
-            <StrongText font={16}>{`${eventDate[2]}/${eventDate[1]}/${eventDate[0]}`}</StrongText>
+            <StrongText
+              font={16}
+            >{`${eventDate[2]}/${eventDate[1]}/${eventDate[0]}`}</StrongText>
           </WrapperEventNames>
           <Divider />
           <WrapperSectionContainer>

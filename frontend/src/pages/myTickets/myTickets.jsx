@@ -19,15 +19,32 @@ const useStyles = makeStyles({
 function MyTickets() {
   const [textFilter, setTextFilter] = useState('');
   const classes = useStyles();
+  const [events, setEvents] = useState([]);
   const eventsState = useSelector((state) => state.event);
-  const events = eventsState.event;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchEvent());
+    if (!eventsState.entities) {
+      dispatch(fetchEvent());
+    }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (!events.length > 0 && eventsState.status === 'loaded') {
+      loadEvents();
+    }
+    // eslint-disable-next-line
+  }, [eventsState]);
+
+  const loadEvents = () => {
+    const eventsResponse =
+      eventsState.entities &&
+      Object.values(eventsState.entities).length > 0 &&
+      Object.values(eventsState.entities);
+    setEvents(eventsResponse);
+  };
 
   const getFilterEvents = () => {
     if (textFilter !== '') {

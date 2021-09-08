@@ -1,8 +1,8 @@
-import api from "./api";
+import api from './api';
 
 export const getEvents = () => {
   return api()
-    .get("/eventos")
+    .get('/eventos')
     .then((response) => {
       return response.data || {};
     })
@@ -32,7 +32,7 @@ export const registerEvent = (
   description
 ) => {
   return api()
-    .post("/evento", {
+    .post('/evento', {
       name,
       type,
       enterprise,
@@ -57,7 +57,7 @@ export const updateEvent = (
   date,
   price,
   description
-) => { console.log(slug)
+) => {
   return api()
     .patch(`/evento/${slug}`, {
       slug,
