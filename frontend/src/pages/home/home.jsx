@@ -18,27 +18,43 @@ const useStyles = makeStyles({
 function App({ history, getEventos, status }) {
   const [recentEvents, setRecentEvents] = useState([]);
   const [textFilter, setTextFilter] = useState('');
-
+  const [events, setEvents] = useState([]);
   const eventsState = useSelector((state) => state.event);
-  const events = eventsState.event;
 
   const classes = useStyles();
-  console.log(eventsState, 'como q ta vindo');
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchEvent());
+    if (!eventsState.entities) {
+      dispatch(fetchEvent());
+    }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    if (!events.length > 0 && eventsState.status === 'loaded') {
+      loadEvents();
+      getRecentsEvents();
+    }
+    // eslint-disable-next-line
+  }, [eventsState]);
+
+  useEffect(() => {
     getRecentsEvents();
+
     // eslint-disable-next-line
   }, [events]);
 
+  const loadEvents = () => {
+    const eventsResponse =
+      eventsState.entities &&
+      Object.values(eventsState.entities).length > 0 &&
+      Object.values(eventsState.entities);
+    setEvents(eventsResponse);
+  };
+
   const getRecentsEvents = () => {
-    if (events) {
+    if (events.length > 0) {
       const eventsRecent = events.reduce((acc, event) => {
         if (acc.length < 3) {
           acc.push(event);
@@ -55,7 +71,6 @@ function App({ history, getEventos, status }) {
       const eventsFilter = events.filter((event) =>
         event.name.toLowerCase().includes(textFilter)
       );
-      console.log(eventsFilter, 'olha aqui');
       return eventsFilter;
     } else {
       return events;
@@ -65,7 +80,9 @@ function App({ history, getEventos, status }) {
   return (
     <div className='App'>
       <Header history={history} />
-      {events && <CarouselImg events={recentEvents} homePage={true} />}
+      {events.length > 0 && (
+        <CarouselImg events={recentEvents} homePage={true} />
+      )}
       <Grid
         container
         justify='center'
