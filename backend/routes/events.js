@@ -188,7 +188,7 @@ router.post('/', (req, res) => {
     return res.status(401).json({ msg: 'Evento já cadastrado' });
   }
 
-  const newEvent = {
+  const event = {
     id: Date.now(),
     name,
     slug,
@@ -207,9 +207,9 @@ router.post('/', (req, res) => {
     ],
   };
 
-  events.push(newEvent);
+  events.push(event);
 
-  return res.status(200).json({ newEvent });
+  return res.status(200).json({ event });
 });
 
 router.put('/:slug', (req, res) => {
