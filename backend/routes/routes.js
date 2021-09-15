@@ -5,5 +5,6 @@ const events = require('./events')
 
 router.use('/usuarios', users)
 router.use('/eventos', events)
+router.use('/', events)
 
 module.exports = router
