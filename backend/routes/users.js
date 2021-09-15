@@ -60,13 +60,14 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   let id = req.params.id
 
-  let userFound = users.filter(user=>user.id === id)
+  let userFound = users.find(user=>user.id === parseInt(id))
   console.log(userFound)
+
   if(userFound == undefined){
     return res.status(404).json({msg: "Usuário não encontrado"})
   }
 
-  return res.status(200).json({user: userFound})
+  return res.status(200).json(userFound)
 })
 
 router.post('/', (req, res, next) =>{
