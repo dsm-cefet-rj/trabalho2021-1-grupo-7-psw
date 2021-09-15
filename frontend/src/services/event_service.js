@@ -13,7 +13,7 @@ export const getEvents = () => {
 
 export const getEventBySlug = (slug) => {
   return api()
-    .get(`/evento/${slug}`)
+    .get(`/eventos/${slug}`)
     .then((response) => {
       return response.data.event || {};
     })
@@ -32,7 +32,7 @@ export const registerEvent = (
   description
 ) => {
   return api()
-    .post('/evento', {
+    .post('/eventos', {
       name,
       type,
       enterprise,
@@ -59,7 +59,7 @@ export const updateEvent = (
   description
 ) => {
   return api()
-    .patch(`/evento/${slug}`, {
+    .patch(`/eventos/${slug}`, {
       slug,
       name,
       type,
@@ -78,7 +78,7 @@ export const updateEvent = (
 
 export const deleteEvent = (slug) => {
   return api()
-    .delete(`/evento/${slug}`)
+    .delete(`/eventos/${slug}`)
     .then((response) => {
       return response.data.event || {};
     })
