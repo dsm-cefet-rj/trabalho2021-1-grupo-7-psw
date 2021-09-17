@@ -1,7 +1,140 @@
 const router = require('express').Router(); 
-const verifyDataUser = require('../utils/verifyData')
-const createAllUsers = require('../utils/createAllUsers')
+const verifyUser = require('../utils/verifyDataUser')
+const User = require('../models/user')
+const Company = require('../models/company')
+const bcrypt = require('bcrypt');
 
+//Pega todos os usuários
+router.get('/', async (req, res, next) => {
+  try{
+    let users = await User.find({})
+    res.status(200).json(users)
+  }catch(e){
+    res.status(500).json({msg: "Erro interno"})
+  }
+});
+
+//Pegar um usuário
+router.get('/:id', async (req, res, next) => {
+  let id = req.params.id
+
+  if(!verifyUser.id(id)){
+    return res.status(400).json({msg: "Dados inválidos"})
+  }
+
+  let userFound = await User.findById(id).exec()
+  
+  if(userFound == undefined){
+    return res.status(404).json({msg: "Usuário não encontrado"})
+  }
+
+  return res.status(200).json(userFound)
+})
+
+//Cadastra um usuário
+router.post('/', async (req, res, next) =>{
+  try{
+    let {name,email,cpf,password} = req.body
+
+    let verifyData = verifyUser.user(name, email, cpf, password)
+    if(!verifyData){
+      return res.status(400).json({msg: "Dados inválidos."})
+    }
+    
+    let userFound = await User.findOne({'email': email})
+    let companyFound = await Company.findOne({'email': email})
+    
+    if(userFound != undefined || companyFound != undefined){
+      return res.status(401).json({msg: "E-mail já cadastrado."})
+    }
+
+    let user = new User({name,email,cpf,password,role: 0})
+    await user.save()
+
+    return res.status(200).json({status: "Usuário criado com sucesso!"})
+  }catch(e){
+    res.status(500).json({msg: "Erro interno"})
+  }
+})
+
+//Deleta um usuário
+router.delete('/:id', async (req, res, next) => {
+  try{
+    let id = req.params.id
+
+    if(!verifyUser.id(id)){
+      return res.status(400).json({msg: "Dados inválidos."})
+    }
+
+    let userExists = await User.findById(id).exec()
+    if(userExists == undefined){
+      return res.status(404).json({msg: "Usuário não encontrado."})
+    }
+
+    await User.findByIdAndDelete(id)
+    return res.status(200).json({status: "Usuário deletado com sucesso."})
+  }catch(e){
+    res.status(500).json({msg: "Erro interno"})
+  }
+})
+
+//Atualiza um usuário
+router.put('/:id', async (req, res, next) => {
+  try{
+    let { name, email, cpf, password} = req.body
+    let id = req.params.id
+
+    if(!verifyUser.user(name,email,cpf,password) || !verifyUser.id(id)){
+      return res.status(400).json({msg: "Dados inválidos."})
+    }
+
+    let userExists = await User.findById(id).exec()
+    if(userExists == undefined){
+      return res.status(404).json({msg: "Usuário não encontrado."})
+    }
+
+    let userFound = await User.findOne({'email': email})
+    let companyFound = await Company.findOne({'email': email})
+
+    if((userFound && userExists.email != userFound.email) || companyFound != undefined){
+      return res.status(406).json({msg: "E-mail já cadastrado."})
+    }
+
+    await User.findByIdAndUpdate(id, {name,email,cpf, password})
+    return res.status(200).json({status: "Usuário atualizado com sucesso"})
+  }catch(e){
+    res.status(500).json({msg: "Erro interno"})
+  }
+})
+
+//Login do usuário
+router.post('/login', async (req, res, next) =>{
+  try{
+    let {email, password} = req.body
+
+    if(!verifyUser.login(email,password)){
+      return res.status(400).json({msg: "Dados inválidos."})
+    }
+
+    let userFound = await User.findOne({'email': email})
+    let companyFound = await Company.findOne({'email': email})
+
+    if(!userFound && !companyFound){
+      return res.status(404).json({msg: "Usuário não encontrado ou não existe."})
+    }
+
+    if((companyFound && companyFound.password != password) ||
+    (userFound && userFound.password != password)){
+      return res.status(404).json({msg: "Senha incorreta."})
+    }
+
+    res.status(200).json({status: "Login feito com sucesso."})
+  }catch(e){
+    res.status(500).json({msg: "Erro interno."})
+  }
+})
+
+/*
 let favorites = [
   {
     id: 1,
@@ -207,188 +340,6 @@ let companies = [
   },
 ];
 
-let allUsers = createAllUsers(users,companies)
-
-//Pega todos os usuários
-router.get('/', (req, res, next) => {
-  res.status(200).json(allUsers)
-});
-
-//Pega todos os usuários que sao clientes
-router.get('/clientes', (req, res, next) => {
-  res.status(200).json(users)
-});
-
-//Pega todos os usuários de empresas
-router.get('/empresas', (req, res, next) => {
-  res.status(200).json(companies)
-});
-
-//Pegar um usuário
-router.get('/:id', (req, res, next) => {
-  let id = req.params.id
-
-  let userFound = allUsers.find(user=>user.id === parseInt(id))
-  console.log(userFound)
-
-  if(userFound == undefined){
-    return res.status(404).json({msg: "Usuário não encontrado"})
-  }
-
-  return res.status(200).json(userFound)
-})
-
-//Cadastra um usuário
-router.post('/', (req, res, next) =>{
-  let {name,email,cpf,cnpj,password} = req.body
-
-  let verifyData = verifyDataUser(name, email, cpf, cnpj, password)
-
-  if(!verifyData){
-    return res.status(400).json({msg: "Dados inválidos."})
-  }
-
-  let userFound = allUsers.find(user=> user.email === email)
-
-  if(userFound != undefined){
-    return res.status(401).json({msg: "E-mail já cadastrado."})
-  }
-
-  if(cpf != ''){
-    users.push({
-      id: Date.now(),
-      name,
-      email,
-      cpf,
-      password,
-      role: 2,
-    });
-  }
-
-  if(cnpj != ''){
-    companies.push({
-      id: Date.now(),
-      name,
-      email,
-      cnpj,
-      password,
-      role: 3,
-    });
-
-    allUsers.push({
-      id: Date.now(),
-      name,
-      email,
-      cnpj,
-      password,
-      role: 3,
-    });
-  }
-      
-  return res.status(200).json({status: "Usuário criado com sucesso!"})
-})
-
-//Deleta um usuário
-router.delete('/:id', (req, res, next) => {
-  let id = req.params.id
-
-  if(id == undefined || id == ''){
-    return res.status(400).json({msg: "Dados inválidos."})
-  }
-
-  let indexUsers = users.findIndex(user=>user.id === parseInt(id))
-  let indexCompanies = companies.findIndex(user=>user.id === parseInt(id))
-
-  if(indexUsers === -1 && indexCompanies === -1){
-    return res.status(404).json({msg: "Usuário não encontrado."})
-  }
-
-  if(indexUsers != -1){
-    try{
-      users.splice(indexUsers, 1)
-    }
-    catch(error){
-      console.log(error)
-    } 
-  }
-  if(indexCompanies != -1){
-    try{
-      companies.splice(indexCompanies, 1)
-    }
-    catch(error){
-      console.log(error)
-    } 
-  }
-
-  return res.status(200).json({status: "Usuário deletado com sucesso."})
-})
-
-//Atualiza um usuário
-router.put('/:id', (req, res, next) => {
-  let { name, email, cpf, cnpj, password} = req.body
-  let id = req.params.id
-
-  if((name == undefined || name == '') && (email == undefined || email == '')
-  && (cpf == undefined || cpf == '') && (cnpj == undefined || cnpj == '')
-  && (password == undefined || password == '')){
-    return res.status(400).json({msg: "Dados inválidos."})
-  }
-
-  let indexUsers = users.findIndex(user=>user.id === parseInt(id))
-  let indexCompanies = companies.findIndex(user=>user.id === parseInt(id))
-
-  if(indexUsers === -1 && indexCompanies === -1){
-    return res.status(404).json({msg: "Usuário não encontrado."})
-  }
-
-  if(indexUsers != -1){
-    try{
-      let user = users.find(user=>user.id === parseInt(id))
-
-      if(name.length > 0 && name !== undefined) user.name = name
-      else user.name = user.name
-
-      if(email.length > 0 && email !== undefined) user.email = email
-      else user.email = user.email
-
-      if(cpf.length > 0 && cpf !== undefined) user.cpf = cpf
-      else user.cpf = user.cpf
-
-      if(password.length > 0 && password !== undefined) user.password = password
-      else user.password = user.password
-
-      console.log(user)
-    }
-    catch(error){
-      console.log(error)
-    } 
-  }
-  if(indexCompanies != -1){
-    try{
-      let company = companies.find(user=>user.id === parseInt(id))
-      
-      if(name.length > 0 && name !== undefined)company.name = name
-      else company.name = company.name
-
-      if(email.length > 0 && email !== undefined)company.email = email
-      else company.email = company.email
-
-      if(cnpj.length > 0 && cnpj !== undefined) company.cnpj = cnpj
-      else company.cnpj = company.cnpj
-
-      if(password.length > 0 && password !== undefined) company.password = password
-      else company.password = company.password
-
-      console.log(company)
-    }
-    catch(error){
-      console.log(error)
-    } 
-  }
-
-  return res.status(200).json({status: "Usuário atualizado com sucesso"})
-})
-
 //Pega os favoritos do usuário
 router.get('/:id/favoritos', (req, res, next)=>{
   let id = req.params.id
@@ -468,5 +419,5 @@ router.delete('/:user_id/favoritos/:favorite_id', (req, res,next) =>{
 
   return res.status(200).json({status: "Favorito deletado com sucesso."})
 })
-
+*/
 module.exports = router;

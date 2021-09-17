@@ -1,10 +1,12 @@
 const router = require('express').Router()
 const buy = require('./buy')
-const users = require('./users')
+const user = require('./user')
 const events = require('./events')
+const company = require('./company')
 
-router.use('/usuarios', users)
+router.use('/usuarios', user)
 router.use('/eventos', events)
+router.use('/empresas', company)
 router.use('/', events)
 router.use('/', buy)
 module.exports = router
