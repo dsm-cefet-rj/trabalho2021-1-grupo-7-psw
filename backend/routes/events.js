@@ -1,7 +1,7 @@
-const router = require("express").Router();
-const { verifyEventData } = require("../utils/verifyDataEvent");
-const Slugify = require("slugify");
-const Event = require("../models/events");
+const router = require('express').Router();
+const { verifyEventData } = require('../utils/verifyDataEvent');
+const Slugify = require('slugify');
+const Event = require('../models/events');
 /*
 const events = [
   {
@@ -142,32 +142,32 @@ const events = [
 */
 
 /* GET all events. */
-router.get("/", async (req, res) => {
-  let events = await Event.find().populate("company");
+router.get('/', async (req, res) => {
+  let events = await Event.find().populate('company');
 
   if (events.length === 0) {
-    return res.status(404).json({ msg: "Nenhum evento encontrado." });
+    return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
   }
 
   return res.status(200).json(events);
 });
 
-router.get("/:slug", async (req, res) => {
+router.get('/:slug', async (req, res) => {
   const slug = req.params.slug;
 
-  if (slug == "" || slug == undefined) {
-    return res.status(400).json({ msg: "Dados inválidos." });
+  if (slug == '' || slug == undefined) {
+    return res.status(400).json({ msg: 'Dados inválidos.' });
   }
 
-  let event = await Event.findOne({ slug }).populate("company");
+  let event = await Event.findOne({ slug }).populate('company');
 
   if (event == undefined) {
-    return res.status(404).json({ msg: "Nenhum evento encontrado." });
+    return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
   }
   return res.status(200).json(event);
 });
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   const { name, type, company, num_tickets, date, price, description } =
     req.body;
 
@@ -182,7 +182,7 @@ router.post("/", async (req, res) => {
   );
 
   if (!validation) {
-    return res.status(400).json({ msg: "Dado(s) Obrigatório(s) invalido(s)." });
+    return res.status(400).json({ msg: 'Dado(s) Obrigatório(s) invalido(s).' });
   }
 
   let slug = Slugify(name).toLowerCase();
@@ -190,7 +190,7 @@ router.post("/", async (req, res) => {
   const isEventAvalible = await Event.findOne({ slug });
 
   if (isEventAvalible != undefined) {
-    return res.status(401).json({ msg: "Evento já cadastrado" });
+    return res.status(401).json({ msg: 'Evento já cadastrado' });
   }
 
   const event = new Event({
@@ -207,52 +207,49 @@ router.post("/", async (req, res) => {
       lat: -43.28361798050839,
     },
     images:
-      "https://cdn.ome.lt/o4KVf1xxVkdCbqavTCQW-KWURJI=/1200x630/smart/extras/conteudos/Velozes_e_Furiosos_9_poster.jpg",
+      'https://cdn.ome.lt/o4KVf1xxVkdCbqavTCQW-KWURJI=/1200x630/smart/extras/conteudos/Velozes_e_Furiosos_9_poster.jpg',
   });
 
   await event.save();
 
-  return res.status(200).json({ status: "Evento cadastrado com sucesso!" });
+  return res.status(200).json({ status: 'Evento cadastrado com sucesso!' });
 });
 
-router.put("/:slug", (req, res) => {
+router.put('/:slug', async (req, res) => {
   const { slug, name, type, num_tickets, date, price, description } = req.body;
 
-  const eventSelected = events.find((event) => event.slug === slug);
+  const eventSelected = await Event.findOne({ slug });
 
   if (!eventSelected) {
-    return res.status(404).json({ msg: "Evento não encontrado" });
+    return res.status(404).json({ msg: 'Evento não encontrado' });
   }
 
-  events.forEach((event) => {
-    if (event === eventSelected) {
-      event.name = name;
-      event.type = type;
-      event.num_tickets = num_tickets;
-      event.date = date;
-      event.price = price;
-      event.description = description;
-    }
+  await Event.findByIdAndUpdate(eventSelected.id, {
+    name,
+    type,
+    num_tickets,
+    date,
+    price,
+    description,
   });
 
-  const updatedEvent = events.find((event) => event.slug === slug);
+  const updatedEvent = await Event.findOne({ slug });
 
   return res.status(200).json({ updatedEvent });
 });
 
-router.delete("/:slug", (req, res) => {
+router.delete('/:slug', async (req, res) => {
   const slug = req.params.slug;
 
-  const eventSelected = events.find((event) => event.slug === slug);
+  let eventSelected = await Event.findOne({ slug });
 
   if (!eventSelected) {
-    return res.status(404).json({ msg: "Nenhum evento encontrado." });
+    return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
   }
 
-  const eventIndex = events.findIndex((event) => event.slug === slug);
-  events.splice(eventIndex, 1);
+  await Event.findByIdAndDelete(eventSelected.id);
 
-  return res.status(200).json({ status: "Evento deletado com sucesso!" });
+  return res.status(200).json({ status: 'Evento deletado com sucesso!' });
 });
 
 module.exports = router;
