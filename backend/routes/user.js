@@ -61,7 +61,9 @@ router.post('/', async (req, res, next) => {
         res.setHeader("Content-Type", "application/json")
         res.json({msg: err})
       }else{
+        
         passport.authenticate('local')(req,res, ()=>{
+          console.log(passport.authenticate('local'))
           res.statusCode = 200
           res.setHeader("Content-Type", "application/json")
           res.json({ success: true, status: "Usuário cadastrado com sucesso!"})
@@ -128,39 +130,11 @@ router.put('/:id',auth, async (req, res, next) => {
 });
 
 //Login do usuário
-router.post('/login', async (req, res, next) => {
-  try {
-    let { email, password } = req.body;
-
-    if (!verifyUser.login(email, password)) {
-      return res.status(400).json({ msg: 'Dados inválidos.' });
-    }
-
-    let userFound = await User.findOne({ email: email });
-    let companyFound = await Company.findOne({ email: email });
-
-    if (!userFound && !companyFound) {
-      return res
-        .status(404)
-        .json({ msg: 'Usuário não encontrado ou não existe.' });
-    }
-
-    if (
-      (companyFound && companyFound.password != password) ||
-      (userFound && userFound.password != password)
-    ) {
-      return res.status(404).json({ msg: 'Senha incorreta.' });
-    }
-
-    if (userFound) {
-      res.status(200).json({ user: { ...userFound._doc } });
-    } else if (companyFound) {
-      console.log(companyFound);
-      res.status(200).json({ user: { ...companyFound._doc } });
-    }
-  } catch (e) {
-    res.status(500).json({ msg: 'Erro interno.' });
-  }
+router.post('/login', passport.authenticate("local") ,async (req, res, next) => {
+  let token = authenticate.getToken({_id: req.user._id})
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
+  res.json({success: true, token: token, status: "Login feito com sucesso!"})
 });
 
 //Pega todos os favoritos do banco
