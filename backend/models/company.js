@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const passport = require('passport-local-mongoose')
 
 const companySchema = new mongoose.Schema({
     name: {
@@ -12,11 +13,11 @@ const companySchema = new mongoose.Schema({
     cnpj: {
         type: String,
         require: true
-    },
+    },/*
     password: {
         type: String,
         require: true
-    },
+    },*/
     role: {
         type: Number,
         require: true
@@ -27,6 +28,6 @@ const companySchema = new mongoose.Schema({
     }
 })
 
+companySchema.plugin(passport)
 let Company = mongoose.model('company', companySchema)
-
 module.exports = Company

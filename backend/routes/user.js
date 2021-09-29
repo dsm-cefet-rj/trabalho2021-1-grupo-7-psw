@@ -4,11 +4,12 @@ const User = require('../models/user');
 const Company = require('../models/company');
 const Favorite = require('../models/favorite');
 const Event = require('../models/events');
-const bcrypt = require('bcrypt');
 const verifyDataUser = require('../utils/verifyDataUser');
+const auth = require('../middlewares/auth');
+const passport = require('passport');
 
 //Pega todos os usuários
-router.get('/', async (req, res, next) => {
+router.get('/',auth, async (req, res, next) => {
   try {
     let users = await User.find({});
     res.status(200).json(users);
@@ -18,7 +19,7 @@ router.get('/', async (req, res, next) => {
 });
 
 //Pegar um usuário
-router.get('/:id', async (req, res, next) => {
+router.get('/:id',auth, async (req, res, next) => {
   let id = req.params.id;
 
   if (!verifyUser.id(id)) {
@@ -50,18 +51,31 @@ router.post('/', async (req, res, next) => {
     if (userFound != undefined || companyFound != undefined) {
       return res.status(401).json({ msg: 'E-mail já cadastrado.' });
     }
-
+    /*
     let user = new User({ name, email, cpf, password, role: 0 });
-    await user.save();
+    await user.save();*/
 
-    return res.status(200).json({ status: 'Usuário criado com sucesso!' });
+    User.register(new User({name,email, cpf, role:0, username: email}), password, (err, user) =>{
+      if(err){
+        res.statusCode = 500
+        res.setHeader("Content-Type", "application/json")
+        res.json({msg: err})
+      }else{
+        passport.authenticate('local')(req,res, ()=>{
+          res.statusCode = 200
+          res.setHeader("Content-Type", "application/json")
+          res.json({ success: true, status: "Usuário cadastrado com sucesso!"})
+        })
+      }
+    })
+
   } catch (e) {
     res.status(500).json({ msg: 'Erro interno' });
   }
 });
 
 //Deleta um usuário
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id',auth, async (req, res, next) => {
   try {
     let id = req.params.id;
 
@@ -82,7 +96,7 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 //Atualiza um usuário
-router.put('/:id', async (req, res, next) => {
+router.put('/:id',auth, async (req, res, next) => {
   try {
     let { name, email, cpf, password } = req.body;
     let id = req.params.id;

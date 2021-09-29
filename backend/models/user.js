@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const passport = require('passport-local-mongoose')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -12,11 +13,11 @@ const userSchema = new mongoose.Schema({
   cpf: {
     type: String,
     require: true,
-  },
+  },/*
   password: {
     type: String,
     require: true,
-  },
+  },*/
   role: {
     type: Number,
     require: true,
@@ -27,6 +28,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.plugin(passport)
 let Users = mongoose.model("User", userSchema);
-
 module.exports = Users;
