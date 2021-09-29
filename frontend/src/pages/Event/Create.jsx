@@ -8,9 +8,10 @@ import {
   InputTextarea,
   ErrorInputs,
 } from './style';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { createEvent } from '../../store/event/eventSlice';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
@@ -37,10 +38,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function FormCard(props) {
   const classes = useStyles();
-
+  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
   const [error, setErro] = useState(null);
+
+  const userState = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!user && userState.entities && userState.status === 'loaded') {
+      const userResponse = Object.values(userState.entities)[0];
+      setUser(userResponse);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const {
     register,
@@ -49,16 +60,16 @@ export default function FormCard(props) {
   } = useForm({
     resolver: yupResolver(createEventSchema),
   });
+  console.log(user, ' olha o user');
 
   const createEventSubmit = async (event) => {
     const { name, type, quantity, date, price, description } = event;
-
     try {
       dispatch(
         createEvent({
           name,
           type,
-          enterprise: 'Microsoft',
+          company: user,
           quantity,
           date,
           price,

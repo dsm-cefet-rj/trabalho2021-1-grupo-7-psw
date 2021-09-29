@@ -20,7 +20,6 @@ function App({ history, getEventos, status }) {
   const [textFilter, setTextFilter] = useState('');
   const [events, setEvents] = useState([]);
   const eventsState = useSelector((state) => state.event);
-
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -50,6 +49,7 @@ function App({ history, getEventos, status }) {
       eventsState.entities &&
       Object.values(eventsState.entities).length > 0 &&
       Object.values(eventsState.entities);
+
     setEvents(eventsResponse);
   };
 

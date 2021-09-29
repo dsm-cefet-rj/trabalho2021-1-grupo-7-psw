@@ -58,7 +58,7 @@ export default function FormCard(props) {
   }, []);
 
   const handleDelete = () => {
-    dispatch(delEvent({ slug, id: event.id }));
+    dispatch(delEvent({ slug, id: event._id }));
     history.push('/admin/eventos');
   };
 

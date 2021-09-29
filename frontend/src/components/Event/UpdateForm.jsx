@@ -49,7 +49,7 @@ export default function UpdateForm(props) {
   function update(data) {
     dispatch(
       upEvent({
-        id: props.props.id,
+        id: props.props._id,
         slug: props.props.slug,
         name: data.name,
         type: data.type,

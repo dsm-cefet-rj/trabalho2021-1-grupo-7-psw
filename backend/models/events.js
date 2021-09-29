@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
   name: {
@@ -19,7 +19,7 @@ const eventSchema = new mongoose.Schema({
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "company",
+    ref: 'company',
     require: true,
   },
   num_tickets: {
@@ -39,7 +39,7 @@ const eventSchema = new mongoose.Schema({
     lat: { type: Number, require: true },
   },
   images: {
-    type: String,
+    type: Array,
     require: true,
   },
   created_at: {
@@ -48,6 +48,6 @@ const eventSchema = new mongoose.Schema({
   },
 });
 
-let Event = mongoose.model("event", eventSchema);
+let Event = mongoose.model('event', eventSchema);
 
 module.exports = Event;

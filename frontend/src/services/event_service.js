@@ -25,7 +25,7 @@ export const getEventBySlug = (slug) => {
 export const registerEvent = (
   name,
   type,
-  enterprise,
+  company,
   quantity,
   date,
   price,
@@ -35,7 +35,7 @@ export const registerEvent = (
     .post('/eventos', {
       name,
       type,
-      enterprise,
+      company,
       num_tickets: quantity,
       date,
       price,
@@ -59,7 +59,7 @@ export const updateEvent = (
   description
 ) => {
   return api()
-    .patch(`/eventos/${slug}`, {
+    .put(`/eventos/${slug}`, {
       slug,
       name,
       type,

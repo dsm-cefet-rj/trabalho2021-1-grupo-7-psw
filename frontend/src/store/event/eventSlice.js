@@ -22,12 +22,12 @@ export const fetchEvent = createAsyncThunk('auth/fetchEvent', async () => {
 
 export const createEvent = createAsyncThunk(
   'auth/CreateEvent',
-  async ({ name, type, enterprise, quantity, date, price, description }) => {
+  async ({ name, type, company, quantity, date, price, description }) => {
     try {
       const response = await registerEvent(
         name,
         type,
-        enterprise,
+        company,
         quantity,
         date,
         price,
@@ -53,6 +53,7 @@ export const upEvent = createAsyncThunk(
         price,
         description
       );
+
       const obj = {
         slug: response.updatedEvent.slug,
         name: response.updatedEvent.name,
@@ -62,7 +63,6 @@ export const upEvent = createAsyncThunk(
         price: response.updatedEvent.date,
         description: response.updatedEvent.description,
       };
-
       return { id, changes: obj };
     } catch (error) {
       throw error;
@@ -83,7 +83,7 @@ export const delEvent = createAsyncThunk(
 );
 
 export const eventAdapter = createEntityAdapter({
-  selectId: (entity) => entity.id,
+  selectId: (entity) => entity._id,
 });
 
 const initialState = { event: [], error: null, status: null };

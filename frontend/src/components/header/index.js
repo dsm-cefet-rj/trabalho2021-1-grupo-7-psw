@@ -86,7 +86,7 @@ const Header = () => {
       >
         <Link>Home</Link>
       </ListItem>
-      {user && user.role === 3 ? (
+      {user && user.role === 1 ? (
         <ListItem
           button={true}
           classes={{ root: classes.listItemRoot }}
