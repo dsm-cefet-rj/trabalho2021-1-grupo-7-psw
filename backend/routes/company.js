@@ -1,9 +1,8 @@
 const router = require('express').Router(); 
 const verifyCompany = require('../utils/verifyDataCompany')
 const Company = require('../models/company')
-const bcrypt = require('bcrypt');
 const User = require('../models/user');
-
+const passport = require('passport')
 //Pega todas as empresas
 router.get('/', async (req, res, next) => {
   try{
@@ -51,11 +50,24 @@ router.post('/', async (req, res, next) =>{
     if(companyFound != undefined || userFound != undefined){
       return res.status(406).json({msg: "E-mail já cadastrado."})
     }
-
+    /*
     let company = new Company({name,email,cnpj,password,role: 0})
     await company.save()
-
     return res.status(200).json({status: "Empresa criada com sucesso!"})
+    */  
+    Company.register(new User({name,email, cnpj, role:0, username: email}), password, (err, company) =>{
+      if(err){
+        res.statusCode = 500
+        res.setHeader("Content-Type", "application/json")
+        res.json({msg: err})
+      }else{
+        passport.authenticate('local')(req,res, ()=>{
+          res.statusCode = 200
+          res.setHeader("Content-Type", "application/json")
+          res.json({ success: true, status: "Empresa cadastrada com sucesso!"})
+        })
+      }
+    })
   }catch(e){
     res.status(500).json({msg: "Erro interno"})
   }
