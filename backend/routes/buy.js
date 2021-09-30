@@ -3,7 +3,7 @@ const Users = require("../models/user");
 const Events = require('../models/events')
 const router = require("express").Router();
 const { id: verifyId } = require('../utils/verifyDataUser')
-
+const auth = require('../middlewares/authenticate').verifyUser;
 
 function paramUndefined(...args) {
     args.forEach((element) => {
@@ -13,7 +13,7 @@ function paramUndefined(...args) {
 }
 
 
-router.post("/compra", async (req, res) => {
+router.post("/compra", auth,async (req, res) => {
     let { userId, eventId } = req.body;
     const result = paramUndefined(userId, eventId);
     const date = Date.now();
@@ -56,7 +56,7 @@ router.post("/compra", async (req, res) => {
 });
 
 //Todas os usuarios que compraram um evento
-router.get("/vendas/evento/:id", async (req, res) => {
+router.get("/vendas/evento/:id", auth,async (req, res) => {
     let { id } = req.params;
     if (!verifyId(id)) {
         return res.status(400).json({ msg: "Id invalido" })
@@ -76,7 +76,7 @@ router.get("/vendas/evento/:id", async (req, res) => {
     res.json(sales);
 });
 
-router.get('/usuarios/compras/:userId/', async (req, res) => {
+router.get('/usuarios/compras/:userId/', auth,async (req, res) => {
     const { userId } = req.params
     const userExists = await Users.findOne({ _id: userId })
     if (userExists === null)

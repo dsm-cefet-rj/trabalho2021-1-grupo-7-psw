@@ -3,8 +3,10 @@ const verifyCompany = require('../utils/verifyDataCompany')
 const Company = require('../models/company')
 const User = require('../models/user');
 const passport = require('passport')
+const auth = require('../middlewares/authenticate').verifyUser;
+
 //Pega todas as empresas
-router.get('/', async (req, res, next) => {
+router.get('/', auth,async (req, res, next) => {
   try{
     let users = await Company.find({})
     res.status(200).json(users)
@@ -14,7 +16,7 @@ router.get('/', async (req, res, next) => {
 });
 
 //Pega uma empresa
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', auth,async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -74,7 +76,7 @@ router.post('/', async (req, res, next) =>{
 })
 
 //Deleta uma empresa
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', auth,async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -95,7 +97,7 @@ router.delete('/:id', async (req, res, next) => {
 })
 
 //Atualiza uma empresa
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', auth,async (req, res, next) => {
   try{
     let { name, email, cnpj, password} = req.body
     let id = req.params.id
