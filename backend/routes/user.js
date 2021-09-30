@@ -5,7 +5,7 @@ const Company = require('../models/company');
 const Favorite = require('../models/favorite');
 const Event = require('../models/events');
 const verifyDataUser = require('../utils/verifyDataUser');
-const auth = require('../middlewares/auth');
+const auth = require('../middlewares/authenticate').verifyUser;
 const passport = require('passport');
 
 //Pega todos os usuários
@@ -76,6 +76,14 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+//Login do usuário
+router.post("/login", passport.authenticate("local"), (req, res, next) => {
+  let token = auth.getToken({ _id: req.user._id });
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.json({success: true, token: token, status: "Login feito com sucesso!" });
+});
+
 //Deleta um usuário
 router.delete('/:id',auth, async (req, res, next) => {
   try {
@@ -129,16 +137,9 @@ router.put('/:id',auth, async (req, res, next) => {
   }
 });
 
-//Login do usuário
-router.post('/login', passport.authenticate("local") ,async (req, res, next) => {
-  let token = authenticate.getToken({_id: req.user._id})
-  res.statusCode = 200
-  res.setHeader('Content-Type', 'application/json')
-  res.json({success: true, token: token, status: "Login feito com sucesso!"})
-});
 
 //Pega todos os favoritos do banco
-router.get('/favoritos/favoritos', async (req, res) => {
+router.get('/favoritos/favoritos',auth, async (req, res) => {
   let favorites = await Favorite.find({});
   if (favorites.length === 0) {
     return res
@@ -150,7 +151,7 @@ router.get('/favoritos/favoritos', async (req, res) => {
 });
 
 //Pega os favoritos do usuário
-router.get('/:id/favoritos', async (req, res, next) => {
+router.get('/:id/favoritos',auth, async (req, res, next) => {
   let id = req.params.id;
 
   if (!verifyDataUser.id(id)) {
@@ -173,7 +174,7 @@ router.get('/:id/favoritos', async (req, res, next) => {
 });
 
 //Adiciona favorito
-router.post('/:user_id/favoritos/:event_id', async (req, res, next) => {
+router.post('/:user_id/favoritos/:event_id',auth, async (req, res, next) => {
   let { user_id, event_id } = req.params;
 
   if (!verifyDataUser.id(user_id) || !verifyDataUser.id(event_id)) {
@@ -200,7 +201,7 @@ router.post('/:user_id/favoritos/:event_id', async (req, res, next) => {
 });
 
 //Deleta favorito
-router.delete('/:user_id/favoritos/:favorite_id', async (req, res, next) => {
+router.delete('/:user_id/favoritos/:favorite_id',auth, async (req, res, next) => {
   let { user_id, favorite_id } = req.params;
 
   if (!verifyDataUser.id(user_id) || !verifyDataUser.id(favorite_id)) {
