@@ -2,7 +2,10 @@ const router = require('express').Router();
 const { verifyEventData } = require('../utils/verifyDataEvent');
 const Slugify = require('slugify');
 const Event = require('../models/events');
-const auth = require('../middlewares/authenticate').verifyUser;
+const {verifyUser, userCompany} = require('../middlewares/authenticate');
+const jwt = require("jsonwebtoken")
+const User = require('../models/user');
+const {secret} = require('../config')
 
 /* GET all events. */
 router.get('/', async (req, res) => {
@@ -30,9 +33,8 @@ router.get('/:slug', async (req, res) => {
   return res.status(200).json({ event });
 });
 
-router.post('/', auth,async (req, res) => {
-  const { name, type, company, num_tickets, date, price, description } =
-    req.body;
+router.post('/', verifyUser, userCompany,async (req, res) => {
+  const { name, type, company, num_tickets, date, price, description } = req.body;
 
   const validation = verifyEventData(
     name,
@@ -43,15 +45,23 @@ router.post('/', auth,async (req, res) => {
     price,
     description
   );
-  console.log(name, type, company, num_tickets, date, price, description);
+
   if (!validation) {
     return res.status(400).json({ msg: 'Dado(s) Obrigatório(s) invalido(s).' });
   }
 
+  let token = req.headers.authorization
+  let bearerToken = token.split(' ')
+  let decoded = jwt.verify(bearerToken[1], secret)
+  
+  let companyFound = await User.findOne({_id: decoded._id, role: 1})
+  if(companyFound == undefined){
+    return res.status(403).json({ msg: 'Ação não permitida.' });
+  }
+  
   let slug = Slugify(name).toLowerCase();
 
   const isEventAvalible = await Event.findOne({ slug });
-
   if (isEventAvalible != undefined) {
     return res.status(401).json({ msg: 'Evento já cadastrado' });
   }
@@ -59,6 +69,7 @@ router.post('/', auth,async (req, res) => {
   const event = new Event({
     name,
     slug,
+    company: companyFound._id,
     type,
     num_tickets,
     date,
@@ -78,13 +89,20 @@ router.post('/', auth,async (req, res) => {
   return res.status(200).json({ event });
 });
 
-router.put('/:slug', auth,async (req, res) => {
+router.put('/:slug', verifyUser, userCompany,async (req, res) => {
   const { slug, name, type, num_tickets, date, price, description } = req.body;
 
   const eventSelected = await Event.findOne({ slug });
 
   if (!eventSelected) {
     return res.status(404).json({ msg: 'Evento não encontrado' });
+  }
+
+  let token = req.headers.authorization.split(' ')[1]
+  let decoded = jwt.verify(token, secret)
+  
+  if(eventSelected.company != decoded._id){
+    return res.status(403).json({ msg: 'Ação não permitida' });
   }
 
   await Event.findByIdAndUpdate(eventSelected.id, {
@@ -101,13 +119,20 @@ router.put('/:slug', auth,async (req, res) => {
   return res.status(200).json({ updatedEvent });
 });
 
-router.delete('/:slug', auth,async (req, res) => {
+router.delete('/:slug', verifyUser, userCompany,async (req, res) => {
   const slug = req.params.slug;
 
   let eventSelected = await Event.findOne({ slug });
 
   if (!eventSelected) {
     return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
+  }
+
+  let token = req.headers.authorization.split(' ')[1]
+  let decoded = jwt.verify(token, secret)
+  
+  if(eventSelected.company != decoded._id){
+    return res.status(403).json({ msg: 'Ação não permitida' });
   }
 
   await Event.findByIdAndDelete(eventSelected.id);
