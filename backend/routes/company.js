@@ -1,22 +1,26 @@
 const router = require('express').Router(); 
 const verifyCompany = require('../utils/verifyDataCompany')
-const Company = require('../models/company')
+
 const User = require('../models/user');
 const passport = require('passport')
 const auth = require('../middlewares/authenticate').verifyUser;
+const userType = require('../utils/enumTypeUser');
+const Company = require('../models/company');
+const {userAdmin} = require('../middlewares/authenticate')
 
 //Pega todas as empresas
-router.get('/', auth,async (req, res, next) => {
+router.get('/', auth, userAdmin,async (req, res, next) => {
   try{
-    let users = await Company.find({})
-    res.status(200).json(users)
+    let companys = await User.find({role: userType.COMPANY})
+    res.status(200).json(companys)
   }catch(e){
+    console.log(e)
     res.status(500).json({msg: "Erro interno"})
   }
 });
 
 //Pega uma empresa
-router.get('/:id', auth,async (req, res, next) => {
+router.get('/:id', auth, userAdmin,async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -24,7 +28,7 @@ router.get('/:id', auth,async (req, res, next) => {
       return res.status(400).json({msg: "Dados inválidos"})
     }
 
-    let companyFound = await Company.findById(id).exec()
+    let companyFound = await User.findById({_id: id, role: userType.COMPANY}).exec()
     
     if(companyFound == undefined){
       return res.status(404).json({msg: "Empresa não encontrada"})
@@ -37,46 +41,9 @@ router.get('/:id', auth,async (req, res, next) => {
 })
 
 //Cadastra uma empresa
-router.post('/', async (req, res, next) =>{
-  try{
-    let {name,email,cnpj,password} = req.body
-
-    let verifyData = verifyCompany.body(name, email, cnpj, password)
-    if(!verifyData){
-      return res.status(400).json({msg: "Dados inválidos."})
-    }
-    
-    let userFound = await User.findOne({'email': email})
-    let companyFound = await Company.findOne({'email': email})
-    
-    if(companyFound != undefined || userFound != undefined){
-      return res.status(406).json({msg: "E-mail já cadastrado."})
-    }
-    /*
-    let company = new Company({name,email,cnpj,password,role: 0})
-    await company.save()
-    return res.status(200).json({status: "Empresa criada com sucesso!"})
-    */  
-    Company.register(new User({name,email, cnpj, role:0, username: email}), password, (err, company) =>{
-      if(err){
-        res.statusCode = 500
-        res.setHeader("Content-Type", "application/json")
-        res.json({msg: err})
-      }else{
-        passport.authenticate('local')(req,res, ()=>{
-          res.statusCode = 200
-          res.setHeader("Content-Type", "application/json")
-          res.json({ success: true, status: "Empresa cadastrada com sucesso!"})
-        })
-      }
-    })
-  }catch(e){
-    res.status(500).json({msg: "Erro interno"})
-  }
-})
 
 //Deleta uma empresa
-router.delete('/:id', auth,async (req, res, next) => {
+router.delete('/:id', auth, userAdmin, async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -84,12 +51,12 @@ router.delete('/:id', auth,async (req, res, next) => {
       return res.status(400).json({msg: "Dados inválidos."})
     }
 
-    let companyExists = await Company.findById(id).exec()
+    let companyExists = await User.findById(id).exec()
     if(companyExists == undefined){
       return res.status(404).json({msg: "Empresa não encontrada ou não existe."})
     }
 
-    await Company.findByIdAndDelete(id)
+    await User.findByIdAndDelete(id)
     return res.status(200).json({status: "Empresa deletada com sucesso."})
   }catch(e){
     res.status(500).json({msg: "Erro interno"})
@@ -97,28 +64,28 @@ router.delete('/:id', auth,async (req, res, next) => {
 })
 
 //Atualiza uma empresa
-router.put('/:id', auth,async (req, res, next) => {
+router.put('/:id', auth, userAdmin, async (req, res, next) => {
+  console.log(req)
   try{
-    let { name, email, cnpj, password} = req.body
+    let { name, email, document, password} = req.body
     let id = req.params.id
 
-    if(!verifyCompany.body(name,email,cnpj,password) || !verifyCompany.id(id)){
+    if(!verifyCompany.body(name,email,document,password) || !verifyCompany.id(id)){
       return res.status(400).json({msg: "Dados inválidos."})
     }
 
-    let companyExists = await Company.findById(id).exec()
+    let companyExists = await User.findById(id).exec()
     if(companyExists == undefined){
       return res.status(404).json({msg: "Empresa não encontrada."})
     }
 
-    let userFound = await User.findOne({'email': email})
-    let companyFound = await Company.findOne({'email': email})
+    let companyFound = await User.findOne({'email': email})
 
-    if((companyFound && companyExists.email != companyFound.email) || userFound != undefined){
+    if((companyFound && companyExists.email != companyFound.email)){
       return res.status(406).json({msg: "E-mail já cadastrado."})
     }
 
-    await Company.findByIdAndUpdate(id, {name,email,cnpj, password})
+    await User.findByIdAndUpdate(id, {name,email,document, password})
     return res.status(200).json({status: "Empresa atualizada com sucesso"})
   }catch(e){
     console.log(e)
