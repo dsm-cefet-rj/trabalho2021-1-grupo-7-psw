@@ -5,11 +5,12 @@ const Company = require('../models/company');
 const Favorite = require('../models/favorite');
 const Event = require('../models/events');
 const verifyDataUser = require('../utils/verifyDataUser');
-const auth = require('../middlewares/authenticate').verifyUser;
+const auth = require('../middlewares/authenticate');
+const getToken = require('../middlewares/authenticate');
 const passport = require('passport');
 
 //Pega todos os usuários
-router.get('/',auth, async (req, res, next) => {
+router.get('/',auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   try {
     let users = await User.find({});
     res.status(200).json(users);
@@ -19,7 +20,7 @@ router.get('/',auth, async (req, res, next) => {
 });
 
 //Pegar um usuário
-router.get('/:id',auth, async (req, res, next) => {
+router.get('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
   let id = req.params.id;
 
   if (!verifyUser.id(id)) {
@@ -51,9 +52,6 @@ router.post('/', async (req, res, next) => {
     if (userFound != undefined || companyFound != undefined) {
       return res.status(401).json({ msg: 'E-mail já cadastrado.' });
     }
-    /*
-    let user = new User({ name, email, cpf, password, role: 0 });
-    await user.save();*/
 
     User.register(new User({name,email, cpf, role:0, username: email}), password, (err, user) =>{
       if(err){
@@ -77,15 +75,15 @@ router.post('/', async (req, res, next) => {
 });
 
 //Login do usuário
-router.post("/login", passport.authenticate("local"), (req, res, next) => {
-  let token = auth.getToken({ _id: req.user._id });
+router.post("/login", passport.authenticate("local"),async (req, res, next) => {
+  let token = auth.getToken({ _id: req.user._id});
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
   res.json({success: true, token: token, status: "Login feito com sucesso!" });
 });
 
 //Deleta um usuário
-router.delete('/:id',auth, async (req, res, next) => {
+router.delete('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
   try {
     let id = req.params.id;
 
@@ -106,7 +104,7 @@ router.delete('/:id',auth, async (req, res, next) => {
 });
 
 //Atualiza um usuário
-router.put('/:id',auth, async (req, res, next) => {
+router.put('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
   try {
     let { name, email, cpf, password } = req.body;
     let id = req.params.id;
@@ -139,7 +137,7 @@ router.put('/:id',auth, async (req, res, next) => {
 
 
 //Pega todos os favoritos do banco
-router.get('/favoritos/favoritos',auth, async (req, res) => {
+router.get('/favoritos/favoritos',auth.verifyUser,auth.userAdmin, async (req, res) => {
   let favorites = await Favorite.find({});
   if (favorites.length === 0) {
     return res
@@ -151,7 +149,7 @@ router.get('/favoritos/favoritos',auth, async (req, res) => {
 });
 
 //Pega os favoritos do usuário
-router.get('/:id/favoritos',auth, async (req, res, next) => {
+router.get('/:id/favoritos',auth.verifyUser,auth.userClient, async (req, res, next) => {
   let id = req.params.id;
 
   if (!verifyDataUser.id(id)) {
@@ -174,7 +172,7 @@ router.get('/:id/favoritos',auth, async (req, res, next) => {
 });
 
 //Adiciona favorito
-router.post('/:user_id/favoritos/:event_id',auth, async (req, res, next) => {
+router.post('/:user_id/favoritos/:event_id',auth.verifyUser, auth.userClient,async (req, res, next) => {
   let { user_id, event_id } = req.params;
 
   if (!verifyDataUser.id(user_id) || !verifyDataUser.id(event_id)) {
@@ -201,7 +199,7 @@ router.post('/:user_id/favoritos/:event_id',auth, async (req, res, next) => {
 });
 
 //Deleta favorito
-router.delete('/:user_id/favoritos/:favorite_id',auth, async (req, res, next) => {
+router.delete('/:user_id/favoritos/:favorite_id',auth.verifyUser, auth.userClient, async (req, res, next) => {
   let { user_id, favorite_id } = req.params;
 
   if (!verifyDataUser.id(user_id) || !verifyDataUser.id(favorite_id)) {

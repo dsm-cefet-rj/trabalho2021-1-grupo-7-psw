@@ -23,7 +23,7 @@ exports.getToken = user =>{
 }
 
 exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) =>{
-    console.log("JWT Payload", jwt_payload)
+    //console.log("JWT Payload", jwt_payload)
     User.findOne({_id: jwt_payload._id}, (err, user)=>{
         if(err){
             return done(err,false)
@@ -36,5 +36,80 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts, (jwt_payload, done) =>{
         }
     })
 }))
+
+exports.userClient = async (req, res, next) =>{
+    const authToken = req.headers['authorization']
+
+    if(authToken != undefined){
+        const bearer = authToken.split(' ')
+        const token = bearer[1]
+        try{
+            let decoded = jwt.verify(token, config.secret)
+            let user = await User.findById({_id: decoded._id})
+
+            if(user.role === 0){
+                next()
+            }
+            else{
+                return res.status(401).json({msg: "Usuário não permitido"})
+            }
+        }catch(e){
+            return res.status(401).json({msg: "Usuário não autenticado"})
+        }
+    }
+    else{
+        return res.status(401).json({msg: "Usuário não autenticado"})
+    }
+}
+
+exports.userCompany = async (req, res, next) =>{
+    const authToken = req.headers['authorization']
+
+    if(authToken != undefined){
+        const bearer = authToken.split(' ')
+        const token = bearer[1]
+        try{
+            let decoded = jwt.verify(token, config.secret)
+            let user = await User.findById({_id: decoded._id})
+
+            if(user.role === 1){
+                next()
+            }
+            else{
+                return res.status(401).json({msg: "Usuário não permitido"})
+            }
+        }catch(e){
+            return res.status(401).json({msg: "Usuário não autenticado"})
+        }
+    }
+    else{
+        return res.status(401).json({msg: "Usuário não autenticado"})
+    }
+}
+
+exports.userAdmin = async (req, res, next) =>{
+    const authToken = req.headers['authorization']
+
+    if(authToken != undefined){
+        const bearer = authToken.split(' ')
+        const token = bearer[1]
+        try{
+            let decoded = jwt.verify(token, config.secret)
+            let user = await User.findById({_id: decoded._id})
+
+            if(user.role === 2){
+                next()
+            }
+            else{
+                return res.status(401).json({msg: "Usuário não permitido"})
+            }
+        }catch(e){
+            return res.status(401).json({msg: "Usuário não autenticado"})
+        }
+    }
+    else{
+        return res.status(401).json({msg: "Usuário não autenticado"})
+    }
+}
 
 exports.verifyUser = passport.authenticate('jwt', {session: false})
