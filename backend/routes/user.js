@@ -39,12 +39,16 @@ router.get('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
 //Cadastra um usuário
 router.post('/', async (req, res, next) => {
   try {
-    let { name, email, cpf, password } = req.body;
+    let { name, email, document, password } = req.body;
 
-    let verifyData = verifyUser.user(name, email, cpf, password);
+    let verifyData = verifyUser.user(name, email, document, password);
     if (!verifyData) {
       return res.status(400).json({ msg: 'Dados inválidos.' });
     }
+
+    let user_role
+    if(document.length == 14) user_role = 0
+    else user_role = 1
 
     let userFound = await User.findOne({ email: email });
     let companyFound = await Company.findOne({ email: email });
@@ -53,19 +57,18 @@ router.post('/', async (req, res, next) => {
       return res.status(401).json({ msg: 'E-mail já cadastrado.' });
     }
 
-    User.register(new User({name,email, cpf, role:0, username: email}), password, (err, user) =>{
+    User.register(new User({name,email, document, role:user_role, username: email}), password, (err, user) =>{
       if(err){
-        res.statusCode = 500
-        res.setHeader("Content-Type", "application/json")
-        res.json({msg: err})
+        res.status(500).json({ msg: 'Erro ao criar usuário' });
       }else{
-        
+        return res.status(200).json({ msg: 'Usuário cadastrado com sucesso' });
+        /*
         passport.authenticate('local')(req,res, ()=>{
-          console.log(passport.authenticate('local'))
+          console.log("chegou aqui")
           res.statusCode = 200
           res.setHeader("Content-Type", "application/json")
           res.json({ success: true, status: "Usuário cadastrado com sucesso!"})
-        })
+        })*/
       }
     })
 
@@ -79,7 +82,8 @@ router.post("/login", passport.authenticate("local"),async (req, res, next) => {
   let token = auth.getToken({ _id: req.user._id});
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
-  res.json({success: true, token: token, status: "Login feito com sucesso!" });
+  res.json({success: true, token: token, status: "Login feito com sucesso!",
+  user:{name: req.user.name, email: req.user.email, role: req.user.role, id: req.user._id, document: req.user.document}});
 });
 
 //Deleta um usuário

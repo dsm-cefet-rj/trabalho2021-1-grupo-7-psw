@@ -10,14 +10,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  cpf: {
+  document: {
     type: String,
     require: true,
-  },/*
-  password: {
-    type: String,
-    require: true,
-  },*/
+  },
   role: {
     type: Number,
     require: true,
