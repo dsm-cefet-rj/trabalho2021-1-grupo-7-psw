@@ -4,28 +4,39 @@ const Events = require('../models/events')
 const router = require("express").Router();
 const { id: verifyId } = require('../utils/verifyDataUser')
 const auth = require('../middlewares/authenticate').verifyUser;
+const typeUser = require("../utils/enumTypeUser");
+const jwt = require("jsonwebtoken")
+const config = require('../config')
+
 
 function paramUndefined(...args) {
-    args.forEach((element) => {
-        if (element == undefined || element === "") return true;
-    });
+    let isAnyoneUndefined = false
+    args.forEach((element) => 
+    {
+        if (element == undefined || element === "") {  
+            isAnyoneUndefined = true
+        }
+    })
+
+    if(isAnyoneUndefined)
+        return true    
     return false;
 }
-
-
 router.post("/compra", auth,async (req, res) => {
-    let { userId, eventId } = req.body;
-    const result = paramUndefined(userId, eventId);
-    const date = Date.now();
-
-    if (result) {
+    
+    let { eventId } = req.body;
+    const token = req.headers.authorization.split(" ")[1]
+    const userDecoded = jwt.decode(token,{json: true, complete: true} )
+    const userId = userDecoded?.payload?._id
+    console.log(userId)
+    if (eventId ===undefined) {
         res.status(400).json({ msg: "Bad request" });
         return;
     }
-
-    const user = await Users.findOne({ _id: userId })
-    if (user === null) {
-        res.status(404).json({ msg: "Usuario não logado" });
+    const user = await Users.findOne({ _id: userId, role:typeUser.USER })
+    
+    if (user == null) {
+        res.status(404).json({ msg: "Usuario não encontrado" });
         return;
     }
     const event = await Events.findById({ _id: eventId })
@@ -38,21 +49,15 @@ router.post("/compra", auth,async (req, res) => {
     if (num_tickets === 0) {
         return res.status(400).json({ msg: "As vendas estão esgotadas" })
     }
-
-
     const newBuy = new Buy({
         userId,
         eventId
     })
 
-    await newBuy.save()
+    const buyConfirm = await newBuy.save()
     --num_tickets;
     await Events.findByIdAndUpdate(eventId, { num_tickets })
-
-
-
-
-    res.json({ msg: "compra efetuada" });
+    res.json({ msg: "compra efetuada", buyConfirm });
 });
 
 //Todas os usuarios que compraram um evento
