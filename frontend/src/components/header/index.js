@@ -45,12 +45,15 @@ const Header = () => {
   const handleOpenMenu = (valor) => {
     setIsMenuOpen(valor);
   };
-  const userState = useSelector((state) => state.user);
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    history.push('/entrar');
+  };
 
   useEffect(() => {
-    if (!user && userState.entities && userState.status === 'loaded') {
-      const userResponse = Object.values(userState.entities)[0];
-      setUser(userResponse);
+    if (localStorage.getItem('user')) {
+      const userRes = JSON.parse(localStorage.getItem('user'));
+      setUser(userRes.user);
     }
     // eslint-disable-next-line
   }, [isMenuOpen]);
@@ -124,7 +127,7 @@ const Header = () => {
         <ListItem
           button={true}
           classes={{ root: classes.listItemRoot }}
-          onClick={() => history.push('/entrar')}
+          onClick={() => handleLogout()}
         >
           <Link>Logout</Link>
         </ListItem>

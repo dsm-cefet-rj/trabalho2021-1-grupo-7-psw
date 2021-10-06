@@ -41,7 +41,7 @@ export default function LoginU() {
     const { email, password } = user;
 
     try {
-      dispatch(fetchUser({ email, password }));
+      dispatch(fetchUser({ username: email, password }));
       setErro(null);
       history.push('/');
     } catch (error) {

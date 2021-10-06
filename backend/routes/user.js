@@ -7,12 +7,12 @@ const Event = require('../models/events');
 const verifyDataUser = require('../utils/verifyDataUser');
 const auth = require('../middlewares/authenticate');
 const passport = require('passport');
-const userType = require('../utils/enumTypeUser')
-const jwt = require("jsonwebtoken")
-const config = require('../config')
+const userType = require('../utils/enumTypeUser');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 //Pega todos os usuários
-router.get('/',auth.verifyUser, auth.userAdmin, async (req, res, next) => {
+router.get('/', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   try {
     let users = await User.find({});
     res.status(200).json(users);
@@ -22,7 +22,7 @@ router.get('/',auth.verifyUser, auth.userAdmin, async (req, res, next) => {
 });
 
 //Pegar um usuário
-router.get('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
+router.get('/:id', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   let id = req.params.id;
 
   if (!verifyUser.id(id)) {
@@ -48,9 +48,9 @@ router.post('/', async (req, res, next) => {
       return res.status(400).json({ msg: 'Dados inválidos.' });
     }
 
-    let user_role
-    if(document.length == 14) user_role = 0
-    else user_role = 1
+    let user_role;
+    if (document.length == 14) user_role = 0;
+    else user_role = 1;
 
     let userFound = await User.findOne({ email: email });
     let companyFound = await Company.findOne({ email: email });
@@ -59,51 +59,75 @@ router.post('/', async (req, res, next) => {
       return res.status(401).json({ msg: 'E-mail já cadastrado.' });
     }
 
-    User.register(new User({name,email, document, role:user_role, username: email}), password, (err, user) =>{
-      if(err){
-        res.status(500).json({ msg: 'Erro ao criar usuário' });
-      }else{
-        return res.status(200).json({ msg: 'Usuário cadastrado com sucesso' });
+    User.register(
+      new User({ name, email, document, role: user_role, username: email }),
+      password,
+      (err, user) => {
+        if (err) {
+          res.status(500).json({ msg: 'Erro ao criar usuário' });
+        } else {
+          return res
+            .status(200)
+            .json({ msg: 'Usuário cadastrado com sucesso' });
+        }
       }
-    })
-
+    );
   } catch (e) {
     res.status(500).json({ msg: 'Erro interno' });
   }
 });
 
 //Login do usuário
-router.post("/login", passport.authenticate("local"),async (req, res, next) => {
-  let token = auth.getToken({ _id: req.user._id});
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  res.json({success: true, token: token, status: "Login feito com sucesso!",
-  user:{name: req.user.name, email: req.user.email, role: req.user.role, id: req.user._id, document: req.user.document}});
-});
+router.post(
+  '/login',
+  passport.authenticate('local'),
+  async (req, res, next) => {
+    let token = auth.getToken({ _id: req.user._id });
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.json({
+      success: true,
+      token: token,
+      status: 'Login feito com sucesso!',
+      user: {
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+        id: req.user._id,
+        document: req.user.document,
+      },
+    });
+  }
+);
 
 //Deleta um usuário
-router.delete('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
-  try {
-    let id = req.params.id;
+router.delete(
+  '/:id',
+  auth.verifyUser,
+  auth.userAdmin,
+  async (req, res, next) => {
+    try {
+      let id = req.params.id;
 
-    if (!verifyUser.id(id)) {
-      return res.status(400).json({ msg: 'Dados inválidos.' });
+      if (!verifyUser.id(id)) {
+        return res.status(400).json({ msg: 'Dados inválidos.' });
+      }
+
+      let userExists = await User.findById(id).exec();
+      if (userExists == undefined) {
+        return res.status(404).json({ msg: 'Usuário não encontrado.' });
+      }
+
+      await User.findByIdAndDelete(id);
+      return res.status(200).json({ status: 'Usuário deletado com sucesso.' });
+    } catch (e) {
+      res.status(500).json({ msg: 'Erro interno' });
     }
-
-    let userExists = await User.findById(id).exec();
-    if (userExists == undefined) {
-      return res.status(404).json({ msg: 'Usuário não encontrado.' });
-    }
-
-    await User.findByIdAndDelete(id);
-    return res.status(200).json({ status: 'Usuário deletado com sucesso.' });
-  } catch (e) {
-    res.status(500).json({ msg: 'Erro interno' });
   }
-});
+);
 
 //Atualiza um usuário
-router.put('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
+router.put('/:id', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   try {
     let { name, email, cpf, password } = req.body;
     let id = req.params.id;
@@ -134,118 +158,143 @@ router.put('/:id',auth.verifyUser,auth.userAdmin, async (req, res, next) => {
   }
 });
 
-
 //Pega todos os favoritos do banco
-router.get('/favoritos/favoritos',auth.verifyUser,auth.userAdmin, async (req, res) => {
-  let favorites = await Favorite.find({});
-  if (favorites.length === 0) {
-    return res
-      .status(200)
-      .json({ msg: 'Nenhum favorito registrado.' })
-      .populate(['user', 'event']);
+router.get(
+  '/favoritos/favoritos',
+  auth.verifyUser,
+  auth.userAdmin,
+  async (req, res) => {
+    let favorites = await Favorite.find({});
+    if (favorites.length === 0) {
+      return res
+        .status(200)
+        .json({ msg: 'Nenhum favorito registrado.' })
+        .populate(['user', 'event']);
+    }
+    res.json(favorites);
   }
-  res.json(favorites);
-});
+);
 
 //Pega os favoritos do usuário
-router.get('/:id/favoritos',auth.verifyUser,auth.userClient, async (req, res, next) => {
-  let id = req.params.id;
+router.get(
+  '/:id/favoritos',
+  auth.verifyUser,
+  auth.userClient,
+  async (req, res, next) => {
+    let id = req.params.id;
 
-  if (!verifyDataUser.id(id)) {
-    return res.status(400).json({ msg: 'Dados inválidos.' });
-  }
+    if (!verifyDataUser.id(id)) {
+      return res.status(400).json({ msg: 'Dados inválidos.' });
+    }
 
-  let userFound = await User.findOne({ _id: id });
-  if (userFound == undefined) {
-    return res.status(404).json({ msg: 'Usuário não encontrado.' });
-  }
+    let userFound = await User.findOne({ _id: id });
+    if (userFound == undefined) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
 
-  let token = req.headers.authorization
-  let bearerToken = token.split(' ')
-  let decoded = jwt.verify(bearerToken[1], config.secret)
-  
-  if(userFound._id != decoded._id){
-    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
-  }
+    let token = req.headers.authorization;
+    let bearerToken = token.split(' ');
+    let decoded = jwt.verify(bearerToken[1], config.secret);
 
-  let getFavorites = await Favorite.find({ user: id }).populate([
-    'user',
-    'event',
-  ]);
-  if (getFavorites.length === 0) {
-    return res.status(200).json({ msg: 'Nenhum favorito registrado.' });
+    if (userFound._id != decoded._id) {
+      return res
+        .status(403)
+        .json({ msg: 'Usuário não permitido para esta ação' });
+    }
+
+    let getFavorites = await Favorite.find({ user: id }).populate([
+      'user',
+      'event',
+    ]);
+    if (getFavorites.length === 0) {
+      return res.status(200).json({ msg: 'Nenhum favorito registrado.' });
+    }
+    res.status(200).json(getFavorites);
   }
-  res.status(200).json(getFavorites);
-});
+);
 
 //Adiciona favorito
-router.post('/:user_id/favoritos/:event_id',auth.verifyUser, auth.userClient,async (req, res, next) => {
-  let { user_id, event_id } = req.params;
+router.post(
+  '/:user_id/favoritos/:event_id',
+  auth.verifyUser,
+  auth.userClient,
+  async (req, res, next) => {
+    let { user_id, event_id } = req.params;
 
-  if (!verifyDataUser.id(user_id) || !verifyDataUser.id(event_id)) {
-    return res.status(400).json({ msg: 'Dados inválidos.' });
+    if (!verifyDataUser.id(user_id) || !verifyDataUser.id(event_id)) {
+      return res.status(400).json({ msg: 'Dados inválidos.' });
+    }
+
+    let userFound = await User.findOne({ _id: user_id });
+    if (userFound == undefined) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
+
+    let token = req.headers.authorization;
+    let bearerToken = token.split(' ');
+    let decoded = jwt.verify(bearerToken[1], config.secret);
+
+    if (userFound._id != decoded._id) {
+      return res
+        .status(403)
+        .json({ msg: 'Usuário não permitido para esta ação' });
+    }
+
+    let eventFound = await Event.findOne({ _id: event_id });
+    if (eventFound == undefined) {
+      return res.status(404).json({ msg: 'Evento não encontrado.' });
+    }
+
+    let favoriteFound = await Favorite.findOne({ event: event_id });
+    if (favoriteFound != null) {
+      return res.status(406).json({ msg: 'Favorito já existe.' });
+    }
+
+    let favorite = new Favorite({
+      user: user_id,
+      event: event_id,
+    });
+
+    favorite.save();
+    res.status(200).json({ status: 'Favorito adicionado com sucesso.' });
   }
-
-  let userFound = await User.findOne({ _id: user_id });
-  if (userFound == undefined) {
-    return res.status(404).json({ msg: 'Usuário não encontrado.' });
-  }
-
-  let token = req.headers.authorization
-  let bearerToken = token.split(' ')
-  let decoded = jwt.verify(bearerToken[1], config.secret)
-  
-  if(userFound._id != decoded._id){
-    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
-  }
-
-  let eventFound = await Event.findOne({ _id: event_id });
-  if (eventFound == undefined) {
-    return res.status(404).json({ msg: 'Evento não encontrado.' });
-  }
-
-  let favoriteFound = await Favorite.findOne({event: event_id})
-  if(favoriteFound != null){
-    return res.status(406).json({ msg: 'Favorito já existe.' });
-  }
-
-  let favorite = new Favorite({
-    user: user_id,
-    event: event_id,
-  });
-
-  favorite.save();
-  res.status(200).json({ status: 'Favorito adicionado com sucesso.' });
-});
+);
 
 //Deleta favorito
-router.delete('/:user_id/favoritos/:favorite_id',auth.verifyUser, auth.userClient, async (req, res, next) => {
-  let { user_id, favorite_id } = req.params;
+router.delete(
+  '/:user_id/favoritos/:favorite_id',
+  auth.verifyUser,
+  auth.userClient,
+  async (req, res, next) => {
+    let { user_id, favorite_id } = req.params;
 
-  if (!verifyDataUser.id(user_id) || !verifyDataUser.id(favorite_id)) {
-    return res.status(400).json({ msg: 'Dados inválidos.' });
+    if (!verifyDataUser.id(user_id) || !verifyDataUser.id(favorite_id)) {
+      return res.status(400).json({ msg: 'Dados inválidos.' });
+    }
+
+    let userFound = await User.findOne({ _id: user_id });
+    if (userFound == undefined) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
+
+    let token = req.headers.authorization;
+    let bearerToken = token.split(' ');
+    let decoded = jwt.verify(bearerToken[1], config.secret);
+
+    if (userFound._id != decoded._id) {
+      return res
+        .status(403)
+        .json({ msg: 'Usuário não permitido para esta ação' });
+    }
+
+    let favoriteFound = await Favorite.findOne({ _id: favorite_id });
+    if (favoriteFound == undefined) {
+      return res.status(404).json({ msg: 'Favorito não encontrado.' });
+    }
+
+    await Favorite.findByIdAndDelete(favorite_id);
+    return res.status(200).json({ status: 'Favorito deletado com sucesso.' });
   }
-
-  let userFound = await User.findOne({ _id: user_id });
-  if (userFound == undefined) {
-    return res.status(404).json({ msg: 'Usuário não encontrado.' });
-  }
-
-  let token = req.headers.authorization
-  let bearerToken = token.split(' ')
-  let decoded = jwt.verify(bearerToken[1], config.secret)
-  
-  if(userFound._id != decoded._id){
-    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
-  }
-
-  let favoriteFound = await Favorite.findOne({ _id: favorite_id });
-  if (favoriteFound == undefined) {
-    return res.status(404).json({ msg: 'Favorito não encontrado.' });
-  }
-
-  await Favorite.findByIdAndDelete(favorite_id);
-  return res.status(200).json({ status: 'Favorito deletado com sucesso.' });
-});
+);
 
 module.exports = router;

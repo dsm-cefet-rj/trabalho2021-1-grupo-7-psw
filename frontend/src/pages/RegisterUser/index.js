@@ -53,7 +53,7 @@ export default function RegisterU() {
         createUser({
           name: `${user.firstName} ${user.lastName}`,
           email: user.email,
-          cpf: user.cpf,
+          document: user.cpf,
           password: user.password,
         })
       );

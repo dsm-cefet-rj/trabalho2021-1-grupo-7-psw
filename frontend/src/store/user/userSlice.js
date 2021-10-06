@@ -9,10 +9,13 @@ import {
 
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
-  async ({ email, password }) => {
+  async ({ username, password }) => {
     try {
-      const response = await getUser(email, password);
-      return response;
+      const response = await getUser(username, password);
+      if (response.user) {
+        localStorage.setItem('user', JSON.stringify(response));
+        return response.user;
+      }
     } catch (error) {
       throw error;
     }
@@ -21,12 +24,12 @@ export const fetchUser = createAsyncThunk(
 
 export const createAdminUser = createAsyncThunk(
   'auth/createAdminUser',
-  async ({ name, email, cnpj, password, confirmPassword }) => {
+  async ({ name, email, document, password, confirmPassword }) => {
     try {
-      const response = await registerCompany(
+      const response = await registerUser(
         name,
         email,
-        cnpj,
+        document,
         password,
         confirmPassword
       );
@@ -39,9 +42,9 @@ export const createAdminUser = createAsyncThunk(
 
 export const createUser = createAsyncThunk(
   'auth/createUser',
-  async ({ name, email, cpf, password }) => {
+  async ({ name, email, document, password }) => {
     try {
-      const response = await registerUser(name, email, cpf, password);
+      const response = await registerUser(name, email, document, password);
       return response;
     } catch (error) {
       throw error;

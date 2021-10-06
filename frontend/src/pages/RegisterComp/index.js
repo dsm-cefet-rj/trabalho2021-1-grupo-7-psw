@@ -52,7 +52,7 @@ export default function RegisterComp() {
         createAdminUser({
           name: comp.name,
           email: comp.email,
-          cnpj: comp.cnpj,
+          document: comp.cnpj,
           password: comp.password,
           confirmPassword: comp.confirmPassword,
         })

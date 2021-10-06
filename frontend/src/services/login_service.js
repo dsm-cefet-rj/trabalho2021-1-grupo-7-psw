@@ -1,10 +1,10 @@
 import api from './api';
 
-export const getUser = (email, password) => {
+export const getUser = (username, password) => {
   return api()
-    .post('/usuarios/login', { email, password })
+    .post('/usuarios/login', { username, password })
     .then((response) => {
-      return response.data.user || {};
+      return response.data || {};
     })
     .catch((error) => {
       throw error;
