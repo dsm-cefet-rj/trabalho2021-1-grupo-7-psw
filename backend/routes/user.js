@@ -6,8 +6,10 @@ const Favorite = require('../models/favorite');
 const Event = require('../models/events');
 const verifyDataUser = require('../utils/verifyDataUser');
 const auth = require('../middlewares/authenticate');
-const getToken = require('../middlewares/authenticate');
 const passport = require('passport');
+const userType = require('../utils/enumTypeUser')
+const jwt = require("jsonwebtoken")
+const config = require('../config')
 
 //Pega todos os usuários
 router.get('/',auth.verifyUser, auth.userAdmin, async (req, res, next) => {
@@ -62,13 +64,6 @@ router.post('/', async (req, res, next) => {
         res.status(500).json({ msg: 'Erro ao criar usuário' });
       }else{
         return res.status(200).json({ msg: 'Usuário cadastrado com sucesso' });
-        /*
-        passport.authenticate('local')(req,res, ()=>{
-          console.log("chegou aqui")
-          res.statusCode = 200
-          res.setHeader("Content-Type", "application/json")
-          res.json({ success: true, status: "Usuário cadastrado com sucesso!"})
-        })*/
       }
     })
 
@@ -165,6 +160,14 @@ router.get('/:id/favoritos',auth.verifyUser,auth.userClient, async (req, res, ne
     return res.status(404).json({ msg: 'Usuário não encontrado.' });
   }
 
+  let token = req.headers.authorization
+  let bearerToken = token.split(' ')
+  let decoded = jwt.verify(bearerToken[1], config.secret)
+  
+  if(userFound._id != decoded._id){
+    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
+  }
+
   let getFavorites = await Favorite.find({ user: id }).populate([
     'user',
     'event',
@@ -188,9 +191,22 @@ router.post('/:user_id/favoritos/:event_id',auth.verifyUser, auth.userClient,asy
     return res.status(404).json({ msg: 'Usuário não encontrado.' });
   }
 
+  let token = req.headers.authorization
+  let bearerToken = token.split(' ')
+  let decoded = jwt.verify(bearerToken[1], config.secret)
+  
+  if(userFound._id != decoded._id){
+    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
+  }
+
   let eventFound = await Event.findOne({ _id: event_id });
   if (eventFound == undefined) {
     return res.status(404).json({ msg: 'Evento não encontrado.' });
+  }
+
+  let favoriteFound = await Favorite.findOne({event: event_id})
+  if(favoriteFound != null){
+    return res.status(406).json({ msg: 'Favorito já existe.' });
   }
 
   let favorite = new Favorite({
@@ -213,6 +229,14 @@ router.delete('/:user_id/favoritos/:favorite_id',auth.verifyUser, auth.userClien
   let userFound = await User.findOne({ _id: user_id });
   if (userFound == undefined) {
     return res.status(404).json({ msg: 'Usuário não encontrado.' });
+  }
+
+  let token = req.headers.authorization
+  let bearerToken = token.split(' ')
+  let decoded = jwt.verify(bearerToken[1], config.secret)
+  
+  if(userFound._id != decoded._id){
+    return res.status(403).json({ msg: 'Usuário não permitido para esta ação' });
   }
 
   let favoriteFound = await Favorite.findOne({ _id: favorite_id });
