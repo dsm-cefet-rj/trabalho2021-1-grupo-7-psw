@@ -72,7 +72,7 @@ router.get("/empresas/:id",verifyUser, userCompany, async (req, res) => {
         return res.status(403).json({ msg: "Ação não permitida" })
     }
 
-    const sales = await Buy.find({ company: companyId }).populate(['event', 'user']);
+    const sales = await Buy.find({ company: companyId }).populate(['event', 'user']).sort([['created_at', 'descending']]);
 
     if (sales.length === 0) {
         res.status(200).json({ msg: "Nao há vendas relacionadas a esse evento" });
@@ -114,7 +114,7 @@ router.get('/usuarios/:userId', verifyUser, userClient,async (req, res) => {
     if (userExists === null)
         return res.status(400).json({ msg: "Usuário nao cadastrado no sistema" })
 
-    const buys = await Buy.find({ user: userId }).populate(["event", "company"])
+    const buys = await Buy.find({ user: userId }).populate(["event", "company"]).sort([['created_at', 'descending']])
     if (buys.length === 0)
         return res.status(200).json({ msg: "Nao há compras relacionadas a esse usuario" });
 

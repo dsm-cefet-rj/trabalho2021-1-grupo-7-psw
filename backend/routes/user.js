@@ -13,7 +13,7 @@ const config = require('../config');
 //Pega todos os usuários
 router.get('/', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   try {
-    let users = await User.find({});
+    let users = await User.find({}).sort([['created_at', 'descending']]);
     res.status(200).json(users);
   } catch (e) {
     res.status(500).json({ msg: 'Erro interno' });
@@ -151,23 +151,6 @@ router.put('/:id', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
   }
 });
 
-//Pega todos os favoritos do banco
-router.get(
-  '/favoritos/favoritos',
-  auth.verifyUser,
-  auth.userAdmin,
-  async (req, res) => {
-    let favorites = await Favorite.find({});
-    if (favorites.length === 0) {
-      return res
-        .status(200)
-        .json({ msg: 'Nenhum favorito registrado.' })
-        .populate(['user', 'event']);
-    }
-    res.json(favorites);
-  }
-);
-
 //Pega os favoritos do usuário
 router.get(
   '/:id/favoritos',
@@ -197,7 +180,7 @@ router.get(
     let getFavorites = await Favorite.find({ user: id }).populate([
       'user',
       'event',
-    ]);
+    ]).sort([['created_at', 'descending']]);
     if (getFavorites.length === 0) {
       return res.status(200).json({ msg: 'Nenhum favorito registrado.' });
     }
