@@ -1,12 +1,17 @@
 const mongoose = require('mongoose')
 const {ObjectId} = require('mongoose').SchemaTypes
 const buySchema = new mongoose.Schema({
-   userId:{
+   user:{
        type: ObjectId,
        ref: 'User',
        required: true,
    },
-   eventId:{
+   company:{
+    type: ObjectId,
+    ref: 'User',
+    required: true,
+    },
+   event:{
        type: ObjectId,
        ref: 'event',
        required: true,

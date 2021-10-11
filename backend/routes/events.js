@@ -10,7 +10,6 @@ const {secret} = require('../config')
 /* GET all events. */
 router.get('/', async (req, res) => {
   let event = await Event.find().populate('company');
-
   if (event.length === 0) {
     return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
   }
@@ -50,12 +49,9 @@ router.post('/', verifyUser, userCompany,async (req, res) => {
     return res.status(400).json({ msg: 'Dado(s) Obrigatório(s) invalido(s).' });
   }
 
-  let token = req.headers.authorization
-  let bearerToken = token.split(' ')
-  let decoded = jwt.verify(bearerToken[1], secret)
-  
-  let companyFound = await User.findOne({_id: decoded._id, role: 1})
-  if(companyFound == undefined){
+  let token = req.headers.authorization.split(' ')[1];
+  let decoded = jwt.verify(token, secret);
+  if(decoded.role != 1){
     return res.status(403).json({ msg: 'Ação não permitida.' });
   }
   
@@ -69,7 +65,7 @@ router.post('/', verifyUser, userCompany,async (req, res) => {
   const event = new Event({
     name,
     slug,
-    company: companyFound._id,
+    company: decoded._id,
     type,
     num_tickets,
     date,
@@ -86,7 +82,7 @@ router.post('/', verifyUser, userCompany,async (req, res) => {
 
   await event.save();
 
-  return res.status(200).json({ event });
+  return res.status(200).json({ status: "Evento criado com sucesso!"});
 });
 
 router.put('/:slug', verifyUser, userCompany,async (req, res) => {
@@ -114,9 +110,7 @@ router.put('/:slug', verifyUser, userCompany,async (req, res) => {
     description,
   });
 
-  const updatedEvent = await Event.findOne({ slug });
-
-  return res.status(200).json({ updatedEvent });
+  return res.status(200).json({ status: "Evento atualizado com sucesso!" });
 });
 
 router.delete('/:slug', verifyUser, userCompany,async (req, res) => {
@@ -139,7 +133,7 @@ router.delete('/:slug', verifyUser, userCompany,async (req, res) => {
 
   return res
     .status(200)
-    .json({ status: 'Evento deletado com sucesso!', id: eventSelected.id });
+    .json({ status: 'Evento deletado com sucesso!'});
 });
 
 module.exports = router;

@@ -7,6 +7,5 @@ const company = require('./company')
 router.use('/usuarios', user)
 router.use('/eventos', events)
 router.use('/empresas', company)
-router.use('/', events)
-router.use('/', buy)
+router.use('/compras', buy)
 module.exports = router

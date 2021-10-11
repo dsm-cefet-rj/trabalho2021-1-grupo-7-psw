@@ -1,241 +1,281 @@
 const User = require('./models/user')
-const Company = require('./models/company')
 const Event = require('./models/events')
 const Favorite = require('./models/favorite')
 const Buy = require('./models/buy')
 
-const user = [
-  {
-      name: "LucasHub" ,
-      email: "lucashub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "JoaoHub" ,
-      email: "joaohub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "FelipeHub" ,
-      email: "felipehub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "CaioHub" ,
-      email: "caiohub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "AndreyHub" ,
-      email: "andreyhub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  }
+const userData = [
+    {
+        name: "Lucas Farolfi" ,
+        email: "lucas123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 2
+    },
+    {
+        name: "Joao Marcos" ,
+        email: "joao123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 2
+    },
+    {
+        name: "Felipe Junior" ,
+        email: "felipe123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 2
+    },
+    {
+        name: "Caio Abreu" ,
+        email: "caio123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 2
+    },
+    {
+        name: "Andrey Alves" ,
+        email: "andrey123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 2
+    },
+    {
+        name: "Kinoplex" ,
+        email: "linoplex@email.com",
+        document: "12.123.123/1234-12",
+        password: "123123123",
+        role: 1
+    },
+    {
+        name: "Sony" ,
+        email: "sony@email.com",
+        document: "12.123.123/1234-12",
+        password: "123123123",
+        role: 1
+    },
+    {
+        name: "John Doe" ,
+        email: "john123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 0
+    },
+    {
+        name: "Pedro Alvares" ,
+        email: "pedro123@email.com",
+        document: "123.123.123-12",
+        password: "123123123",
+        role: 0
+    }
 ]
 
-const company = [
-  {
-      name: "LucasHub" ,
-      email: "lucashub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "JoaoHub" ,
-      email: "joaohub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "FelipeHub" ,
-      email: "felipehub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "CaioHub" ,
-      email: "caiohub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  },
-  {
-      name: "AndreyHub" ,
-      email: "andreyhub@email.com",
-      cnpj: "12.123.123/1234-12",
-      password: "123123123",
-      role: 0
-  }
-]
-
-const seeder = async () =>{
+const userSeed = async () =>{
     try{
         //Deleta dados já existentes
         await User.deleteMany()
-        await Company.deleteMany()
+
+        userData.forEach(u =>{
+            User.register(
+                new User({ name:u.name, email:u.email, document:u.document,
+                    role: u.role, username: u.email }),
+                u.password,(err, user) => {}
+            );
+        })
+        console.log("Usuarios criados")
+    }catch(e){
+        console.log("Erro ao criar as seeds"+ "\n" + e)
+    }
+}
+
+const seeders = async () =>{
+    try{
+        //Deleta dados já existentes
         await Event.deleteMany()
         await Favorite.deleteMany()
         await Buy.deleteMany()
 
-        //Cria novos dados na tabela
-        await User.create(user)
-        await Company.create(company)
-        let companies = await Company.find()
+        let users = await User.find({role:0})
+        let companies = await User.find({role:1})
         await Event.create([
-          {
-            name: "Um lugar silencioso 2",
-            slug: "um-lugar-silencioso-2",
-            type: "Cinema",
-            company: companies[0]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 150.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "E3 2021",
+                slug: "e3-2021",
+                type: "Games",
+                company: companies[1]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "199.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/e3-2021.jpg',
+                ],
             },
-            images:'https://tracklist.com.br/wp-content/uploads/2021/06/FOTO-54.jpg',
-          },
-          {
-            name: "Rock in Rio",
-            slug: "rock-in-rio",
-            type: "Show",
-            company:  companies[0]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 150.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "BGS São Paulo",
+                slug: "bgs-sao-paulo",
+                type: "Games",
+                company: companies[1]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "199.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/bgs-sp.jpg',
+                ],
             },
-            images:'https://tracklist.com.br/wp-content/uploads/2021/08/rock-in-rio.png',
-          },
-          {
-            name: "Loki",
-            slug: "loki",
-            type: "Cinema",
-            company:  companies[1]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 150.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "Velozes e Furiosos 9",
+                slug: "velozes-e-furiosos-9",
+                type: "Filmes",
+                company: companies[0]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "39.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/Velozes_e_Furiosos_9_poster.jpg',
+                ],
             },
-            images:'https://img.olhardigital.com.br/wp-content/uploads/2021/05/Loki-1.jpg',
-          },{
-            name: "CBLOL",
-            slug: "cblol",
-            type: "E-Sports",
-            company:  companies[1]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 150.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "John Wick 4",
+                slug: "john-wick-4",
+                type: "Filmes",
+                company: companies[0]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "39.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/John-Wick-4.jpg',
+                ],
             },
-            images:'https://imagens.ebc.com.br/sy2XzPi9f9XV9zkKyZDZyBb_FD8=/1170x700/smart/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/imagem_rio.jpg?itok=ikxPLMpd',
-          },
-          ,{
-            name: "Velozes e Furiosos 9",
-            slug: "velozes-e-furiosos-9",
-            type: "Filme",
-            company:  companies[2]._id,
-            num_tickets: 50,
-            date: "2022-05-20",
-            price: 30.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "Maratona Round 6",
+                slug: "maratona-round-6",
+                type: "Series",
+                company: companies[0]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "39.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/round-6-poster.jpg',
+                ],
             },
-            images:'https://cdn.ome.lt/o4KVf1xxVkdCbqavTCQW-KWURJI=/1200x630/smart/extras/conteudos/Velozes_e_Furiosos_9_poster.jpg',
-          },
-          ,{
-            name: "Major CSGO",
-            slug: "major-csgo",
-            type: "E-Sports",
-            company:  companies[2]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 150.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "Campus Party 2021",
+                slug: "campus-party-2021",
+                type: "Tecnologia",
+                company: companies[1]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "79.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/campus-party-2021.jpg',
+                ],
             },
-            images:'https://tracklist.com.br/wp-content/uploads/2021/08/rock-in-rio.png',
-          },
-          ,{
-            name: "BGS São Paulo",
-            slug: "bgs-sao-paulo",
-            type: "Games",
-            company:  companies[2]._id,
-            num_tickets: 100,
-            date: "2022-05-20",
-            price: 50.00,
-            description: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet",
-            address: {
-              long: -22.886205000766278,
-              lat: -43.28361798050839,
+            {
+                name: "CCXP",
+                slug: "ccxp",
+                type: "Geek",
+                company: companies[1]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "159.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/ccxp-poster.png',
+                ],
             },
-            images:'https://dropsdejogos.uai.com.br/wp-content/uploads/sites/10/2019/09/bgs-1280x720.jpg',
-          },
-        ])
-        let users = await User.find()
-        let events = await Event.find()
+            {
+                name: "Venom 2",
+                slug: "venom-2",
+                type: "Filmes",
+                company: companies[0]._id,
+                num_tickets: "100",
+                date: "2021-12-25",
+                price: "29.99",
+                description: "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet",
+                address: {
+                    long: -22.886205000766278,
+                    lat: -43.28361798050839,
+                },
+                images: [
+                    'http://localhost:8080/files/venom-2-poster.jpg',
+                ],
+            },
+        ]);
+
+        let events = await Event.find({})
         await Favorite.create([
-          {
-            user: users[0].id,
-            event: events[0].id
-          },
-          {
-            user: users[0].id,
-            event: events[1].id
-          },
-          {
-            user: users[1].id,
-            event: events[2].id
-          },
-          {
-            user: users[0].id,
-            event: events[3].id
-          },
+            {
+                user: users[0]._id,
+                event: events[0]._id,
+            },
+            {
+                user: users[0]._id,
+                event: events[1]._id,
+            },
+            {
+                user: users[1]._id,
+                event: events[3]._id,
+            },
+            {
+                user: users[0]._id,
+                event: events[4]._id,
+            },
         ])
+
         await Buy.create([
-          {
-            userId: users[0].id,
-            eventId: events[0].id
-          },
-          {
-            userId: users[0].id,
-            eventId: events[1].id
-          },
-          {
-            userId: users[1].id,
-            eventId: events[2].id
-          },
-          {
-            userId: users[0].id,
-            eventId: events[3].id
-          },
+            {
+                company: companies[1]._id,
+                user: users[0]._id,
+                event: events[0]._id
+            },
+            {
+                company: companies[1]._id,
+                user: users[0]._id,
+                event: events[1]._id
+            },
+            {
+                company: companies[0]._id,
+                user: users[1]._id,
+                event: events[3]._id
+            },
+            {
+                company: companies[0]._id,
+                user: users[1]._id,
+                event: events[4]._id
+            },
         ])
 
         console.log("Seeds criadas")
@@ -244,4 +284,4 @@ const seeder = async () =>{
     }
 }
 
-module.exports = seeder
+module.exports = {userSeed, seeders}
