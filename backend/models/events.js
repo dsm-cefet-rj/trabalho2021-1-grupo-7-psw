@@ -19,7 +19,7 @@ const eventSchema = new mongoose.Schema({
   },
   company: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'company',
+    ref: 'User',
     require: true,
   },
   num_tickets: {

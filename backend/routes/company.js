@@ -1,15 +1,11 @@
 const router = require('express').Router(); 
 const verifyCompany = require('../utils/verifyDataCompany')
-
 const User = require('../models/user');
-const passport = require('passport')
-const auth = require('../middlewares/authenticate').verifyUser;
 const userType = require('../utils/enumTypeUser');
-const Company = require('../models/company');
-const {userAdmin} = require('../middlewares/authenticate')
+const {userAdmin, verifyUser} = require('../middlewares/authenticate')
 
 //Pega todas as empresas
-router.get('/', auth, userAdmin,async (req, res, next) => {
+router.get('/', verifyUser, userAdmin,async (req, res, next) => {
   try{
     let companys = await User.find({role: userType.COMPANY})
     res.status(200).json(companys)
@@ -20,7 +16,7 @@ router.get('/', auth, userAdmin,async (req, res, next) => {
 });
 
 //Pega uma empresa
-router.get('/:id', auth, userAdmin,async (req, res, next) => {
+router.get('/:id', verifyUser, userAdmin,async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -40,10 +36,8 @@ router.get('/:id', auth, userAdmin,async (req, res, next) => {
   }
 })
 
-//Cadastra uma empresa
-
 //Deleta uma empresa
-router.delete('/:id', auth, userAdmin, async (req, res, next) => {
+router.delete('/:id', verifyUser, userAdmin, async (req, res, next) => {
   try{
     let id = req.params.id
 
@@ -64,7 +58,7 @@ router.delete('/:id', auth, userAdmin, async (req, res, next) => {
 })
 
 //Atualiza uma empresa
-router.put('/:id', auth, userAdmin, async (req, res, next) => {
+router.put('/:id', verifyUser, userAdmin, async (req, res, next) => {
   console.log(req)
   try{
     let { name, email, document, password} = req.body

@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const verifyUser = require('../utils/verifyDataUser');
 const User = require('../models/user');
-const Company = require('../models/company');
 const Favorite = require('../models/favorite');
 const Event = require('../models/events');
 const verifyDataUser = require('../utils/verifyDataUser');
@@ -41,8 +40,8 @@ router.get('/:id', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
 //Cadastra um usuário
 router.post('/', async (req, res, next) => {
   try {
+    
     let { name, email, document, password } = req.body;
-
     let verifyData = verifyUser.user(name, email, document, password);
     if (!verifyData) {
       return res.status(400).json({ msg: 'Dados inválidos.' });
@@ -53,9 +52,7 @@ router.post('/', async (req, res, next) => {
     else user_role = 1;
 
     let userFound = await User.findOne({ email: email });
-    let companyFound = await Company.findOne({ email: email });
-
-    if (userFound != undefined || companyFound != undefined) {
+    if (userFound != null) {
       return res.status(401).json({ msg: 'E-mail já cadastrado.' });
     }
 
@@ -72,7 +69,7 @@ router.post('/', async (req, res, next) => {
         }
       }
     );
-  } catch (e) {
+  } catch (e) { console.log(e)
     res.status(500).json({ msg: 'Erro interno' });
   }
 });
@@ -82,7 +79,7 @@ router.post(
   '/login',
   passport.authenticate('local'),
   async (req, res, next) => {
-    let token = auth.getToken({ _id: req.user._id });
+    let token = auth.getToken({ _id: req.user._id, name: req.user.name, email: req.user.email, role: req.user.role});
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json({
@@ -142,12 +139,8 @@ router.put('/:id', auth.verifyUser, auth.userAdmin, async (req, res, next) => {
     }
 
     let userFound = await User.findOne({ email: email });
-    let companyFound = await Company.findOne({ email: email });
 
-    if (
-      (userFound && userExists.email != userFound.email) ||
-      companyFound != undefined
-    ) {
+    if (userFound != null) {
       return res.status(406).json({ msg: 'E-mail já cadastrado.' });
     }
 
@@ -192,9 +185,8 @@ router.get(
       return res.status(404).json({ msg: 'Usuário não encontrado.' });
     }
 
-    let token = req.headers.authorization;
-    let bearerToken = token.split(' ');
-    let decoded = jwt.verify(bearerToken[1], config.secret);
+    let token = req.headers.authorization.split(' ')[1];
+    let decoded = jwt.verify(token, config.secret);
 
     if (userFound._id != decoded._id) {
       return res
@@ -230,9 +222,8 @@ router.post(
       return res.status(404).json({ msg: 'Usuário não encontrado.' });
     }
 
-    let token = req.headers.authorization;
-    let bearerToken = token.split(' ');
-    let decoded = jwt.verify(bearerToken[1], config.secret);
+    let token = req.headers.authorization.split(' ')[1];
+    let decoded = jwt.verify(token, config.secret);
 
     if (userFound._id != decoded._id) {
       return res
@@ -277,9 +268,8 @@ router.delete(
       return res.status(404).json({ msg: 'Usuário não encontrado.' });
     }
 
-    let token = req.headers.authorization;
-    let bearerToken = token.split(' ');
-    let decoded = jwt.verify(bearerToken[1], config.secret);
+    let token = req.headers.authorization.split(' ')[1];
+    let decoded = jwt.verify(token, config.secret);
 
     if (userFound._id != decoded._id) {
       return res

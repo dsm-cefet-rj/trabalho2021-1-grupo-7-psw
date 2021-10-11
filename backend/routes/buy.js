@@ -3,11 +3,10 @@ const Users = require("../models/user");
 const Events = require('../models/events')
 const router = require("express").Router();
 const { id: verifyId } = require('../utils/verifyDataUser')
-const auth = require('../middlewares/authenticate').verifyUser;
+const {verifyUser, userClient, userCompany} = require('../middlewares/authenticate');
 const typeUser = require("../utils/enumTypeUser");
 const jwt = require("jsonwebtoken")
 const config = require('../config')
-
 
 function paramUndefined(...args) {
     let isAnyoneUndefined = false
@@ -22,23 +21,20 @@ function paramUndefined(...args) {
         return true    
     return false;
 }
-router.post("/compra", auth,async (req, res) => {
+
+//Compra um ingresso
+router.post("/", verifyUser, userClient,async (req, res) => {
     
     let { eventId } = req.body;
     const token = req.headers.authorization.split(" ")[1]
     const userDecoded = jwt.decode(token,{json: true, complete: true} )
     const userId = userDecoded?.payload?._id
-    console.log(userId)
+
     if (eventId ===undefined) {
-        res.status(400).json({ msg: "Bad request" });
+        res.status(400).json({ msg: "Dados inválidos" });
         return;
     }
-    const user = await Users.findOne({ _id: userId, role:typeUser.USER })
-    
-    if (user == null) {
-        res.status(404).json({ msg: "Usuario não encontrado" });
-        return;
-    }
+
     const event = await Events.findById({ _id: eventId })
     if (event === null) {
         res.status(404).json({ msg: "Evento nao encontrado" });
@@ -50,51 +46,64 @@ router.post("/compra", auth,async (req, res) => {
         return res.status(400).json({ msg: "As vendas estão esgotadas" })
     }
     const newBuy = new Buy({
-        userId,
-        eventId
+        company: event.company,
+        user: userId,
+        event: eventId
     })
 
-    const buyConfirm = await newBuy.save()
+    await newBuy.save()
     --num_tickets;
     await Events.findByIdAndUpdate(eventId, { num_tickets })
-    res.json({ msg: "compra efetuada", buyConfirm });
+    res.json({ status: "Compra efetuada com sucesso!" });
 });
 
-//Todas os usuarios que compraram um evento
-router.get("/vendas/evento/:id", auth,async (req, res) => {
+//Retorna todas as vendas de uma empresa
+router.get("/empresas/:id",verifyUser, userCompany, async (req, res) => {
+    const token = req.headers.authorization.split(" ")[1]
+    let decoded = jwt.verify(token, config.secret);
+    const companyId = decoded._id
     let { id } = req.params;
+
     if (!verifyId(id)) {
-        return res.status(400).json({ msg: "Id invalido" })
+        return res.status(400).json({ msg: "Dados inválidos" })
     }
-    const event = await Events.findOne({ _id: id })
-    console.log(event)
-    if (event === null) {
-        res.status(404).json({ msg: "Evento nao encontrado" });
-        return;
+
+    if(companyId != id){
+        return res.status(403).json({ msg: "Ação não permitida" })
     }
-    const sales = await Buy.find({ eventId: id }).populate('userId');
+
+    const sales = await Buy.find({ company: companyId }).populate(['eventId', 'userId']);
 
     if (sales.length === 0) {
         res.status(200).json({ msg: "Nao há vendas relacionadas a esse evento" });
         return;
     }
-    res.json(sales);
+    res.json({sales});
 });
 
-router.get('/usuarios/compras/:userId/', auth,async (req, res) => {
+//Retorna todas as compras de um usuário
+router.get('/usuarios/:userId', verifyUser, userClient,async (req, res) => {
     const { userId } = req.params
-    const userExists = await Users.findOne({ _id: userId })
-    if (userExists === null)
-        return res.status(400).json({ msg: "Usuario nao cadastrado no sistema" })
 
     if (!verifyId(userId))
-        return res.status(400).json({ msg: "Id invalido" })
-    const vendas = await Buy.find({ userId: userId })
-    if (vendas.length === 0)
+        return res.status(400).json({ msg: "Dados inválidos" })
+    
+    const token = req.headers.authorization.split(" ")[1]
+    const userDecoded = jwt.verify(token, config.secret);
+
+    if(userDecoded._id != userId){
+        return res.status(403).json({ msg: "Ação não permitida" })
+    }
+
+    const userExists = await Users.findOne({ _id: userId })
+    if (userExists === null)
+        return res.status(400).json({ msg: "Usuário nao cadastrado no sistema" })
+
+    const buys = await Buy.find({ user: userId }).populate("eventId")
+    if (buys.length === 0)
         return res.status(200).json({ msg: "Nao há compras relacionadas a esse usuario" });
 
-    res.status(200).json({ vendas })
+    res.status(200).json({ buys })
 })
-
 
 module.exports = router;
