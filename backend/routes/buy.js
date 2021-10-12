@@ -72,13 +72,28 @@ router.get("/empresas/:id",verifyUser, userCompany, async (req, res) => {
         return res.status(403).json({ msg: "Ação não permitida" })
     }
 
-    const sales = await Buy.find({ company: companyId }).populate(['eventId', 'userId']);
+    const sales = await Buy.find({ company: companyId }).populate(['event', 'user']).sort([['created_at', 'descending']]);
 
     if (sales.length === 0) {
         res.status(200).json({ msg: "Nao há vendas relacionadas a esse evento" });
         return;
     }
-    res.json({sales});
+
+    let allSales = []
+    sales.forEach(s =>{
+        allSales.push({
+            _id: s._id,
+            num_tickets: 1,
+            buy_date: s.created_at,
+            user:{
+                name: s.user.name,
+                email: s.user.email,
+                document: s.user.document
+            },
+            event: s.event
+        })
+    })
+    res.json({sales: allSales});
 });
 
 //Retorna todas as compras de um usuário
@@ -99,11 +114,25 @@ router.get('/usuarios/:userId', verifyUser, userClient,async (req, res) => {
     if (userExists === null)
         return res.status(400).json({ msg: "Usuário nao cadastrado no sistema" })
 
-    const buys = await Buy.find({ user: userId }).populate("eventId")
+    const buys = await Buy.find({ user: userId }).populate(["event", "company"]).sort([['created_at', 'descending']])
     if (buys.length === 0)
         return res.status(200).json({ msg: "Nao há compras relacionadas a esse usuario" });
 
-    res.status(200).json({ buys })
+    let allBuys = []
+    buys.forEach(b =>{
+        allBuys.push({
+            _id: b._id,
+            num_tickets: 1,
+            buy_date: b.created_at,
+            company:{
+                name: b.company.name,
+                email: b.company.email,
+                document: b.company.document
+            },
+            event: b.event
+        })
+    })
+    res.status(200).json({ buys: allBuys })
 })
 
 module.exports = router;

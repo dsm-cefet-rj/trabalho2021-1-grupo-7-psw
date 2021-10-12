@@ -7,7 +7,7 @@ const {userAdmin, verifyUser} = require('../middlewares/authenticate')
 //Pega todas as empresas
 router.get('/', verifyUser, userAdmin,async (req, res, next) => {
   try{
-    let companys = await User.find({role: userType.COMPANY})
+    let companys = await User.find({role: userType.COMPANY}).sort([['created_at', 'descending']])
     res.status(200).json(companys)
   }catch(e){
     console.log(e)

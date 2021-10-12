@@ -9,7 +9,7 @@ const {secret} = require('../config')
 
 /* GET all events. */
 router.get('/', async (req, res) => {
-  let event = await Event.find().populate('company');
+  let event = await Event.find().populate('company').sort([['created_at', 'descending']]);
   if (event.length === 0) {
     return res.status(404).json({ msg: 'Nenhum evento encontrado.' });
   }
