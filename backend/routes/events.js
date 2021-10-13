@@ -6,6 +6,8 @@ const {verifyUser, userCompany} = require('../middlewares/authenticate');
 const jwt = require("jsonwebtoken")
 const User = require('../models/user');
 const {secret} = require('../config')
+const multer = require('multer')
+const multerConfig = require('../middlewares/multer')
 
 /* GET all events. */
 router.get('/', async (req, res) => {
@@ -32,8 +34,10 @@ router.get('/:slug', async (req, res) => {
   return res.status(200).json({ event });
 });
 
-router.post('/', verifyUser, userCompany,async (req, res) => {
+router.post('/', verifyUser, userCompany,multer(multerConfig).single('file') ,async (req, res) => {
   const { name, type, company, num_tickets, date, price, description } = req.body;
+  const filename = req.file.filename;
+  console.log(req.file)
 
   const validation = verifyEventData(
     name,
@@ -45,7 +49,7 @@ router.post('/', verifyUser, userCompany,async (req, res) => {
     description
   );
 
-  if (!validation) {
+  if (!validation || filename == undefined) {
     return res.status(400).json({ msg: 'Dado(s) Obrigatório(s) invalido(s).' });
   }
 
@@ -76,7 +80,7 @@ router.post('/', verifyUser, userCompany,async (req, res) => {
       lat: -43.28361798050839,
     },
     images: [
-      'https://cdn.ome.lt/o4KVf1xxVkdCbqavTCQW-KWURJI=/1200x630/smart/extras/conteudos/Velozes_e_Furiosos_9_poster.jpg',
+      'http://localhost:8080/files/' + filename,
     ],
   });
 
