@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchEvent } from '../../store/event/eventSlice';
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
+import { getEventsBoughtByUser } from '../../services/event_service';
 import { Main, Title, Container, Text, Tickets } from './style.js';
 import EventCard from '../../components/EventCard/index';
 import { TextField, Grid, InputAdornment } from '@material-ui/core';
@@ -20,29 +21,19 @@ function MyTickets() {
   const [textFilter, setTextFilter] = useState('');
   const classes = useStyles();
   const [events, setEvents] = useState([]);
-  const eventsState = useSelector((state) => state.event);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!eventsState.entities) {
-      dispatch(fetchEvent());
-    }
+    loadEvents();
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (!events.length > 0 && eventsState.status === 'loaded') {
-      loadEvents();
-    }
-    // eslint-disable-next-line
-  }, [eventsState]);
-
-  const loadEvents = () => {
-    const eventsResponse =
-      eventsState.entities &&
-      Object.values(eventsState.entities).length > 0 &&
-      Object.values(eventsState.entities);
+  const loadEvents = async () => {
+    console.log(user);
+    const response = await getEventsBoughtByUser({ userId: user.user.id });
+    const eventsResponse = response.buys.map((res) => res.event);
     setEvents(eventsResponse);
   };
 

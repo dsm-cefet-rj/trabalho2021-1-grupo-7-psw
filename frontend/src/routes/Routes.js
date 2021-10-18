@@ -5,6 +5,7 @@ import { history } from '../history';
 //Componentes das páginas
 import Home from '../pages/home/home';
 import EventPage from '../pages/EventPage/index.jsx';
+import BuyEvent from '../pages/BuyEvent/index.jsx';
 import MyTickets from '../pages/myTickets/myTickets';
 import Login from '../pages/Login/login';
 import RegisteredEvents from '../pages/registeredEvents/registeredEvents';
@@ -42,6 +43,7 @@ export default function Routes() {
         <Route exact path='/' component={Home} />
         <Route exact path='/sobre' component={AboutUs} />
         <Route exact path='/evento/:slug' component={EventPage} />
+        <Route exact path='/comprar/:slug' component={BuyEvent} />
         <Route exact path='/entrar' component={Login} />
         <Route exact path='/cadastrar' component={RegisterU} />
         <Route exact path='/admin/cadastrar' component={RegisterC} />

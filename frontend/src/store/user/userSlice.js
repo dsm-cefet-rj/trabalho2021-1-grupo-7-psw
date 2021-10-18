@@ -14,7 +14,10 @@ export const fetchUser = createAsyncThunk(
       const response = await getUser(username, password);
       if (response.user) {
         localStorage.setItem('user', JSON.stringify(response));
-        return response.user;
+        return {
+          ...response.user,
+          token: response.token,
+        };
       }
     } catch (error) {
       throw error;

@@ -27,7 +27,7 @@ import { loginSchema } from '../../utils/loginSchema';
 
 export default function LoginU() {
   const [erro, setErro] = useState(null);
-  // const userState = useSelector((state) => state.user);
+  const userState = useSelector((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -41,9 +41,12 @@ export default function LoginU() {
     const { email, password } = user;
 
     try {
-      dispatch(fetchUser({ username: email, password }));
-      setErro(null);
-      history.push('/');
+      await dispatch(fetchUser({ username: email, password }));
+      if (userState.status && userState.status !== 'failed') {
+        history.push('/');
+      } else {
+        setErro('Usuário ou senha inválido.');
+      }
     } catch (error) {
       let msgErro = error.response.data.msg;
       setErro(msgErro);
