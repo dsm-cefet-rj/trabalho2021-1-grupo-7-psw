@@ -2,9 +2,9 @@ const router = require('express').Router();
 const verifyCompany = require('../utils/verifyDataCompany')
 const User = require('../models/user');
 const Events = require('../models/events');
-
 const userType = require('../utils/enumTypeUser');
 const {userAdmin, verifyUser, userCompany} = require('../middlewares/authenticate');
+
 
 //Pega todas as empresas
 router.get('/', verifyUser, userAdmin,async (req, res, next) => {
@@ -89,6 +89,7 @@ router.put('/:id', verifyUser, userAdmin, async (req, res, next) => {
   }
 })
 
+//Eventos de uma empresa
 router.get("/:id/eventos",userCompany, async (req, res)=>{
   const {id} = req.params 
   const user = await User.findById(id)
