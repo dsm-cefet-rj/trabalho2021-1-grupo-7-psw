@@ -16,6 +16,7 @@ import EventUpdate from '../pages/Event/Update';
 import EventCreate from '../pages/Event/Create';
 import AboutUs from '../pages/About/about';
 import Feedback from '../pages/Feedback/index';
+import {PrivateRoute, NotAuthRoute} from '../services/auth';
 
 const isAuthentticated = () => {
   if (!localStorage.getItem('user')) {
@@ -26,15 +27,18 @@ const isAuthentticated = () => {
 };
 
 export default function Routes() {
+
+  let roletype ={
+    all: "All",
+    client: "Client",
+    company: "Company",
+    admin: "Admin",
+    notAuthenticated: "NotAuth"
+  }
+
   return (
     <Router history={history}>
-      {!isAuthentticated() && (
-        <Redirect
-          to={{
-            pathname: '/entrar',
-          }}
-        />
-      )}
+      
       {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch>
         {' '}
@@ -42,22 +46,22 @@ export default function Routes() {
         <Route exact path='/' component={Home} />
         <Route exact path='/sobre' component={AboutUs} />
         <Route exact path='/evento/:slug' component={EventPage} />
-        <Route exact path='/entrar' component={Login} />
-        <Route exact path='/cadastrar' component={RegisterU} />
-        <Route exact path='/admin/cadastrar' component={RegisterC} />
-        <Route exact path='/meus-ingressos' component={MyTickets} />
-        <Route exact path='/admin/eventos' component={RegisteredEvents} />
+        <NotAuthRoute exact path='/entrar' component={Login}/> {/* role={roletype.notAuthenticated} */}
+        <NotAuthRoute exact path='/cadastrar' component={RegisterU}/>
+        <NotAuthRoute exact path='/admin/cadastrar' component={RegisterC} />
+        <PrivateRoute exact path='/meus-ingressos' component={MyTickets} role={roletype.client}/>
+        <PrivateRoute exact path='/admin/eventos' component={RegisteredEvents} role={roletype.company}/>
         <Route exact path='/feedback' component={Feedback} />
-        <Route exact path='/admin/evento/novo' component={EventCreate} />
-        <Route
+        <PrivateRoute exact path='/admin/evento/novo' component={EventCreate} role={roletype.company}/>
+        <PrivateRoute
           exact
           path='/admin/evento/:slug/editar'
-          component={EventUpdate}
+          component={EventUpdate} role={roletype.company}
         />
-        <Route
+        <PrivateRoute
           exact
           path='/admin/evento/:slug'
-          component={EventReadAndDelete}
+          component={EventReadAndDelete} role={roletype.company}
         />
         <Route path='*' component={Page404} />
         {/*Se a rota não existir... */}
