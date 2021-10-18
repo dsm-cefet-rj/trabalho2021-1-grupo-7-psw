@@ -2,6 +2,7 @@ const router = require('express').Router();
 const verifyCompany = require('../utils/verifyDataCompany')
 
 const User = require('../models/user');
+const Events = require('../models/events');
 const passport = require('passport')
 const auth = require('../middlewares/authenticate').verifyUser;
 const userType = require('../utils/enumTypeUser');
@@ -91,6 +92,16 @@ router.put('/:id', auth, userAdmin, async (req, res, next) => {
     console.log(e)
     res.status(500).json({msg: "Erro interno"})
   }
+})
+
+router.get("/:id/eventos",async (req, res)=>{
+  const {id} = req.params 
+  const user = await User.findById(id)
+  if(user==undefined){
+    return res.status(404).json({msg: "Usuario não encontrado."})
+  }
+  const userEvents = await Events.find({company: id})
+  res.json(userEvents)
 })
 
 module.exports = router
