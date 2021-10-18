@@ -7,7 +7,7 @@ const passport = require('passport')
 const auth = require('../middlewares/authenticate').verifyUser;
 const userType = require('../utils/enumTypeUser');
 const Company = require('../models/company');
-const {userAdmin} = require('../middlewares/authenticate')
+const {userAdmin, userCompany} = require('../middlewares/authenticate')
 
 //Pega todas as empresas
 router.get('/', auth, userAdmin,async (req, res, next) => {
@@ -94,7 +94,7 @@ router.put('/:id', auth, userAdmin, async (req, res, next) => {
   }
 })
 
-router.get("/:id/eventos",async (req, res)=>{
+router.get("/:id/eventos", auth, userCompany,async (req, res)=>{
   const {id} = req.params 
   const user = await User.findById(id)
   if(user==undefined){
