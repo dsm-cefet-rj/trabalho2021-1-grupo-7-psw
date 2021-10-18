@@ -5,6 +5,7 @@ import { history } from '../history';
 //Componentes das páginas
 import Home from '../pages/home/home';
 import EventPage from '../pages/EventPage/index.jsx';
+import BuyEvent from '../pages/BuyEvent/index.jsx';
 import MyTickets from '../pages/myTickets/myTickets';
 import Login from '../pages/Login/login';
 import RegisteredEvents from '../pages/registeredEvents/registeredEvents';
@@ -41,11 +42,11 @@ export default function Routes() {
       
       {/* Dentro deste componente há uma função q o Router espera receber */}
       <Switch>
-        {' '}
         {/* Onde contém todas as rotas da aplicação */}
         <Route exact path='/' component={Home} />
         <Route exact path='/sobre' component={AboutUs} />
         <Route exact path='/evento/:slug' component={EventPage} />
+        <PrivateRoute exact path='/comprar/:slug' component={BuyEvent} role={roletype.client}/>
         <NotAuthRoute exact path='/entrar' component={Login}/> {/* role={roletype.notAuthenticated} */}
         <NotAuthRoute exact path='/cadastrar' component={RegisterU}/>
         <NotAuthRoute exact path='/admin/cadastrar' component={RegisterC} />

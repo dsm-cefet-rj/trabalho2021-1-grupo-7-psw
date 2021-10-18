@@ -15,6 +15,7 @@ import {
   TagContainer,
   WrapperSectionContainer,
 } from './style.js';
+import { history } from '../../history';
 import { IconButton, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { Calendar } from '@styled-icons/boxicons-regular/Calendar';
@@ -123,6 +124,7 @@ const EventPage = () => {
           classes={{
             root: classes.button,
           }}
+          onClick={() => history.push(`/comprar/${event.slug}`)}
         >
           Comprar
         </Button>

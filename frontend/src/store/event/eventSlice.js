@@ -22,7 +22,7 @@ export const fetchEvent = createAsyncThunk('auth/fetchEvent', async () => {
 
 export const createEvent = createAsyncThunk(
   'auth/CreateEvent',
-  async ({ name, type, company, quantity, date, price, description }) => {
+  async ({ name, type, company, quantity, date, file, price, description }) => {
     try {
       const response = await registerEvent(
         name,
@@ -30,6 +30,7 @@ export const createEvent = createAsyncThunk(
         company,
         quantity,
         date,
+        file,
         price,
         description
       );

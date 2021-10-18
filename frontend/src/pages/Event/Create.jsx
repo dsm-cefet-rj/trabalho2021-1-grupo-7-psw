@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FormCard(props) {
   const classes = useStyles();
   const [user, setUser] = useState(null);
+  const [file, setFile] = useState(null);
   const dispatch = useDispatch();
 
   const [error, setErro] = useState(null);
@@ -60,7 +61,17 @@ export default function FormCard(props) {
   } = useForm({
     resolver: yupResolver(createEventSchema),
   });
-  console.log(user, ' olha o user');
+  console.log(file, ' olha o user', file?.name);
+  const handleFile = (e) => {
+    setFile({
+      lastModified: e?.lastModified,
+      lastModifiedDate: e?.lastModifiedDate,
+      name: e?.name,
+      size: e?.size,
+      type: e?.type,
+      webkitRelativePath: e?.webkitRelativePath,
+    });
+  };
 
   const createEventSubmit = async (event) => {
     const { name, type, quantity, date, price, description } = event;
@@ -73,6 +84,7 @@ export default function FormCard(props) {
           quantity,
           date,
           price,
+          file,
           description,
         })
       );
@@ -148,6 +160,14 @@ export default function FormCard(props) {
             placeholder='Digite a descrição do evento'
             id='description'
             {...register('description')}
+          />
+
+          <input
+            type='file'
+            id='avatar'
+            name='avatar'
+            accept='image/png, image/jpeg'
+            onChange={(e) => handleFile(e.target.files[0])}
           />
           <ErrorInputs>{errors.description?.message}</ErrorInputs>
 

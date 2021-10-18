@@ -28,9 +28,11 @@ export const registerEvent = (
   company,
   quantity,
   date,
+  file,
   price,
   description
 ) => {
+  console.log(file, 'aqqqqqqqqqqqqq');
   return api()
     .post('/eventos', {
       name,
@@ -38,6 +40,7 @@ export const registerEvent = (
       company,
       num_tickets: quantity,
       date,
+      file,
       price,
       description,
     })
@@ -81,6 +84,29 @@ export const deleteEvent = (slug) => {
     .delete(`/eventos/${slug}`)
     .then((response) => {
       return response.data.event || {};
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const buyEvent = ({ eventId }) => {
+  console.log(eventId, 'compra');
+  return api()
+    .post(`/compras`, { eventId })
+    .then((response) => {
+      return response.data || {};
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getEventsBoughtByUser = ({ userId }) => {
+  return api()
+    .get(`/compras/usuarios/${userId}`)
+    .then((response) => {
+      return response.data || {};
     })
     .catch((error) => {
       throw error;
