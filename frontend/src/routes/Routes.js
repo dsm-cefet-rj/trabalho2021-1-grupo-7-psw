@@ -17,6 +17,7 @@ import EventUpdate from '../pages/Event/Update';
 import EventCreate from '../pages/Event/Create';
 import AboutUs from '../pages/About/about';
 import Feedback from '../pages/Feedback/index';
+import Sales from '../pages/Sales'
 import {PrivateRoute, NotAuthRoute} from '../services/auth';
 
 const isAuthentticated = () => {
@@ -54,6 +55,7 @@ export default function Routes() {
         <PrivateRoute exact path='/admin/eventos' component={RegisteredEvents} role={roletype.company}/>
         <Route exact path='/feedback' component={Feedback} />
         <PrivateRoute exact path='/admin/evento/novo' component={EventCreate} role={roletype.company}/>
+        <PrivateRoute exact path='/admin/vendas' component={Sales} role={roletype.company}/>
         <PrivateRoute
           exact
           path='/admin/evento/:slug/editar'

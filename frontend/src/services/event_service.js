@@ -1,5 +1,16 @@
 import api from './api';
 
+export const getSales = (id) => {
+  return api()
+    .get('/compras/empresas/'+id)
+    .then((response) => {
+      return response.data || {};
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
 export const getEvents = () => {
   return api()
     .get('/eventos')
