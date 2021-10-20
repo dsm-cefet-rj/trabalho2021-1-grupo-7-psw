@@ -22,18 +22,10 @@ export const fetchEvent = createAsyncThunk('auth/fetchEvent', async () => {
 
 export const createEvent = createAsyncThunk(
   'auth/CreateEvent',
-  async ({ name, type, company, quantity, date, file, price, description }) => {
+  async ({ formData }) => {
     try {
-      const response = await registerEvent(
-        name,
-        type,
-        company,
-        quantity,
-        date,
-        file,
-        price,
-        description
-      );
+      const response = await registerEvent(formData);
+      console.log(response);
       return response;
     } catch (error) {
       throw error;
