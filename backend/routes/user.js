@@ -177,14 +177,49 @@ router.get(
         .json({ msg: 'Usuário não permitido para esta ação' });
     }
 
-    let getFavorites = await Favorite.find({ user: id }).populate([
-      'user',
-      'event',
-    ]).sort([['created_at', 'descending']]);
+    let getFavorites = await Favorite.find({ user: id }).populate('event')
+    .sort([['created_at', 'descending']]);
     if (getFavorites.length === 0) {
       return res.status(200).json({ msg: 'Nenhum favorito registrado.' });
     }
     res.status(200).json(getFavorites);
+  }
+);
+
+//Verifica se um evento é Favorito de um usuário
+router.get('/:user_id/favoritos/:event_id',
+auth.verifyUser, auth.userClient, async (req, res, next) => {
+    let { user_id, event_id } = req.params;
+
+    if (!verifyDataUser.id(user_id) || !verifyDataUser.id(event_id)) {
+      return res.status(400).json({ msg: 'Dados inválidos.' });
+    }
+
+    let userFound = await User.findOne({ _id: user_id });
+    if (userFound == undefined) {
+      return res.status(404).json({ msg: 'Usuário não encontrado.' });
+    }
+
+    let token = req.headers.authorization.split(' ')[1];
+    let decoded = jwt.verify(token, config.secret);
+
+    if (userFound._id != decoded._id) {
+      return res
+        .status(403)
+        .json({ msg: 'Usuário não permitido para esta ação' });
+    }
+
+    let eventFound = await Event.findOne({ _id: event_id });
+    if (eventFound == undefined) {
+      return res.status(404).json({ msg: 'Favorito não encontrado.' });
+    }
+
+    let favoriteFound = await Favorite.findOne({ event: event_id });
+    if (favoriteFound == null) {
+      return res.status(404).json({ msg: 'Favorito não existe' });
+    }
+
+    res.status(200).json({ favorite: favoriteFound });
   }
 );
 
