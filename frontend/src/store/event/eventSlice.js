@@ -25,8 +25,18 @@ export const createEvent = createAsyncThunk(
   async ({ formData }) => {
     try {
       const response = await registerEvent(formData);
-      console.log(response);
-      return response;
+      const event = {
+        id: response._id,
+        slug: response.slug,
+        name: response.name,
+        type: response.type,
+        quantity: response.quantity,
+        date: response.date,
+        price: response.date,
+        images: response.images,
+        description: response.description,
+      };
+      return { event };
     } catch (error) {
       throw error;
     }

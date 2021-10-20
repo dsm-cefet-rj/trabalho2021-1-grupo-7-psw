@@ -37,7 +37,7 @@ export const registerEvent = (formData) => {
   return api()
     .post('/eventos', formData)
     .then((response) => {
-      return response.data || {};
+      return response.data.event || {};
     })
     .catch((error) => {
       throw error;
@@ -97,6 +97,17 @@ export const buyEvent = ({ eventId }) => {
 export const getEventsBoughtByUser = ({ userId }) => {
   return api()
     .get(`/compras/usuarios/${userId}`)
+    .then((response) => {
+      return response.data || {};
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getEventsByCompany = ({ userId }) => {
+  return api()
+    .get(`/empresas/${userId}/eventos`)
     .then((response) => {
       return response.data || {};
     })

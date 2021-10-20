@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import Header from '../../components/Header/index';
 import Footer from '../../components/Footer/index';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchEvent } from '../../store/event/eventSlice';
+
 import {
   Main,
   Title,
@@ -11,34 +10,26 @@ import {
   RegisterEventBtn,
   Events,
 } from './style.js';
+import { getEventsByCompany } from '../../services/event_service';
 import EventCard from '../../components/EventCard';
-import { getEvents } from '../../services/event_service';
 import { useEffect, useState } from 'react';
 
 export default function RegisteredEvents({ history }) {
   const [events, setEvents] = useState([]);
-  const eventsState = useSelector((state) => state.event);
-  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    if (!eventsState.entities) {
-      dispatch(fetchEvent());
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!events.length > 0 && eventsState.status === 'loaded') {
+    if (!events.length > 0) {
       loadEvents();
     }
     // eslint-disable-next-line
-  }, [eventsState]);
+  }, []);
 
-  const loadEvents = () => {
-    const eventsResponse =
-      eventsState.entities &&
-      Object.values(eventsState.entities).length > 0 &&
-      Object.values(eventsState.entities);
-    setEvents(eventsResponse);
+  const loadEvents = async () => {
+    console.log(user.user.id);
+    const response = await getEventsByCompany({ userId: user.user.id });
+    setEvents(response);
+    console.log(events);
   };
   return (
     <>
