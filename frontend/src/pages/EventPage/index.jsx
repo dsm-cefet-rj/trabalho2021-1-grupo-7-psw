@@ -19,7 +19,6 @@ import { history } from '../../history';
 import { IconButton, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { Calendar } from '@styled-icons/boxicons-regular/Calendar';
-import { FavoriteBorder } from '@styled-icons/material/FavoriteBorder';
 import CarouselImg from '../../components/Carousel/index.js';
 // import { getEventBySlug } from '../../utils/events.js';
 import { CircularProgress } from '@material-ui/core';
@@ -77,9 +76,6 @@ const EventPage = () => {
             <TagContainer>{event.type}</TagContainer>
             <WrapperEventNames>
               <Title>{event.name}</Title>
-              <IconButton>
-                <FavoriteBorder size={40} style={{ marginBottom: 5 }} />
-              </IconButton>
             </WrapperEventNames>
           </WrapperEventSpecs>
           <WrapperEventNames>

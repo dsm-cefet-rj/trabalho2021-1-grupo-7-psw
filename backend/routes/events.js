@@ -44,8 +44,8 @@ router.post(
   async (req, res) => {
     const { name, type, company, num_tickets, date, price, description } =
       req.body;
-    const filename = req.file.filename;
-
+    const { filename } = req.file;
+    console.log(filename, req.file);
     const validation = verifyEventData(
       name,
       type,
@@ -93,7 +93,9 @@ router.post(
 
     await event.save();
 
-    return res.status(200).json({ status: 'Evento criado com sucesso!' });
+    return res
+      .status(200)
+      .json({ event, status: 'Evento criado com sucesso!' });
   }
 );
 

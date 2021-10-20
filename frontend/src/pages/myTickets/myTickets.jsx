@@ -31,7 +31,6 @@ function MyTickets() {
   }, []);
 
   const loadEvents = async () => {
-    console.log(user);
     const response = await getEventsBoughtByUser({ userId: user.user.id });
     const eventsResponse = response.buys.map((res) => res.event);
     setEvents(eventsResponse);

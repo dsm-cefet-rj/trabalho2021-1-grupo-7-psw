@@ -13,6 +13,7 @@
     "@types/react-redux": "^7.1.18",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
+    "filesize": "^8.0.3",
     "formik": "^2.2.9",
     "install": "^0.13.0",
     "leaflet": "^1.7.1",

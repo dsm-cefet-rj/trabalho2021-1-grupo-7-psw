@@ -2,7 +2,7 @@ import api from './api';
 
 export const getSales = (id) => {
   return api()
-    .get('/compras/empresas/'+id)
+    .get('/compras/empresas/' + id)
     .then((response) => {
       return response.data || {};
     })
@@ -33,30 +33,11 @@ export const getEventBySlug = (slug) => {
     });
 };
 
-export const registerEvent = (
-  name,
-  type,
-  company,
-  quantity,
-  date,
-  file,
-  price,
-  description
-) => {
-  console.log(file, 'aqqqqqqqqqqqqq');
+export const registerEvent = (formData) => {
   return api()
-    .post('/eventos', {
-      name,
-      type,
-      company,
-      num_tickets: quantity,
-      date,
-      file,
-      price,
-      description,
-    })
+    .post('/eventos', formData)
     .then((response) => {
-      return response.data || {};
+      return response.data.event || {};
     })
     .catch((error) => {
       throw error;
@@ -116,6 +97,17 @@ export const buyEvent = ({ eventId }) => {
 export const getEventsBoughtByUser = ({ userId }) => {
   return api()
     .get(`/compras/usuarios/${userId}`)
+    .then((response) => {
+      return response.data || {};
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const getEventsByCompany = ({ userId }) => {
+  return api()
+    .get(`/empresas/${userId}/eventos`)
     .then((response) => {
       return response.data || {};
     })

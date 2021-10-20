@@ -10,6 +10,8 @@ import {
 } from './style';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { uniqueId } from 'lodash';
+import filesize from 'filesize';
 import { createEvent } from '../../store/event/eventSlice';
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
@@ -61,31 +63,34 @@ export default function FormCard(props) {
   } = useForm({
     resolver: yupResolver(createEventSchema),
   });
-  console.log(file, ' olha o user', file?.name);
-  const handleFile = (e) => {
+  const handleFile = (file) => {
     setFile({
-      lastModified: e?.lastModified,
-      lastModifiedDate: e?.lastModifiedDate,
-      name: e?.name,
-      size: e?.size,
-      type: e?.type,
-      webkitRelativePath: e?.webkitRelativePath,
+      file,
+      id: uniqueId(),
+      name: file?.name,
+      readableSize: filesize(file?.size),
+      preview: URL.createObjectURL(file),
+      error: false,
+      url: null,
     });
   };
 
   const createEventSubmit = async (event) => {
     const { name, type, quantity, date, price, description } = event;
+    const formData = new FormData();
+    formData.append('file', file.file, file.name);
+    formData.set('name', name);
+    formData.set('type', type);
+    formData.set('company', user);
+    formData.set('num_tickets', quantity);
+    formData.set('date', date);
+    formData.set('price', price);
+    formData.set('description', description);
+
     try {
       dispatch(
         createEvent({
-          name,
-          type,
-          company: user,
-          quantity,
-          date,
-          price,
-          file,
-          description,
+          formData,
         })
       );
       setErro(null);
